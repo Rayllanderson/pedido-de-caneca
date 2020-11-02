@@ -36,13 +36,11 @@ public class FormServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nome = request.getParameter("nome");
 		String telefone = request.getParameter("telefone");
-		String qtdCanecas = request.getParameter("quantidade");
 		//setar os atributos aqui
 		//salvar no banco de dados...? maybe
 		
 		System.out.println(nome);
 		System.out.println(telefone);
-		System.out.println(qtdCanecas);
 		
 		//			   mudar esse nome também...
 		request.getRequestDispatcher("pedido-caneca.jsp").forward(request, response);

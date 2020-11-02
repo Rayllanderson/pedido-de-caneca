@@ -38,24 +38,12 @@
 		<div class="card">
 			 <h5 class="card-title text-center mt-4">Resumo</h5>
 			 
-			 <form action="form-servlet" method="post">
-			 <div class="group">
-			 	<div class="form-group">
-				    <label for="formGroupExampleInput">Nome</label>
-				    <input type="text" name="nome" class="form-control" id="nome" placeholder="Digite seu nome">
-				 </div>
-				 
-				 <div class="form-group">
-				   <label for="formGroupExampleInput">Telefone</label>
-				   <input name="telefone" type="text" class="telefone form-control" id="telefone" style="width: 50%" inputmode="numeric" maxlength="12" placeholder="Whatsapp ou número do telefone">
-				 </div>
-				 
-				 <div class="form-group">	
-				  	<label for="formGroupExampleInput">Quantidade de Canecas</label>
-					<input name="quantidade" type="number" class="form-control" id="quantidade" style="width: 50%" inputmode="numeric" maxlength="12" placeholder="Quantas canecas?">
-				</div>
-			 	 <button type="submit" class="btn btn-success">Próximo</button>
-			 </div>
+			 <form action="" method="post">
+			 <table class="table">
+			 	
+			 	
+			 	
+			 </table>
 			 </form>
 		</div>
 	</div>
