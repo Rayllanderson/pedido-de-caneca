@@ -23,7 +23,6 @@
 		padding: 10px;
 		width: 50%;
 		margin: 0 auto;
-	
 	}
 	
 
@@ -39,10 +38,11 @@
 		<div class="card">
 			 <h5 class="card-title text-center">Card title</h5>
 			 
+			 <form action="form-servlet" method="post">
 			 <div class="group">
 			 	<div class="form-group">
 				    <label for="formGroupExampleInput">Nome</label>
-				    <input type="text" name="" class="form-control" id="nome" placeholder="Digite seu nome">
+				    <input type="text" name="nome" class="form-control" id="nome" placeholder="Digite seu nome">
 				 </div>
 				 
 				 <div class="form-group">
@@ -54,11 +54,9 @@
 				  	<label for="formGroupExampleInput">Quantidade de Canecas</label>
 					<input name="quantidade" type="number" class="form-control" id="quantidade" style="width: 50%" inputmode="numeric" maxlength="12" placeholder="Quantas canecas?">
 				</div>
-				 
-			 	 <button type="submit" class="btn btn-primary">Próximo</button>
-			 	
+			 	 <button type="submit" class="btn btn-success">Próximo</button>
 			 </div>
-			 
+			 </form>
 		</div>
 	</div>
 	
