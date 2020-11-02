@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class FormServlet
+ * mudar o nome também
  */
 @WebServlet("/form-servlet")
 public class FormServlet extends HttpServlet {
@@ -37,10 +37,15 @@ public class FormServlet extends HttpServlet {
 		String nome = request.getParameter("nome");
 		String telefone = request.getParameter("telefone");
 		String qtdCanecas = request.getParameter("quantidade");
+		//setar os atributos aqui
+		//salvar no banco de dados...? maybe
 		
 		System.out.println(nome);
 		System.out.println(telefone);
 		System.out.println(qtdCanecas);
+		
+		//			   mudar esse nome também...
+		request.getRequestDispatcher("pedido-caneca.jsp").forward(request, response);
 	}
 
 }

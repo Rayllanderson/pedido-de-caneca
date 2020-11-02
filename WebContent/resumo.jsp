@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="src/js/fa.js"></script>
 
 <title>Insert title here</title>
 
@@ -37,36 +36,25 @@
 	
 	<div class="container">
 		<div class="card">
-			 <h5 class="card-title text-center mt-4">Faça o pedido de sua caneca aqui! <i class="fas fa-mug-hot"></i> </h5>
+			 <h5 class="card-title text-center mt-4">Resumo</h5>
 			 
-			 <h6 class="card-title text-center mt-4">Seus dados de contato</h6>
-			 
-			 <form action="form-servlet" method="post" class="d-flex justify-content-center">
+			 <form action="form-servlet" method="post">
 			 <div class="group">
 			 	<div class="form-group">
-			 	
 				    <label for="formGroupExampleInput">Nome</label>
-				    
-				     <div class="input-group">
-				        <div class="input-group-prepend">
-				          <span class="input-group-text" id="inputGroupPrepend"><i class="far fa-user-circle"></i></span>
-				        </div>
-				    <input type="text" name="nome" class="form-control" id="nome" placeholder="Seu nome" required="required">
-				    </div>
+				    <input type="text" name="nome" class="form-control" id="nome" placeholder="Digite seu nome">
 				 </div>
 				 
 				 <div class="form-group">
-				   <label for="formGroupExampleInput">Telefone de contato</label>
-				   
-				    <div class="input-group">
-				        <div class="input-group-prepend">
-				          <span class="input-group-text"><i class="fab fa-whatsapp"></i></span>
-				        </div>
-				   <input name="telefone" type="text" class="telefone form-control" id="telefone"  inputmode="numeric" maxlength="12" placeholder="Whatsapp" required="required">
-				   </div>
+				   <label for="formGroupExampleInput">Telefone</label>
+				   <input name="telefone" type="text" class="telefone form-control" id="telefone" style="width: 50%" inputmode="numeric" maxlength="12" placeholder="Whatsapp ou número do telefone">
 				 </div>
 				 
-			 	 <button type="submit" class="btn btn-success float-right">Próximo</button>
+				 <div class="form-group">	
+				  	<label for="formGroupExampleInput">Quantidade de Canecas</label>
+					<input name="quantidade" type="number" class="form-control" id="quantidade" style="width: 50%" inputmode="numeric" maxlength="12" placeholder="Quantas canecas?">
+				</div>
+			 	 <button type="submit" class="btn btn-success">Próximo</button>
 			 </div>
 			 </form>
 		</div>
