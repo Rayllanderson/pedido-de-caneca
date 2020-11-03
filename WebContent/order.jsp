@@ -39,7 +39,18 @@
 		
 	<div class="mt-5"></div>
 	<div class="container">
-		<div class="card">
+	
+	
+  <!--Grid row-->
+  <div class="row">
+
+    <!--Grid column-->
+    <div class="col">
+
+      <!-- Card -->
+      <div class="card mb-3">
+        <div class="card-body">
+	
 			 <h5 class="card-title text-center mt-4">Caneca x</h5>
 			 
 			 <form class="" action="order"
@@ -50,16 +61,34 @@
 				      <select class="custom-select" id="validationCustom04" name="tema" required>
 				        <option selected disabled value="">Selecione o tema</option>
 				        <option value="Natal">Natal</option>
+				        <option value="Natal">tema X</option>
 				      </select>
 				     <div class="invalid-feedback">
 				        Por favor, selecione uma opção
 				      </div>
 				 </div>
 				 
+				 <div class="form-group">
+				    <label for="validationCustom04">Modelo</label>
+				      <select class="custom-select" id="validationCustom04" name="modelo" required>
+				        <option value="Padrão">Caneca Padrão</option>
+				        <option value="X">Caneca X</option>
+				        <option value="Y">Caneca Y</option>
+				      </select>
+				     <div class="invalid-feedback">
+				        Por favor, selecione uma opção
+				      </div>
+				 </div>
 				 
 				 <div class="form-group" >
+				  <label for="numberExample">Quantidade de canecas</label>
+				  <input type="number" id="numberExample" class="form-control" style="width: 80px; text-align: center" min="1" max="9999" value="1" name="quantidade" required>
+				 
+				</div>
+				
+				 <div class="form-group" >
 				   <label style="display: block">Foto personalizada</label>
-				   <label for="foto" class="btn btn-outline-info" >escolha a foto aqui</label>
+				   <label for="foto" class="btn btn-outline-primary" >escolha a foto aqui</label>
 				   <input type="file" name="foto" id="foto" style="display: none;" accept="image/*">
 				 </div>
 				 
@@ -73,14 +102,16 @@
 				 
 				<div class="form-group">
 				    <label for="exampleFormControlTextarea1">Adicione mais detalhes</label>
-				    <textarea class="form-control" id="exampleFormControlTextarea1" name="descricao" rows="4" placeholder="Dê mais detalhes pra gente (opcional)"></textarea>
+				    <textarea class="form-control" id="exampleFormControlTextarea1" name="descricao" rows="4" placeholder="Dê mais detalhes, diga pra gente como você quer a caneca (opcional)"></textarea>
 				  </div>
-			 	 <button type="submit" class="btn btn-success mb-4 float-right">Próximo</button>
+			 	 <button type="submit" class="btn btn-primary mb-4 float-right">Próximo</button>
 			 </div>
 			 </form>
 		</div>
 	</div>
-	
+	</div>
+	</div>
+	</div>
 	
 	
 	

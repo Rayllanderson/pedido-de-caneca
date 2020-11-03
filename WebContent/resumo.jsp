@@ -22,6 +22,10 @@
 
 <style type="text/css">
 
+	.card{
+		 border-radius: 1em !important;
+	}
+	
  	.n-c{
 		background-color: #28a745  !important;
 	}
@@ -111,7 +115,7 @@
 
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-               <button type="button" class="btn btn-success btn-block waves-effect waves-light">Nova Caneca</button>
+               <a  class="btn btn-success btn-block waves-effect waves-light" href="order.jsp">Nova Caneca</a>
             </li>
            
             <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 "></li>
