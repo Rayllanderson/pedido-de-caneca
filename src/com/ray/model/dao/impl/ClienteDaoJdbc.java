@@ -49,8 +49,21 @@ public class ClienteDaoJdbc implements ClienteRepository {
 
     @Override
     public Cliente update(Cliente cliente) {
-	// TODO Auto-generated method stub
-	return null;
+	PreparedStatement st = null;
+	String sql = "update clientes set nome = ?, telefone = ? where id = ?";
+	try {
+	    st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	    st.setString(1, cliente.getNome());
+	    st.setString(2, cliente.getTelefone());
+	    st.setLong(3, cliente.getId());
+	    st.executeUpdate();
+//	    return this.findById(cliente.getId());
+	} catch (SQLException e) {
+	    throw new DbException(e.getMessage());
+	} finally {
+	    DB.closeStatement(st);
+	}
+	return cliente;
     }
 
     @Override
