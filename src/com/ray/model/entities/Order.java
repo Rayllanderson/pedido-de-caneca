@@ -1,14 +1,19 @@
 package com.ray.model.entities;
 
-public class Tema {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Order {
 
     private Long id;
-    private String nome;
+    private Cliente cliente;
+    private List<Caneca> canecas = new ArrayList<>();
 
-    public Tema(Long id, String nome) {
+    public Order(Long id, Cliente cliente, List<Caneca> canecas) {
 	super();
 	this.id = id;
-	this.nome = nome;
+	this.cliente = cliente;
+	this.canecas = canecas;
     }
 
     public Long getId() {
@@ -19,12 +24,16 @@ public class Tema {
 	this.id = id;
     }
 
-    public String getNome() {
-	return nome;
+    public Cliente getCliente() {
+	return cliente;
     }
 
-    public void setNome(String nome) {
-	this.nome = nome;
+    public void setCliente(Cliente cliente) {
+	this.cliente = cliente;
+    }
+
+    public List<Caneca> getCanecas() {
+	return canecas;
     }
 
     @Override
@@ -43,7 +52,7 @@ public class Tema {
 	    return false;
 	if (getClass() != obj.getClass())
 	    return false;
-	Tema other = (Tema) obj;
+	Order other = (Order) obj;
 	if (id == null) {
 	    if (other.id != null)
 		return false;
@@ -54,6 +63,7 @@ public class Tema {
 
     @Override
     public String toString() {
-	return "Tema [id=" + id + ", nome=" + nome + "]";
+	return "Order [id=" + id + ", cliente=" + cliente + ", canecas=" + canecas + "]";
     }
+
 }
