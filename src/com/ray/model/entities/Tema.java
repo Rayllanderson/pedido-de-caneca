@@ -1,7 +1,11 @@
 package com.ray.model.entities;
 
-public class Tema {
+import java.io.Serializable;
 
+public class Tema implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+    
     private Long id;
     private String nome;
 
@@ -10,6 +14,8 @@ public class Tema {
 	this.id = id;
 	this.nome = nome;
     }
+    
+    public Tema() {};
 
     public Long getId() {
 	return id;

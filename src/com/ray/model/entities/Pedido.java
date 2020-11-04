@@ -1,10 +1,13 @@
 package com.ray.model.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pedido {
+public class Pedido implements Serializable{
 
+    private static final long serialVersionUID = 1L;
+    
     private Long id;
     private Cliente cliente;
     private List<Caneca> canecas = new ArrayList<>();
@@ -15,6 +18,8 @@ public class Pedido {
 	this.cliente = cliente;
 	this.canecas = canecas;
     }
+    
+    public Pedido() {};
 
     public Long getId() {
 	return id;

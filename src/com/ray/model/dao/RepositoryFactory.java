@@ -1,6 +1,7 @@
 package com.ray.model.dao;
 
 import com.ray.db.DB;
+import com.ray.model.dao.impl.CanecaDaoJdbc;
 import com.ray.model.dao.impl.ClienteDaoJdbc;
 import com.ray.model.dao.impl.ImageDaoJdbc;
 import com.ray.model.dao.impl.ModeloDaoJdbc;
@@ -19,8 +20,12 @@ public class RepositoryFactory {
     public static ModeloRepository createModeloDao() {
 	return new ModeloDaoJdbc(DB.getConnection());
     }
-    
+
     public static ImageRepository createImageDao() {
-   	return new ImageDaoJdbc(DB.getConnection());
-       }
+	return new ImageDaoJdbc(DB.getConnection());
+    }
+
+    public static CanecaRepository createCanecaDao() {
+	return new CanecaDaoJdbc(DB.getConnection());
+    }
 }

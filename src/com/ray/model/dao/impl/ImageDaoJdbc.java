@@ -16,14 +16,14 @@ import com.ray.model.entities.Image;
 public class ImageDaoJdbc implements ImageRepository {
 
     private Connection conn;
-    private String tableName = "image";
+    private String tableName = "fotos";
     
     public ImageDaoJdbc(Connection conn) {
 	this.conn = conn;
     }
 
     /**
-     * Retorna o cliente salvo do banco do de dados
+     * Retorna a imagem que foi salva no banco de dados
      */
     @Override
     public Image save(Image image) {
@@ -53,7 +53,7 @@ public class ImageDaoJdbc implements ImageRepository {
     @Override
     public Image update(Image image) {
 	PreparedStatement st = null;
-	String sql = "update " + tableName + " set image = ?, set base64 = ?, set miniatura = ? where id = ?";
+	String sql = "update " + tableName + " set image = ?, base64 = ?, miniatura = ? where id = ?";
 	try {
 	    st = conn.prepareStatement(sql);
 	    st.setBlob(1, image.getInputStream());

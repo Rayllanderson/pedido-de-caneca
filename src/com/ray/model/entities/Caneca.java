@@ -1,7 +1,11 @@
 package com.ray.model.entities;
 
-public class Caneca {
+import java.io.Serializable;
 
+public class Caneca implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+    
     private Long id;
     private Integer quantidade;
     private Tema tema;
@@ -16,6 +20,8 @@ public class Caneca {
 	this.modelo = modelo;
 	this.image = image;
     }
+    
+    public Caneca() {};
 
     public Long getId() {
 	return id;

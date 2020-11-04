@@ -1,9 +1,12 @@
 package com.ray.model.entities;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
-public class Image {
+public class Image implements Serializable{
 
+    private static final long serialVersionUID = 1L;
+    
     private Long id;
     private InputStream inputStream;
     private String base64;
@@ -16,6 +19,10 @@ public class Image {
 	this.miniatura = miniatura;
     }
     
+    public Image() {
+	// TODO Auto-generated constructor stub
+    }
+
     public Long getId() {
 	return id;
     }

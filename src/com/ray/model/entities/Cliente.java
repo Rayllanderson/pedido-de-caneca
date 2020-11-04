@@ -1,7 +1,11 @@
 package com.ray.model.entities;
 
-public class Cliente {
+import java.io.Serializable;
 
+public class Cliente implements Serializable{
+    
+    private static final long serialVersionUID = 1L;
+    
     private Long id;
     private String nome;
     private String telefone;
@@ -11,6 +15,10 @@ public class Cliente {
 	this.id = id;
 	this.nome = nome;
 	this.telefone = telefone;
+    }
+    
+    public Cliente() {
+	
     }
 
     public Long getId() {

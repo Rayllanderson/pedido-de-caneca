@@ -1,7 +1,11 @@
 package com.ray.model.entities;
 
-public class Modelo {
+import java.io.Serializable;
 
+public class Modelo implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+    
     private Long id;
     private String nome;
 
@@ -10,6 +14,8 @@ public class Modelo {
 	this.id = id;
 	this.nome = nome;
     }
+    
+    public Modelo() {};
 
     public Long getId() {
 	return id;
