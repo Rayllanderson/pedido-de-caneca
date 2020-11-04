@@ -2,16 +2,20 @@ package com.ray.model.dao;
 
 import com.ray.db.DB;
 import com.ray.model.dao.impl.ClienteDaoJdbc;
+import com.ray.model.dao.impl.ModeloDaoJdbc;
 import com.ray.model.dao.impl.TemaDaoJdbc;
 
 public class RepositoryFactory {
 
-    
     public static ClienteRepository createClienteDao() {
 	return new ClienteDaoJdbc(DB.getConnection());
     }
-    
+
     public static TemaRepository createTemaDao() {
-   	return new TemaDaoJdbc(DB.getConnection());
-       }
+	return new TemaDaoJdbc(DB.getConnection());
+    }
+
+    public static ModeloRepository createModeloDao() {
+	return new ModeloDaoJdbc(DB.getConnection());
+    }
 }

@@ -1,11 +1,7 @@
 package db.teste.cliente;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.ray.model.dao.ClienteRepository;

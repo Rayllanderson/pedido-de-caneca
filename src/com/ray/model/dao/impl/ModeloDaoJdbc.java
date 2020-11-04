@@ -10,14 +10,15 @@ import java.util.List;
 
 import com.ray.db.DB;
 import com.ray.db.DbException;
-import com.ray.model.dao.TemaRepository;
-import com.ray.model.entities.Tema;
+import com.ray.model.dao.ModeloRepository;
+import com.ray.model.entities.Modelo;
 
-public class TemaDaoJdbc implements TemaRepository {
+public class ModeloDaoJdbc implements ModeloRepository {
 
     private Connection conn;
-
-    public TemaDaoJdbc(Connection conn) {
+    private String tableName = "modelos";
+    
+    public ModeloDaoJdbc(Connection conn) {
 	this.conn = conn;
     }
 
@@ -25,13 +26,13 @@ public class TemaDaoJdbc implements TemaRepository {
      * Retorna o cliente salvo do banco do de dados
      */
     @Override
-    public Tema save(Tema tema) {
+    public Modelo save(Modelo modelo) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	String sql = "insert into temas (nome) values (?)";
+	String sql = "insert into " + tableName + " (nome) values (?)";
 	try {
 	    st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	    st.setString(1, tema.getNome());
+	    st.setString(1, modelo.getNome());
 	    if (st.executeUpdate() > 0) {
 		rs = st.getGeneratedKeys();
 		if (rs.next()) {
@@ -48,15 +49,15 @@ public class TemaDaoJdbc implements TemaRepository {
     }
 
     @Override
-    public Tema update(Tema tema) {
+    public Modelo update(Modelo modelo) {
 	PreparedStatement st = null;
-	String sql = "update temas set nome = ? where id = ?";
+	String sql = "update " + tableName + " set nome = ? where id = ?";
 	try {
 	    st = conn.prepareStatement(sql);
-	    st.setString(1, tema.getNome());
-	    st.setLong(2, tema.getId());
+	    st.setString(1, modelo.getNome());
+	    st.setLong(2, modelo.getId());
 	    st.executeUpdate();
-	    return this.findById(tema.getId());
+	    return this.findById(modelo.getId());
 	} catch (SQLException e) {
 	    throw new DbException(e.getMessage());
 	} finally {
@@ -67,7 +68,7 @@ public class TemaDaoJdbc implements TemaRepository {
     @Override
     public void deleteById(Long id) {
 	PreparedStatement st = null;
-	String sql = "delete from temas where id = ?";
+	String sql = "delete from " + tableName + " where id = ?";
 	try {
 	    st = conn.prepareStatement(sql);
 	    st.setLong(1, id);
@@ -83,16 +84,16 @@ public class TemaDaoJdbc implements TemaRepository {
     }
 
     @Override
-    public Tema findById(Long id) {
+    public Modelo findById(Long id) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	String sql = "select * from temas where id = ?";
+	String sql = "select * from " + tableName + " where id = ?";
 	try {
 	    st = conn.prepareStatement(sql);
 	    st.setLong(1, id);
 	    rs = st.executeQuery();
 	    if(rs.next()) {
-		return new Tema(rs.getLong("id"), rs.getString("nome"));
+		return new Modelo(rs.getLong("id"), rs.getString("nome"));
 	    }else {
 		return null;
 	    }
@@ -104,18 +105,18 @@ public class TemaDaoJdbc implements TemaRepository {
     }
 
     @Override
-    public List<Tema> findAll() {
+    public List<Modelo> findAll() {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	List <Tema> temas = new ArrayList<>();
-	String sql = "select * from temas";
+	List <Modelo> modelos = new ArrayList<>();
+	String sql = "select * from " + tableName;
 	try {
 	    st = conn.prepareStatement(sql);
 	    rs = st.executeQuery();
 	    while(rs.next()) {
-		temas.add(new Tema(rs.getLong("id"), rs.getString("nome")));
+		modelos.add(new Modelo(rs.getLong("id"), rs.getString("nome")));
 	    }
-	    return temas;
+	    return modelos;
 	} catch (SQLException e) {
 	    throw new DbException(e.getMessage());
 	} finally {
