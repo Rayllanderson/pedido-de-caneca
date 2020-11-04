@@ -11,6 +11,7 @@
                         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src.testes"/>
                         
         
         <property name="java-output-path" value="/pedido-caneca-2/build/classes"/>
