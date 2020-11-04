@@ -2,6 +2,7 @@ package com.ray.model.dao;
 
 import com.ray.db.DB;
 import com.ray.model.dao.impl.ClienteDaoJdbc;
+import com.ray.model.dao.impl.ImageDaoJdbc;
 import com.ray.model.dao.impl.ModeloDaoJdbc;
 import com.ray.model.dao.impl.TemaDaoJdbc;
 
@@ -18,4 +19,8 @@ public class RepositoryFactory {
     public static ModeloRepository createModeloDao() {
 	return new ModeloDaoJdbc(DB.getConnection());
     }
+    
+    public static ImageRepository createImageDao() {
+   	return new ImageDaoJdbc(DB.getConnection());
+       }
 }

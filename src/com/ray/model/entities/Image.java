@@ -9,12 +9,13 @@ public class Image {
     private String base64;
     private String miniatura;
 
-    public Image(Long id, InputStream inputStream, String base64) {
+    public Image(Long id, InputStream inputStream, String base64, String miniatura) {
 	this.id = id;
 	this.inputStream = inputStream;
 	this.base64 = base64;
+	this.miniatura = miniatura;
     }
-
+    
     public Long getId() {
 	return id;
     }
