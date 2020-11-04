@@ -3,13 +3,13 @@ package com.ray.model.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Order {
+public class Pedido {
 
     private Long id;
     private Cliente cliente;
     private List<Caneca> canecas = new ArrayList<>();
 
-    public Order(Long id, Cliente cliente, List<Caneca> canecas) {
+    public Pedido(Long id, Cliente cliente, List<Caneca> canecas) {
 	super();
 	this.id = id;
 	this.cliente = cliente;
@@ -52,7 +52,7 @@ public class Order {
 	    return false;
 	if (getClass() != obj.getClass())
 	    return false;
-	Order other = (Order) obj;
+	Pedido other = (Pedido) obj;
 	if (id == null) {
 	    if (other.id != null)
 		return false;
@@ -63,7 +63,7 @@ public class Order {
 
     @Override
     public String toString() {
-	return "Order [id=" + id + ", cliente=" + cliente + ", canecas=" + canecas + "]";
+	return "Pedido [id=" + id + ", cliente=" + cliente + ", canecas=" + canecas + "]";
     }
 
 }
