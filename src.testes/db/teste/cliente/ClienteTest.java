@@ -53,6 +53,5 @@ public class ClienteTest {
     public void findCliente() {
 	List<Cliente> clientes = repository.findAll();
 	clientes.forEach(System.out::println);
-	
     }
 }

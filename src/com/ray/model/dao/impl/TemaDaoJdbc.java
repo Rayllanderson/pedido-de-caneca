@@ -10,14 +10,14 @@ import java.util.List;
 
 import com.ray.db.DB;
 import com.ray.db.DbException;
-import com.ray.model.dao.ClienteRepository;
-import com.ray.model.entities.Cliente;
+import com.ray.model.dao.TemaRepository;
+import com.ray.model.entities.Tema;
 
-public class ClienteDaoJdbc implements ClienteRepository {
+public class TemaDaoJdbc implements TemaRepository {
 
     private Connection conn;
 
-    public ClienteDaoJdbc(Connection conn) {
+    public TemaDaoJdbc(Connection conn) {
 	this.conn = conn;
     }
 
@@ -25,14 +25,13 @@ public class ClienteDaoJdbc implements ClienteRepository {
      * Retorna o cliente salvo do banco do de dados
      */
     @Override
-    public Cliente save(Cliente cliente) {
+    public Tema save(Tema tema) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	String sql = "insert into clientes (nome, telefone) values (?, ?)";
+	String sql = "insert into temas (nome) values (?)";
 	try {
 	    st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	    st.setString(1, cliente.getNome());
-	    st.setString(2, cliente.getTelefone());
+	    st.setString(1, tema.getNome());
 	    if (st.executeUpdate() > 0) {
 		rs = st.getGeneratedKeys();
 		if (rs.next()) {
@@ -49,16 +48,15 @@ public class ClienteDaoJdbc implements ClienteRepository {
     }
 
     @Override
-    public Cliente update(Cliente cliente) {
+    public Tema update(Tema tema) {
 	PreparedStatement st = null;
-	String sql = "update clientes set nome = ?, telefone = ? where id = ?";
+	String sql = "update temas set nome = ? where id = ?";
 	try {
 	    st = conn.prepareStatement(sql);
-	    st.setString(1, cliente.getNome());
-	    st.setString(2, cliente.getTelefone());
-	    st.setLong(3, cliente.getId());
+	    st.setString(1, tema.getNome());
+	    st.setLong(2, tema.getId());
 	    st.executeUpdate();
-	    return this.findById(cliente.getId());
+	    return this.findById(tema.getId());
 	} catch (SQLException e) {
 	    throw new DbException(e.getMessage());
 	} finally {
@@ -69,7 +67,7 @@ public class ClienteDaoJdbc implements ClienteRepository {
     @Override
     public void deleteById(Long id) {
 	PreparedStatement st = null;
-	String sql = "delete from clientes where id = ?";
+	String sql = "delete from temas where id = ?";
 	try {
 	    st = conn.prepareStatement(sql);
 	    st.setLong(1, id);
@@ -85,16 +83,16 @@ public class ClienteDaoJdbc implements ClienteRepository {
     }
 
     @Override
-    public Cliente findById(Long id) {
+    public Tema findById(Long id) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	String sql = "select * from clientes where id = ?";
+	String sql = "select * from temas where id = ?";
 	try {
 	    st = conn.prepareStatement(sql);
 	    st.setLong(1, id);
 	    rs = st.executeQuery();
 	    if(rs.next()) {
-		return new Cliente(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone"));
+		return new Tema(rs.getLong("id"), rs.getString("nome"));
 	    }else {
 		return null;
 	    }
@@ -106,16 +104,16 @@ public class ClienteDaoJdbc implements ClienteRepository {
     }
 
     @Override
-    public List<Cliente> findAll() {
+    public List<Tema> findAll() {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	List <Cliente> clientes = new ArrayList<>();
-	String sql = "select * from clientes";
+	List <Tema> clientes = new ArrayList<>();
+	String sql = "select * from temas";
 	try {
 	    st = conn.prepareStatement(sql);
 	    rs = st.executeQuery();
 	    while(rs.next()) {
-		clientes.add(new Cliente(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone")));
+		clientes.add(new Tema(rs.getLong("id"), rs.getString("nome")));
 	    }
 	    return clientes;
 	} catch (SQLException e) {
