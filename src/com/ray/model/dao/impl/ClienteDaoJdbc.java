@@ -52,7 +52,7 @@ public class ClienteDaoJdbc implements ClienteRepository {
 	PreparedStatement st = null;
 	String sql = "update clientes set nome = ?, telefone = ? where id = ?";
 	try {
-	    st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	    st = conn.prepareStatement(sql);
 	    st.setString(1, cliente.getNome());
 	    st.setString(2, cliente.getTelefone());
 	    st.setLong(3, cliente.getId());
@@ -68,7 +68,19 @@ public class ClienteDaoJdbc implements ClienteRepository {
 
     @Override
     public void deleteById(Long id) {
-	// TODO Auto-generated method stub
+	PreparedStatement st = null;
+	String sql = "delete from clientes where id = ?";
+	try {
+	    st = conn.prepareStatement(sql);
+	    st.setLong(1, id);
+	    if (st.executeUpdate() == 0) {
+		throw new DbException("id não existe");
+	    };
+	} catch (SQLException e) {
+	    throw new DbException(e.getMessage());
+	} finally {
+	    DB.closeStatement(st);
+	}
 
     }
 

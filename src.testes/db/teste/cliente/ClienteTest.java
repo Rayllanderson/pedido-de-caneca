@@ -21,13 +21,20 @@ public class ClienteTest {
 //	System.out.println(cliente);
 //    }
     
+//    @Test
+//    public void updateCliente() {
+//	
+//	Cliente cliente = new Cliente(2L, "Rayllanderson", "88888888");
+//	
+//	cliente = repository.update(cliente);
+//	
+//	System.out.println(cliente);
+//    }
+    
     @Test
-    public void updateCliente() {
+    public void deletarCliente() {
 	
-	Cliente cliente = new Cliente(2L, "Rayllanderson", "88888888");
+	repository.deleteById(4L);
 	
-	cliente = repository.update(cliente);
-	
-	System.out.println(cliente);
     }
 }
