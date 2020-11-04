@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ray.model.entities.Modelo;
 
-public interface ModeloDao {
+public interface ModeloRepository {
 
     Modelo save(Modelo modelo);
 

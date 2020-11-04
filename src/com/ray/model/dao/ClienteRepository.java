@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ray.model.entities.Cliente;
 
-public interface ClienteDao {
+public interface ClienteRepository {
 
     Cliente save(Cliente cliente);
 

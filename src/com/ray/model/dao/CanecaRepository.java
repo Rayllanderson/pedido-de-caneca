@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ray.model.entities.Caneca;
 
-public interface CanecaDao {
+public interface CanecaRepository {
 
     Caneca save(Caneca caneca);
 

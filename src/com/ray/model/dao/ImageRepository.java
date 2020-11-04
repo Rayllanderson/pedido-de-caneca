@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ray.model.entities.Image;
 
-public interface ImageDao {
+public interface ImageRepository {
 
     Image save(Image image);
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ray.model.entities.Tema;
 
-public interface TemaDao {
+public interface TemaRepository {
 
     Tema save(Tema tema);
 
