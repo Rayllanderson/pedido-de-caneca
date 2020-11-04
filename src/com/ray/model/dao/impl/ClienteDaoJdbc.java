@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.spi.DirStateFactory.Result;
 
 import com.ray.db.DB;
 import com.ray.db.DbException;
@@ -26,23 +29,23 @@ public class ClienteDaoJdbc implements ClienteRepository {
     @Override
     public Cliente save(Cliente cliente) {
 	PreparedStatement st = null;
+	ResultSet rs = null;
 	String sql = "insert into clientes (nome, telefone) values (?, ?)";
 	try {
 	    st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	    st.setString(1, cliente.getNome());
 	    st.setString(2, cliente.getTelefone());
 	    if (st.executeUpdate() > 0) {
-		ResultSet rs = st.getGeneratedKeys();
+		rs = st.getGeneratedKeys();
 		if (rs.next()) {
-		    cliente.setId(rs.getLong(1));
+		    return findById(rs.getLong(1));
 		}
-		DB.closeResultSet(rs);
-		return cliente; //return findById depois
 	    }
 	} catch (SQLException e) {
 	    throw new DbException(e.getMessage());
 	} finally {
 	    DB.closeStatement(st);
+	    DB.closeResultSet(rs);
 	}
 	return null;
     }
@@ -57,13 +60,12 @@ public class ClienteDaoJdbc implements ClienteRepository {
 	    st.setString(2, cliente.getTelefone());
 	    st.setLong(3, cliente.getId());
 	    st.executeUpdate();
-//	    return this.findById(cliente.getId());
+	    return this.findById(cliente.getId());
 	} catch (SQLException e) {
 	    throw new DbException(e.getMessage());
 	} finally {
 	    DB.closeStatement(st);
 	}
-	return cliente;
     }
 
     @Override
@@ -86,14 +88,43 @@ public class ClienteDaoJdbc implements ClienteRepository {
 
     @Override
     public Cliente findById(Long id) {
-	// TODO Auto-generated method stub
-	return null;
+	PreparedStatement st = null;
+	ResultSet rs = null;
+	String sql = "select * from clientes where id = ?";
+	try {
+	    st = conn.prepareStatement(sql);
+	    st.setLong(1, id);
+	    rs = st.executeQuery();
+	    if(rs.next()) {
+		return new Cliente(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone"));
+	    }else {
+		return null;
+	    }
+	} catch (SQLException e) {
+	    throw new DbException(e.getMessage());
+	} finally {
+	    DB.closeStatement(st);
+	}
     }
 
     @Override
     public List<Cliente> findAll() {
-	// TODO Auto-generated method stub
-	return null;
+	PreparedStatement st = null;
+	ResultSet rs = null;
+	List <Cliente> clientes = new ArrayList<>();
+	String sql = "select * from clientes";
+	try {
+	    st = conn.prepareStatement(sql);
+	    rs = st.executeQuery();
+	    while(rs.next()) {
+		clientes.add(new Cliente(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone")));
+	    }
+	    return clientes;
+	} catch (SQLException e) {
+	    throw new DbException(e.getMessage());
+	} finally {
+	    DB.closeStatement(st);
+	}
     }
 
 }

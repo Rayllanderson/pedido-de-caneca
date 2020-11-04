@@ -1,5 +1,10 @@
 package db.teste.cliente;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -20,7 +25,7 @@ public class ClienteTest {
 //	
 //	System.out.println(cliente);
 //    }
-    
+
 //    @Test
 //    public void updateCliente() {
 //	
@@ -30,11 +35,24 @@ public class ClienteTest {
 //	
 //	System.out.println(cliente);
 //    }
+
+//    @Test
+//    public void deletarCliente() {
+//	
+//	repository.deleteById(4L);
+//	
+//    }
+
+//    @Test
+//    public void findCliente() {
+//	Cliente cliente = new Cliente(2L, "Rayllanderson", "88888888");
+//	assertThat(repository.findById(2L), is(cliente));
+//    }
     
     @Test
-    public void deletarCliente() {
-	
-	repository.deleteById(4L);
+    public void findCliente() {
+	List<Cliente> clientes = repository.findAll();
+	clientes.forEach(System.out::println);
 	
     }
 }
