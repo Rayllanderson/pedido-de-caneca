@@ -2,14 +2,14 @@ package com.ray.model.entities;
 
 import java.io.InputStream;
 
-public class Foto {
+public class Image {
 
     private Long id;
     private InputStream inputStream;
     private String base64;
     private String miniatura;
 
-    public Foto(Long id, InputStream inputStream, String base64) {
+    public Image(Long id, InputStream inputStream, String base64) {
 	this.id = id;
 	this.inputStream = inputStream;
 	this.base64 = base64;
@@ -63,7 +63,7 @@ public class Foto {
 	    return false;
 	if (getClass() != obj.getClass())
 	    return false;
-	Foto other = (Foto) obj;
+	Image other = (Image) obj;
 	if (id == null) {
 	    if (other.id != null)
 		return false;

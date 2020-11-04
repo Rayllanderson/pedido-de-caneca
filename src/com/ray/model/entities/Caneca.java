@@ -6,15 +6,15 @@ public class Caneca {
     private Integer quantidade;
     private Tema tema;
     private Modelo modelo;
-    private Foto foto;
+    private Image image;
 
-    public Caneca(Long id, Integer quantidade, Tema tema, Modelo modelo, Foto foto) {
+    public Caneca(Long id, Integer quantidade, Tema tema, Modelo modelo, Image image) {
 	super();
 	this.id = id;
 	this.quantidade = quantidade;
 	this.tema = tema;
 	this.modelo = modelo;
-	this.foto = foto;
+	this.image = image;
     }
 
     public Long getId() {
@@ -49,12 +49,12 @@ public class Caneca {
 	this.modelo = modelo;
     }
 
-    public Foto getFoto() {
-	return foto;
+    public Image getFoto() {
+	return image;
     }
 
-    public void setFoto(Foto foto) {
-	this.foto = foto;
+    public void setFoto(Image image) {
+	this.image = image;
     }
 
     @Override
@@ -85,6 +85,6 @@ public class Caneca {
     @Override
     public String toString() {
 	return "Caneca [id=" + id + ", quantidade=" + quantidade + ", tema=" + tema + ", modelo=" + modelo + ", foto="
-		+ foto + "]";
+		+ image + "]";
     }
 }
