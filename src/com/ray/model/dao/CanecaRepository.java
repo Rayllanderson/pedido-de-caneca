@@ -14,6 +14,11 @@ public interface CanecaRepository {
 
     Caneca findById(Long id);
 
-    List<Caneca> findAll();
+    /**
+     * 
+     * @param clientId 
+     * @return uma lista contendo todas as canecas do cliente informado via ID
+     */
+    List<Caneca> findAll(Long clientId);
 
 }

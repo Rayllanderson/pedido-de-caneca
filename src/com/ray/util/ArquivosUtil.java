@@ -30,37 +30,28 @@ public class ArquivosUtil {
      * @throws ServletException
      * @throws EntradaInvalidaException tipo de arquivo inválido
      */
-    public static String createMiniatureBase64(HttpServletRequest request)
+    public static String createMiniatureBase64(InputStream imagem)
 	    throws IOException, ServletException, EntradaInvalidaException {
-	if (ServletFileUpload.isMultipartContent(request)) {// validando de form é de upload
-	    Part imagem = request.getPart("file");
-	    if (imagem != null && imagem.getInputStream().available() > 0) { // siginifica que tem arquivo!
-		if (imagem.getContentType().contains("image")) {
-		    // convertendo pra base64
-		    String fotoBase64 = Base64.encodeBase64String(streamToByte(imagem.getInputStream()));
+	// convertendo pra base64
+	String fotoBase64 = Base64.encodeBase64String(streamToByte(imagem));
 
-		    /* Transforma emum bufferedImage */
-		    byte[] imageByteDecode = Base64.decodeBase64(fotoBase64);
-		    BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageByteDecode));
+	/* Transforma emum bufferedImage */
+	byte[] imageByteDecode = Base64.decodeBase64(fotoBase64);
+	BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageByteDecode));
 
-		    /* Pega o tipo da imagem */
-		    int type = bufferedImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : bufferedImage.getType();
+	/* Pega o tipo da imagem */
+	int type = bufferedImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : bufferedImage.getType();
 
-		    /* Cria imagem em miniatura */
-		    BufferedImage resizedImage = new BufferedImage(100, 100, type);
-		    Graphics2D g = resizedImage.createGraphics();
-		    g.drawImage(bufferedImage, 0, 0, 100, 100, null);
-		    g.dispose();
+	/* Cria imagem em miniatura */
+	BufferedImage resizedImage = new BufferedImage(100, 100, type);
+	Graphics2D g = resizedImage.createGraphics();
+	g.drawImage(bufferedImage, 0, 0, 100, 100, null);
+	g.dispose();
 
-		    /* Escrever imagem novamente */
-		    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		    ImageIO.write(resizedImage, "png", baos);
-		    return "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
-		} else
-		    throw new EntradaInvalidaException("Tipo de arquivo inválido");
-	    }
-	}
-	return ""; //sem arquivos
+	/* Escrever imagem novamente */
+	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	ImageIO.write(resizedImage, "png", baos);
+	return "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
     }
 
     /**
@@ -78,13 +69,13 @@ public class ArquivosUtil {
 	    Part imagem = request.getPart("foto");
 	    if (imagem.getSize() > 0) {
 		if (imagem.getContentType().contains("image")) {
-		return "data:" + imagem.getContentType() + ";base64,"
-			+ Base64.encodeBase64String(streamToByte(imagem.getInputStream()));
+		    return "data:" + imagem.getContentType() + ";base64,"
+			    + Base64.encodeBase64String(streamToByte(imagem.getInputStream()));
 		} else
 		    throw new EntradaInvalidaException("Tipo de arquivo inválido");
 	    }
 	}
-	return ""; //sem arquivos
+	return ""; // sem arquivos
     }
 
     private static byte[] streamToByte(InputStream imagem) throws IOException {
