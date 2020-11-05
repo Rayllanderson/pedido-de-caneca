@@ -1,6 +1,8 @@
 package com.ray.model.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cliente implements Serializable{
     
@@ -9,7 +11,9 @@ public class Cliente implements Serializable{
     private Long id;
     private String nome;
     private String telefone;
-
+    
+    private List <Caneca> canecas = new ArrayList<>();
+    
     public Cliente(Long id, String nome, String telefone) {
 	super();
 	this.id = id;
@@ -73,5 +77,9 @@ public class Cliente implements Serializable{
     @Override
     public String toString() {
 	return "Cliente [id=" + id + ", nome=" + nome + ", telefone=" + telefone + "]";
+    }
+
+    public List <Caneca> getCanecas() {
+	return canecas;
     }
 }

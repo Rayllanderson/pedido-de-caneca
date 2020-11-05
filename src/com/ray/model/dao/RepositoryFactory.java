@@ -28,4 +28,5 @@ public class RepositoryFactory {
     public static CanecaRepository createCanecaDao() {
 	return new CanecaDaoJdbc(DB.getConnection());
     }
+    
 }

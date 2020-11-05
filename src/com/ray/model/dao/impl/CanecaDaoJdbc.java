@@ -12,6 +12,7 @@ import com.ray.db.DB;
 import com.ray.db.DbException;
 import com.ray.model.dao.CanecaRepository;
 import com.ray.model.entities.Caneca;
+import com.ray.model.entities.Cliente;
 import com.ray.model.entities.Image;
 import com.ray.model.entities.Modelo;
 import com.ray.model.entities.Tema;
@@ -99,9 +100,11 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	PreparedStatement st = null;
 	ResultSet rs = null;
 	String sql = "select canecas.*, temas.nome as tema_nome, modelos.nome as modelo_nome, "
-		+ "fotos.image as image, fotos.base64 as base64, fotos.miniatura as miniatura from canecas "
+		+ "fotos.image as image, fotos.base64 as base64, fotos.miniatura as miniatura, "
+		+ "clientes.nome as cli_nome, clientes.telefone as cli_tel from canecas "
 		+ "inner join temas on id_tema = temas.id inner join modelos on id_modelo = modelos.id "
-		+ "inner join fotos on id_foto = fotos.id where canecas.id = ?";
+		+ "inner join fotos on id_foto = fotos.id inner join clientes on id_cliente = clientes.id "
+		+ "where canecas.id = ?";
 	try {
 	    st = conn.prepareStatement(sql);
 	    st.setLong(1, id);
@@ -122,12 +125,14 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	Tema tema = new Tema(rs.getLong("id_tema"), rs.getString("tema_nome"));
 	Modelo modelo = new Modelo (rs.getLong("id_modelo"), rs.getString("modelo_nome"));
 	Image foto = new Image(rs.getLong("id_modelo"), rs.getBinaryStream("image"), rs.getString("base64"), rs.getString("miniatura"));
+	Cliente cli = new Cliente(rs.getLong("id_cliente"), rs.getString("cli_nome"), rs.getString("cli_tel"));
 	Caneca caneca = new Caneca();
 	caneca.setId(rs.getLong("id"));
 	caneca.setQuantidade(rs.getInt("quantidade"));
 	caneca.setTema(tema);
 	caneca.setModelo(modelo);
 	caneca.setFoto(foto);
+	caneca.setCliente(cli);
 	return caneca;
     }
 
@@ -137,9 +142,10 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	ResultSet rs = null;
 	List<Caneca> modelos = new ArrayList<>();
 	String sql = "select canecas.*, temas.nome as tema_nome, modelos.nome as modelo_nome, "
-		+ "fotos.image as image, fotos.base64 as base64, fotos.miniatura as miniatura from canecas "
+		+ "fotos.image as image, fotos.base64 as base64, fotos.miniatura as miniatura, "
+		+ "clientes.nome as cli_nome, clientes.telefone as cli_tel from canecas  from canecas "
 		+ "inner join temas on id_tema = temas.id inner join modelos on id_modelo = modelos.id "
-		+ "inner join fotos on id_foto = fotos.id";
+		+ "inner join fotos on id_foto = fotos.id inner join clientes on id_cliente = clientes.id";
 	try {
 	    st = conn.prepareStatement(sql);
 	    rs = st.executeQuery();
