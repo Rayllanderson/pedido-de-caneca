@@ -3,7 +3,6 @@ package com.ray.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,8 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
-import org.apache.commons.io.IOUtils;
 
 import com.ray.model.dao.ImageRepository;
 import com.ray.model.dao.ModeloRepository;
@@ -33,7 +30,9 @@ import com.ray.util.ArquivosUtil;
 @MultipartConfig
 @WebServlet("/order")
 public class OrderServlet extends HttpServlet {
+    
     private static final long serialVersionUID = 1L;
+    
     private ImageRepository imageRepository;
     private ModeloRepository modeloRepository;
     private TemaRepository temaRepository;
@@ -73,10 +72,7 @@ public class OrderServlet extends HttpServlet {
 	    throws ServletException, IOException {
 	String descricao = request.getParameter("descricao");
 	String quantidade = request.getParameter("quantidade");
-	String tema1 = request.getParameter("tema-id");
-	System.out.println(tema1);
-	Long temaId = Long.valueOf(tema1);
-	Tema tema = temaRepository.findById(temaId);
+	Tema tema = temaRepository.findById(Long.valueOf(request.getParameter("tema-id")));
 	Modelo modelo =  modeloRepository.findById(Long.parseLong(request.getParameter("modelo-id")));
 	
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
@@ -88,7 +84,12 @@ public class OrderServlet extends HttpServlet {
 	}
 	
 	image.setBase64(ArquivosUtil.createBase64(image.getInputStream()));
-	image.setMiniatura(ArquivosUtil.createMiniatureBase64(image.getBase64()));
+	try {
+	    image.setMiniatura(ArquivosUtil.createMiniatureBase64(image.getBase64()));
+	} catch (Exception e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
 	image = imageRepository.save(image);
 	
 	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, modelo, image, cliente, descricao);

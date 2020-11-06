@@ -17,13 +17,18 @@ public class CarrinhoServlet extends HttpServlet{
 
     private static final long serialVersionUID = 1L;
     
-    private CanecaRepository canecaRepository = RepositoryFactory.createCanecaDao();
+    private CanecaRepository canecaRepository;
+    
+    @Override
+    public void init() throws ServletException {
+	canecaRepository = RepositoryFactory.createCanecaDao();
+        super.init();
+    }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	request.getSession().setAttribute("canecas", canecaRepository.findAll(cliente.getId()));
-	System.out.println("w???");
 	request.getRequestDispatcher("carrinho.jsp").forward(request, response);;
     }
 
