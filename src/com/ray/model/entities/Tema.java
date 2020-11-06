@@ -60,6 +60,6 @@ public class Tema implements Serializable{
 
     @Override
     public String toString() {
-	return "Tema [id=" + id + ", nome=" + nome + "]";
+	return nome;
     }
 }

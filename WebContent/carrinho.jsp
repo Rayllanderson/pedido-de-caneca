@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -56,18 +57,15 @@
 
           <h5 class="mb-4">Cart (<span>2</span> items)</h5>
 
+	<c:forEach items="${canecas}" var="caneca">
           <div class="row mb-4">
             <div class="col-md-5 col-lg-3 col-xl-3">
               <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
-                <img class="img-fluid w-100"
-                  src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg" alt="Sample">
-                <a href="#!">
-                  <div class="mask waves-effect waves-light">
-                    <img class="img-fluid w-100"
-                      src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg">
-                    <div class="mask rgba-black-slight waves-effect waves-light"></div>
-                  </div>
-                </a>
+              
+                <c:if test="${!caneca.image.miniatura.isEmpty() && caneca.image.miniatura != null}">
+                     <img class="img-fluid w-100" src="${caneca.image.miniatura }" />
+               </c:if>
+               
               </div>
             </div>
             <div class="col-md-7 col-lg-9 col-xl-9">
@@ -75,8 +73,8 @@
                 <div class="d-flex justify-content-between">
                   <div>
                     <h5>Blue denim shirt</h5>
-                    <p class="mt-3 mb-4 text-muted text-uppercase small">Tema - Dia das maes sajdkjskdjsdks</p>
-                    <p class="mb-5 text-muted text-uppercase small">Quantidade - 3</p>
+                    <p class="mt-3 mb-4 text-muted text-uppercase small">Tema: ${caneca.tema}</p>
+                    <p class="mb-5 text-muted text-uppercase small">Quantidade: ${caneca.quantidade}</p>
                   </div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
@@ -86,13 +84,15 @@
                   
                     <a href="#!" type="button" class="card-link-secondary small text-uppercase"><i
                         class="fas fa-trash-alt mr-1"></i> Remover Caneca </a>
-                   
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <hr class="mb-4">
+      </c:forEach>
+          
+          
           <p class="text-primary mb-0"><i class="fas fa-info-circle mr-1"></i> Do not delay the purchase, adding
             items to your cart does not mean booking them.</p>
 

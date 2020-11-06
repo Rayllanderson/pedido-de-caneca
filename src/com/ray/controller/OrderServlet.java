@@ -73,9 +73,11 @@ public class OrderServlet extends HttpServlet {
 	    throws ServletException, IOException {
 	String descricao = request.getParameter("descricao");
 	String quantidade = request.getParameter("quantidade");
-	
-	Tema tema = temaRepository.findById(Long.valueOf(request.getParameter("tema-id")));
-	Modelo modelo =  modeloRepository.findById(Long.valueOf(request.getParameter("modelo-id")));
+	String tema1 = request.getParameter("tema-id");
+	System.out.println(tema1);
+	Long temaId = Long.valueOf(tema1);
+	Tema tema = temaRepository.findById(temaId);
+	Modelo modelo =  modeloRepository.findById(Long.parseLong(request.getParameter("modelo-id")));
 	
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	
@@ -85,11 +87,16 @@ public class OrderServlet extends HttpServlet {
 	  //thread de criar base 64 aqui!
 	}
 	
+	image.setBase64(ArquivosUtil.createBase64(image.getInputStream()));
+	image.setMiniatura(ArquivosUtil.createMiniatureBase64(image.getBase64()));
+	image = imageRepository.save(image);
+	
 	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, modelo, image, cliente, descricao);
 	
 	//salvar caneca
+	canecaService.save(caneca);
 
-	request.getRequestDispatcher("resumo.jsp").forward(request, response); //mandar pra servlet de resumo/carrinho via get
+	response.sendRedirect("carrinho"); //mandar pra servlet de resumo/carrinho via get
     }
 
     
@@ -107,8 +114,6 @@ public class OrderServlet extends HttpServlet {
 	//criar validacoes em breve
 	return new Image(null, fileContent, "", "");
     }
-
-
 
 
 //	    System.out.println(fileContent);

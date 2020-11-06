@@ -9,15 +9,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ray.model.dao.ClienteRepository;
+import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.entities.Cliente;
 
 @WebServlet("/save-client")
 public class SaveClientServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private ClienteRepository repository;
+    
     public SaveClientServlet() {
 	super();
 	// TODO Auto-generated constructor stub
+    }
+    
+    @Override
+    public void init() throws ServletException {
+	repository = RepositoryFactory.createClienteDao();
+        super.init();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -31,6 +41,7 @@ public class SaveClientServlet extends HttpServlet {
 	String nome = request.getParameter("nome");
 	String telefone = request.getParameter("telefone");
 	Cliente cliente = new Cliente(null, nome, telefone); //salvar o cliente on db
+	cliente = repository.save(cliente);
 	response.setContentType("text/plain");
 	response.setCharacterEncoding("UTF-8");
 //	// invalidando a ultima sessão / fazer isso no final

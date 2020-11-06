@@ -60,6 +60,6 @@ public class Modelo implements Serializable{
 
     @Override
     public String toString() {
-	return "Modelo [id=" + id + ", nome=" + nome + "]";
+	return nome;
     }
 }

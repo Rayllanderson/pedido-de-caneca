@@ -60,11 +60,11 @@ public class Caneca implements Serializable{
 	this.modelo = modelo;
     }
 
-    public Image getFoto() {
+    public Image getImage() {
 	return image;
     }
 
-    public void setFoto(Image image) {
+    public void setImage(Image image) {
 	this.image = image;
     }
 

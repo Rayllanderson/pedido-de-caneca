@@ -1,5 +1,6 @@
 package com.ray.model.dao.impl;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,8 +18,9 @@ import com.ray.model.entities.Image;
 import com.ray.model.entities.Modelo;
 import com.ray.model.entities.Tema;
 
-public class CanecaDaoJdbc implements CanecaRepository {
+public class CanecaDaoJdbc implements CanecaRepository, Serializable {
 
+    private static final long serialVersionUID = 1L;
     private Connection conn;
     private String tableName = "canecas";
 
@@ -37,7 +39,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	try {
 	    st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	    st.setInt(1, caneca.getQuantidade());
-	    st.setLong(2, caneca.getFoto().getId());
+	    st.setLong(2, caneca.getImage().getId());
 	    st.setLong(3, caneca.getModelo().getId());
 	    st.setLong(4, caneca.getTema().getId());
 	    st.setLong(5, caneca.getCliente().getId());
@@ -65,7 +67,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	try {
 	    st = conn.prepareStatement(sql);
 	    st.setInt(1, caneca.getQuantidade());
-	    st.setLong(2, caneca.getFoto().getId());
+	    st.setLong(2, caneca.getImage().getId());
 	    st.setLong(3, caneca.getModelo().getId());
 	    st.setLong(4, caneca.getTema().getId());
 	    st.setLong(5, caneca.getCliente().getId());
@@ -135,7 +137,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	caneca.setQuantidade(rs.getInt("quantidade"));
 	caneca.setTema(tema);
 	caneca.setModelo(modelo);
-	caneca.setFoto(foto);
+	caneca.setImage(foto);
 	caneca.setCliente(cli);
 	caneca.setDescricao(rs.getString("descricao"));
 	return caneca;

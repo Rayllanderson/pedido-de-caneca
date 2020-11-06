@@ -53,7 +53,7 @@
 	
 			 <h5 class="card-title text-center mt-4">Caneca x</h5>
 			 
-			 <form class="" action="order?action=next-page"
+			 <form class="" action="order"
 			 method="POST" id="formUser" enctype="multipart/form-data">		
 			 <div class="group">
 			 	<div class="form-group">
@@ -161,7 +161,7 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
 
 
 <script type="text/javascript">
-$("#file").on("change", function() {
+/*$("#file").on("change", function() {
 	 var file = document.querySelector("#file").files[0];
 	var myFormData = new FormData();
    myFormData.append('pictureFile', file);
@@ -183,7 +183,7 @@ $("#file").on("change", function() {
      }
    });
 
-});
+});*/
 </script>
 
 </body>
