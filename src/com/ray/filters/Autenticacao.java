@@ -48,18 +48,4 @@ public class Autenticacao implements Filter {
 	    chain.doFilter(request, response);
 	}
     }
-
-    @Override
-    public void destroy() {
-//	Filter.super.destroy();
-    }
-
-//    @Override
-//    public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2)
-//	    throws IOException, ServletException {
-//	// TODO Auto-generated method stub
-//	
-//    }
-    
-  
 }

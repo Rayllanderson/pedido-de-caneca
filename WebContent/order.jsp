@@ -60,8 +60,11 @@
 				    <label for="validationCustom04">Tema</label>
 				      <select class="custom-select" id="validationCustom04" name="tema" required>
 				        <option selected disabled value="">Selecione o tema</option>
-				        <option value="Natal">Natal</option>
-				        <option value="Natal">tema X</option>
+				       	<c:forEach items="${temas}" var="tema">
+							<option id="tema_id" value="${tema.id}"> 
+								${tema.nome}
+							</option>
+				    	 </c:forEach>
 				      </select>
 				     <div class="invalid-feedback">
 				        Por favor, selecione uma opção
@@ -71,9 +74,12 @@
 				 <div class="form-group">
 				    <label for="validationCustom04">Modelo</label>
 				      <select class="custom-select" id="validationCustom04" name="modelo" required>
-				        <option value="Padrão">Caneca Padrão</option>
-				        <option value="X">Caneca X</option>
-				        <option value="Y">Caneca Y</option>
+				     <c:forEach items="${modelos}" var="modelo">
+							<option id="tema_id" value="${modelo.id}"> 
+									${modelo.nome}
+							</option>
+				     </c:forEach>
+				      
 				      </select>
 				     <div class="invalid-feedback">
 				        Por favor, selecione uma opção
