@@ -30,22 +30,20 @@ public class ArquivosUtil {
      * @throws ServletException
      * @throws EntradaInvalidaException tipo de arquivo inválido
      */
-    public static String createMiniatureBase64(InputStream imagem)
-	    throws IOException, ServletException, EntradaInvalidaException {
-	// convertendo pra base64
-	String fotoBase64 = Base64.encodeBase64String(streamToByte(imagem));
+    public static String createMiniatureBase64(String base64)
+	    throws IOException {
 
 	/* Transforma emum bufferedImage */
-	byte[] imageByteDecode = Base64.decodeBase64(fotoBase64);
+	byte[] imageByteDecode = Base64.decodeBase64(base64);
 	BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageByteDecode));
 
 	/* Pega o tipo da imagem */
 	int type = bufferedImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : bufferedImage.getType();
 
 	/* Cria imagem em miniatura */
-	BufferedImage resizedImage = new BufferedImage(100, 100, type);
+	BufferedImage resizedImage = new BufferedImage(200, 200, type);
 	Graphics2D g = resizedImage.createGraphics();
-	g.drawImage(bufferedImage, 0, 0, 100, 100, null);
+	g.drawImage(bufferedImage, 0, 0, 200, 200, null);
 	g.dispose();
 
 	/* Escrever imagem novamente */
@@ -57,25 +55,22 @@ public class ArquivosUtil {
     /**
      * retorna a base 64 do arquivo
      * 
-     * @param request
-     * @return
-     * @throws IOException
-     * @throws ServletException
-     * @throws EntradaInvalidaException tipo de arquivo inválido
+     * @param 
+     * @return "data:" + contentType + ";base64,"
      */
-    public static String createBase64(HttpServletRequest request)
-	    throws IOException, ServletException, EntradaInvalidaException {
-	if (ServletFileUpload.isMultipartContent(request)) {
-	    Part imagem = request.getPart("foto");
-	    if (imagem.getSize() > 0) {
-		if (imagem.getContentType().contains("image")) {
-		    return "data:" + imagem.getContentType() + ";base64,"
-			    + Base64.encodeBase64String(streamToByte(imagem.getInputStream()));
-		} else
-		    throw new EntradaInvalidaException("Tipo de arquivo inválido");
-	    }
-	}
-	return ""; // sem arquivos
+    public static String createBase64(InputStream imagem, String contentType)
+	    throws IOException{
+	return "data:" + contentType + ";base64," + Base64.encodeBase64String(streamToByte(imagem));
+    }
+    
+    /**
+     * 
+     * @param imagem
+     * @return apenas a base64, sem data e contentType
+     * @throws IOException
+     */
+    public static String createBase64(InputStream imagem) throws IOException{
+	return Base64.encodeBase64String(streamToByte(imagem));
     }
 
     private static byte[] streamToByte(InputStream imagem) throws IOException {

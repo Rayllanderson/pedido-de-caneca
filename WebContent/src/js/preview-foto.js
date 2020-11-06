@@ -1,6 +1,6 @@
-$('#foto').on('change', () => {
+$('#file').on('change', () => {
 	var target = document.querySelector("#preview");
-    var file = document.querySelector("#foto").files[0];
+    var file = document.querySelector("#file").files[0];
     var reader = new FileReader();
     reader.onloadend = function() {
         target.src = reader.result;
@@ -16,7 +16,7 @@ $('#foto').on('change', () => {
 });
 
 $('#excluir').on('click', () =>{
-	document.getElementById("foto").value = "";
+	document.getElementById("file").value = "";
 	$('#exampleModalCenter').modal('hide');
 	$('#div-preview').hide();
 })

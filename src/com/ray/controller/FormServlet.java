@@ -42,8 +42,7 @@ public class FormServlet extends HttpServlet {
 		System.out.println(nome);
 		System.out.println(telefone);
 		
-		//			   mudar esse nome também...
-		request.getRequestDispatcher("pedido-caneca.jsp").forward(request, response);
+		request.getRequestDispatcher("order.jsp").forward(request, response);
 	}
 
 }

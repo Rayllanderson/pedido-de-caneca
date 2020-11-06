@@ -11,10 +11,11 @@ public class Caneca implements Serializable{
     private Tema tema;
     private Modelo modelo;
     private Image image;
+    private String descricao;
     
     private Cliente cliente;
 
-    public Caneca(Long id, Integer quantidade, Tema tema, Modelo modelo, Image image, Cliente cliente) {
+    public Caneca(Long id, Integer quantidade, Tema tema, Modelo modelo, Image image, Cliente cliente, String descricao) {
 	super();
 	this.id = id;
 	this.quantidade = quantidade;
@@ -22,6 +23,7 @@ public class Caneca implements Serializable{
 	this.modelo = modelo;
 	this.image = image;
 	this.cliente = cliente;
+	this.descricao = descricao;
     }
     
     public Caneca() {};
@@ -94,7 +96,7 @@ public class Caneca implements Serializable{
     @Override
     public String toString() {
 	return "Caneca [id=" + id + ", quantidade=" + quantidade + ", tema=" + tema + ", modelo=" + modelo + ", foto="
-		+ image + "cliente = " + cliente + "]";
+		+ image + ", descricao= " + descricao + ", cliente = " + cliente + "]";
     }
 
     public Cliente getCliente() {
@@ -103,5 +105,13 @@ public class Caneca implements Serializable{
 
     public void setCliente(Cliente cliente) {
 	this.cliente = cliente;
+    }
+
+    public String getDescricao() {
+	return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+	this.descricao = descricao;
     }
 }

@@ -33,7 +33,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
     public Caneca save(Caneca caneca) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	String sql = "insert into " + tableName + " (quantidade, id_foto, id_modelo, id_tema, id_cliente) values (?, ?, ?, ?, ?)";
+	String sql = "insert into " + tableName + " (quantidade, id_foto, id_modelo, id_tema, id_cliente, descricao) values (?, ?, ?, ?, ?, ?)";
 	try {
 	    st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	    st.setInt(1, caneca.getQuantidade());
@@ -41,6 +41,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	    st.setLong(3, caneca.getModelo().getId());
 	    st.setLong(4, caneca.getTema().getId());
 	    st.setLong(5, caneca.getCliente().getId());
+	    st.setString(6, caneca.getDescricao());
 	    if (st.executeUpdate() > 0) {
 		rs = st.getGeneratedKeys();
 		if (rs.next()) {
@@ -60,7 +61,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
     public Caneca update(Caneca caneca) {
 	PreparedStatement st = null;
 	String sql = "update " + tableName
-		+ " set quantidade = ?, id_foto = ?, id_modelo = ?, id_tema = ?, id_cliente = ? where id = ?";
+		+ " set quantidade = ?, id_foto = ?, id_modelo = ?, id_tema = ?, id_cliente = ?, descricao = ? where id = ?";
 	try {
 	    st = conn.prepareStatement(sql);
 	    st.setInt(1, caneca.getQuantidade());
@@ -68,7 +69,8 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	    st.setLong(3, caneca.getModelo().getId());
 	    st.setLong(4, caneca.getTema().getId());
 	    st.setLong(5, caneca.getCliente().getId());
-	    st.setLong(6, caneca.getId());
+	    st.setString(6, caneca.getDescricao());
+	    st.setLong(7, caneca.getId());
 	    st.executeUpdate();
 	    return this.findById(caneca.getId());
 	} catch (SQLException e) {
@@ -135,6 +137,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	caneca.setModelo(modelo);
 	caneca.setFoto(foto);
 	caneca.setCliente(cli);
+	caneca.setDescricao(rs.getString("descricao"));
 	return caneca;
     }
 

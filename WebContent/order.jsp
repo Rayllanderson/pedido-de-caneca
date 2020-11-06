@@ -53,7 +53,7 @@
 	
 			 <h5 class="card-title text-center mt-4">Caneca x</h5>
 			 
-			 <form class="" action="order"
+			 <form class="" action="order?action=next-page"
 			 method="POST" id="formUser" enctype="multipart/form-data">		
 			 <div class="group">
 			 	<div class="form-group">
@@ -86,11 +86,14 @@
 				 
 				</div>
 				
+				<!-- input file  -->
 				 <div class="form-group" >
 				   <label style="display: block">Foto personalizada</label>
-				   <label for="foto" class="btn btn-outline-primary" >escolha a foto aqui</label>
-				   <input type="file" name="foto" id="foto" style="display: none;" accept="image/*">
+				   <label for="file" class="btn btn-outline-primary" >escolha a foto aqui</label>
+				   <input type="file" id="file" name="pictureFile" style="display: none;" accept="image/*">
 				 </div>
+				 
+				 
 				 
 				  <div class="form-group" id="div-preview" style="display: none;" >
 					 <h5 class="text-preview"></h5>
@@ -148,7 +151,33 @@
 if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
 	$('.group').css('width', '80%');
 }
+</script>
 
+
+<script type="text/javascript">
+$("#file").on("change", function() {
+	 var file = document.querySelector("#file").files[0];
+	var myFormData = new FormData();
+   myFormData.append('pictureFile', file);
+
+   $.ajax({
+     url: 'order?action=process-picture',
+     type: 'POST',
+     cache:false,
+     processData: false, // important
+     contentType: false, // important
+     data: myFormData,
+     success:function(data){
+         console.log("successf");
+         console.log(data);
+     },
+     error: function(data){
+         console.log("error");
+         console.log(data);
+     }
+   });
+
+});
 </script>
 
 </body>
