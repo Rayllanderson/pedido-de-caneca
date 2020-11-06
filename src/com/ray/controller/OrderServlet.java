@@ -20,6 +20,7 @@ import com.ray.model.dao.ModeloRepository;
 import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.dao.TemaRepository;
 import com.ray.model.entities.Caneca;
+import com.ray.model.entities.Cliente;
 import com.ray.model.entities.Image;
 import com.ray.model.entities.Modelo;
 import com.ray.model.entities.Tema;
@@ -73,19 +74,42 @@ public class OrderServlet extends HttpServlet {
 	String descricao = request.getParameter("descricao");
 	String quantidade = request.getParameter("quantidade");
 	
-	Tema tema = new Tema(null, request.getParameter("tema"));
-	Modelo modelo = new Modelo(null, request.getParameter("modelo"));
+	Tema tema = temaRepository.findById(Long.valueOf(request.getParameter("tema-id")));
+	Modelo modelo =  modeloRepository.findById(Long.valueOf(request.getParameter("modelo-id")));
 	
-//	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, modelo, image, cliente, descricao)
-
-	Part filePart = request.getPart("pictureFile"); // Retrieves <input type="file" name="pictureFile">
-	InputStream fileContent = filePart.getInputStream();
-	String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	
+	Image image = createImage(request);
 	
+	if(image != null) {
+	  //thread de criar base 64 aqui!
+	}
+	
+	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, modelo, image, cliente, descricao);
+	
+	//salvar caneca
 
 	request.getRequestDispatcher("resumo.jsp").forward(request, response); //mandar pra servlet de resumo/carrinho via get
     }
+
+    
+    /**
+     * Cria uma imagem apenas com o inputstream. Seta base 64 e miniatura pra ""
+     * @param request
+     * @return
+     * @throws IOException
+     * @throws ServletException
+     */
+    private Image createImage(HttpServletRequest request) throws IOException, ServletException {
+	Part filePart = request.getPart("pictureFile"); // Retrieves <input type="file" name="pictureFile">
+	InputStream fileContent = filePart.getInputStream();
+	String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+	//criar validacoes em breve
+	return new Image(null, fileContent, "", "");
+    }
+
+
+
 
 //	    System.out.println(fileContent);
 

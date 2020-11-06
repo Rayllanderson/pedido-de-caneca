@@ -58,10 +58,10 @@
 			 <div class="group">
 			 	<div class="form-group">
 				    <label for="validationCustom04">Tema</label>
-				      <select class="custom-select" id="validationCustom04" name="tema" required>
+				      <select class="custom-select" id="validationCustom04" name="tema-id" required>
 				        <option selected disabled value="">Selecione o tema</option>
 				       	<c:forEach items="${temas}" var="tema">
-							<option id="tema_id" value="${tema.id}"> 
+							<option id="tema-id"  value="${tema.id}"> 
 								${tema.nome}
 							</option>
 				    	 </c:forEach>
@@ -73,9 +73,9 @@
 				 
 				 <div class="form-group">
 				    <label for="validationCustom04">Modelo</label>
-				      <select class="custom-select" id="validationCustom04" name="modelo" required>
+				      <select class="custom-select" id="validationCustom04" name="modelo-id" required>
 				     <c:forEach items="${modelos}" var="modelo">
-							<option id="tema_id" value="${modelo.id}"> 
+							<option id="modelo-id" value="${modelo.id}"> 
 									${modelo.nome}
 							</option>
 				     </c:forEach>
