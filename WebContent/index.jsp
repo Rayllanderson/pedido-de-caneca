@@ -41,7 +41,7 @@
 			 
 			 <h6 class="card-title text-center mt-4">Seus dados de contato</h6>
 			 
-			 <form action="form-servlet" method="post" class="d-flex justify-content-center">
+			 <form action="save-client" method="post" class="d-flex justify-content-center">
 			 <div class="group">
 			 	<div class="form-group">
 			 	

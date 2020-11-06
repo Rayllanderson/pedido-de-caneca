@@ -66,17 +66,17 @@ public class MugOrderServlet extends HttpServlet {
 	System.out.println(action);
 	if (action != null) {
 	    if (action.equals("process-picture")) { // via ajax
-		Part filePart = request.getPart("pictureFile"); // Retrieves <input type="file" name="pictureFile">
-		String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-		InputStream fileContent = filePart.getInputStream();
-		result = new byte[fileContent.available()];
-		image.setInputStream(fileContent);
-		image.setBase64(ArquivosUtil.createBase64(fileContent));
-		image.setMiniatura(ArquivosUtil.createMiniatureBase64(image.getBase64()));
-
-		System.out.println(image.getBase64());
-		System.out.println(image.getMiniatura());
-		System.out.println(fileName);
+//		Part filePart = request.getPart("pictureFile"); // Retrieves <input type="file" name="pictureFile">
+//		String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+//		InputStream fileContent = filePart.getInputStream();
+//		result = new byte[fileContent.available()];
+//		image.setInputStream(fileContent);
+//		image.setBase64(ArquivosUtil.createBase64(fileContent));
+//		image.setMiniatura(ArquivosUtil.createMiniatureBase64(image.getBase64()));
+//
+//		System.out.println(image.getBase64());
+//		System.out.println(image.getMiniatura());
+//		System.out.println(fileName);
 	    } else if (action.equals("next-page")) {
 		String tema = request.getParameter("tema");
 		String descricao = request.getParameter("descricao");
@@ -84,15 +84,9 @@ public class MugOrderServlet extends HttpServlet {
 		Part filePart = request.getPart("pictureFile"); // Retrieves <input type="file" name="pictureFile">
 		InputStream fileContent = filePart.getInputStream();
 		String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-		byte[] result2 = new byte[fileContent.available()];
 		
-		System.out.println(Arrays.equals(result, result2));
-		System.out.println(image.getBase64());
-		System.out.println(image.getMiniatura());
-		System.out.println(fileName);
+		
 
-		System.out.println(tema);
-		System.out.println(descricao);
 
 		request.getRequestDispatcher("resumo.jsp").forward(request, response);
 	    }
