@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="src/css/alert.css">
 <script src="src/js/fa.js"></script>
 
 <title>Insert title here</title>
@@ -37,6 +38,14 @@
 </head>
 <body>
 		
+		<!-- ALERT -->
+			<div class="fixed-top">
+				<div class="alert alert-success" id="success-alert">
+				   <button type="button" class="close" onclick="$('.alert').hide();">x</button>
+				   <h4 id="titulo"></h4> <p id="alertMsg"></p>
+				</div>
+			</div>
+		
 	<div class="mt-5"></div>
 	<div class="container">
 	
@@ -53,7 +62,7 @@
 	
 			 <h5 class="card-title text-center mt-4">Caneca x</h5>
 			 
-			 <form class="" action="order"
+			 <form class="" action="order?action=next"
 			 method="POST" id="formUser" enctype="multipart/form-data">		
 			 <div class="group">
 			 	<div class="form-group">
@@ -113,7 +122,9 @@
 				    <label for="exampleFormControlTextarea1">Adicione mais detalhes</label>
 				    <textarea class="form-control" id="exampleFormControlTextarea1" name="descricao" rows="4" placeholder="Dê mais detalhes, diga pra gente como você quer a caneca (opcional)"></textarea>
 				  </div>
-			 	 <button type="submit" class="btn btn-primary mb-4 float-right">Próximo</button>
+				  <div class="col mb-4">
+			 		 <button type="submit" class="btn btn-primary float-right">Próximo</button>
+			 	 </div>
 			 </div>
 			 </form>
 		</div>
@@ -151,40 +162,16 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 <script src="src/js/preview-foto.js"></script>
+<script src="src/js/checkFileType.js"></script>
 <script type="text/javascript">
 
+$(".alert").hide();
 
 if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
 	$('.group').css('width', '80%');
 }
 </script>
 
-
-<script type="text/javascript">
-/*$("#file").on("change", function() {
-	 var file = document.querySelector("#file").files[0];
-	var myFormData = new FormData();
-   myFormData.append('pictureFile', file);
-
-   $.ajax({
-     url: 'order?action=process-picture',
-     type: 'POST',
-     cache:false,
-     processData: false, // important
-     contentType: false, // important
-     data: myFormData,
-     success:function(data){
-         console.log("successf");
-         console.log(data);
-     },
-     error: function(data){
-         console.log("error");
-         console.log(data);
-     }
-   });
-
-});*/
-</script>
 
 </body>
 

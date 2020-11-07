@@ -1,3 +1,5 @@
+$(".alert").hide();
+
 $('#file').on('change', () => {
 	var target = document.querySelector("#preview");
     var file = document.querySelector("#file").files[0];
@@ -20,7 +22,6 @@ $('#excluir').on('click', () =>{
 	$('#exampleModalCenter').modal('hide');
 	$('#div-preview').hide();
 })
-
 
 /*function LoadData(){
     $("#loading-image").show();

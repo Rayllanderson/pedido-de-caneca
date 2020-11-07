@@ -63,7 +63,11 @@
               <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
               
                 <c:if test="${!caneca.image.miniatura.isEmpty() && caneca.image.miniatura != null}">
-                     <img class="img-fluid w-100" src="${caneca.image.miniatura }" />
+                     <img class="img-fluid w-100" id="img" src="${caneca.image.miniatura }" />
+                </c:if>
+               
+               <c:if test="${caneca.image.miniatura.isEmpty() || caneca.image.miniatura == null}">
+                     <img class="img-fluid w-100" id="img" src="src/img/loading miniature (3).gif" />
                </c:if>
                
               </div>
