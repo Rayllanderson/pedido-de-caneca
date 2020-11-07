@@ -63,7 +63,7 @@
 			 <h5 class="card-title text-center mt-4">Caneca x</h5>
 			 
 			 <form class="" action="order?action=next"
-			 method="POST" id="formUser" enctype="multipart/form-data">		
+			 method="POST" id="order-form" enctype="multipart/form-data">		
 			 <div class="group">
 			 	<div class="form-group">
 				    <label for="validationCustom04">Tema</label>
@@ -124,7 +124,7 @@
 				    <textarea class="form-control" id="exampleFormControlTextarea1" name="descricao" rows="4" placeholder="Dê mais detalhes, diga pra gente como você quer a caneca (opcional)"></textarea>
 				  </div>
 				  <div class="col mb-4">
-			 		 <button type="submit" class="btn btn-primary float-right">Próximo</button>
+			 		 <button type="submit" id="btn-submit" class="btn btn-primary float-right">Próximo</button>
 			 	 </div>
 			 </div>
 			 </form>
@@ -171,6 +171,13 @@ $(".alert").hide();
 if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
 	$('.group').css('width', '80%');
 }
+
+
+$("#btn-submit").on('click', function () {
+	 $('#btn-submit').prop('disabled', true);
+	 $("#btn-submit").html('Envidando...');
+	 $("#order-form").submit();
+});
 </script>
 
 

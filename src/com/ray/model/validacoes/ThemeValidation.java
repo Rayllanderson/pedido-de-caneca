@@ -3,7 +3,7 @@ package com.ray.model.validacoes;
 import com.ray.model.entities.Tema;
 import com.ray.model.exceptions.RequisicaoInvalidaException;
 
-public class TemaValidation {
+public class ThemeValidation {
     
     /**
      * Verifica se o tema selecionado é válido. Caso seja null, throws exception

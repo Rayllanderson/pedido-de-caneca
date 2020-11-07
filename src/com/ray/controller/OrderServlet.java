@@ -19,7 +19,10 @@ import com.ray.model.entities.Cliente;
 import com.ray.model.entities.Image;
 import com.ray.model.entities.Tema;
 import com.ray.model.entities.enums.Modelo;
+import com.ray.model.exceptions.RequisicaoInvalidaException;
 import com.ray.model.service.CanecaService;
+import com.ray.model.validacoes.ModeloValidation;
+import com.ray.model.validacoes.ThemeValidation;
 import com.ray.util.ThreadMiniature;
 
 /**
@@ -63,42 +66,47 @@ public class OrderServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	String action = request.getParameter("action");
-	if (action != null) {
-	    if (action.equals("check-file-type")) {
-		checkFileType(request, response);
-	    } else if (action.equals("next")) {
-		salvarCaneca(request, response);
+	try {
+	    String action = request.getParameter("action");
+	    if (action != null) {
+		if (action.equals("check-file-type")) {
+		    checkFileType(request, response);
+		} else if (action.equals("next")) {
+		    salvarCaneca(request, response);
+		}
 	    }
+	} catch (RequisicaoInvalidaException e) {
+	    // TODO: setar response com erro
 	}
-
     }
 
     private void salvarCaneca(HttpServletRequest request, HttpServletResponse response)
 	    throws IOException, ServletException {
 	String descricao = request.getParameter("descricao");
 	String quantidade = request.getParameter("quantidade");
-	
+
 	Tema tema = temaRepository.findById(Long.valueOf(request.getParameter("tema-id")));
-	
-	Modelo modelo = Modelo.valueOf(Integer.parseInt(request.getParameter("modelo-id")));
+	ThemeValidation.validateTheme(tema);
+
+	Modelo modelo = ModeloValidation.getModeloByNumber(Integer.parseInt(request.getParameter("modelo-id")));
 
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 
 	Image image = createImage(request);
-
-	if (image.getId() == null) {
+	Thread t = null;
+	if (image.getId() == null) { // usuario escolheu uma foto
 	    image = imageRepository.save(image);
-	    Thread t = new Thread(new ThreadMiniature(image));
-	    t.start();
+	    t = new Thread(new ThreadMiniature(image));
 	}
 
 	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, modelo, image, cliente, descricao);
-
-	// salvar caneca
 	canecaService.save(caneca);
 
-	response.sendRedirect("carrinho"); // mandar pra servlet de resumo/carrinho via get
+	response.sendRedirect("carrinho");
+	
+	if(t != null) {
+	    t.start();
+	}
     }
 
     /**
@@ -122,7 +130,8 @@ public class OrderServlet extends HttpServlet {
     }
 
     /**
-     * 
+     * Verifica se o arquivo é uma imagem. <br>
+     * Arquivos de imagens não aceitos: GIF
      * @param request
      * @return true caso o tipo do arquivo seja válido. False caso não seja.
      * @throws IOException
@@ -130,7 +139,7 @@ public class OrderServlet extends HttpServlet {
      */
     private boolean fileTypeIsValid(HttpServletRequest request) throws IOException, ServletException {
 	Part filePart = request.getPart("pictureFile");
-	if (filePart.getContentType().contains("image")) {
+	if (filePart.getContentType().contains("image") && !(filePart.getContentType().contains("gif"))) {
 	    return true;
 	}
 	return false;
@@ -138,7 +147,9 @@ public class OrderServlet extends HttpServlet {
 
     /**
      * Cria uma imagem apenas com o inputstream. Seta base 64 e miniatura pra ""
-     * Caso o arquivo seja inválido ou não tenha imagem, retorn imagem com ID 0, que é a imagem de caneca sem foto
+     * Caso o arquivo seja inválido ou não tenha imagem, retorn imagem com ID 0, que
+     * é a imagem de caneca sem foto
+     * 
      * @param request
      * @return
      * @throws IOException
@@ -155,7 +166,4 @@ public class OrderServlet extends HttpServlet {
 	}
 
     }
-
-//	    System.out.println(fileContent);
-
 }

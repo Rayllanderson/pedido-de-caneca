@@ -4,10 +4,17 @@ import com.ray.model.entities.enums.Modelo;
 
 public class ModeloValidation {
 
-    public static Modelo modeloValidation (Modelo modelo) {
-	if (modelo == null) {
-	    return null;
+    /**
+     * verifica se o codigo passado pertence a um modelo da lista. 
+     * @param modeloValue
+     * @return retorna se encontrar, senao retorna modelo padrao.
+     */
+    public static Modelo getModeloByNumber (int modeloValue) {
+	try{
+	    return Modelo.valueOf(modeloValue);
+	}catch (IllegalArgumentException e) {
+	    return Modelo.PADRAO;
 	}
-	return modelo;
+	
     }
 }
