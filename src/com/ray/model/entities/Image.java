@@ -11,12 +11,14 @@ public class Image implements Serializable{
     private InputStream inputStream;
     private String base64;
     private String miniatura;
+    private String contentType;
 
-    public Image(Long id, InputStream inputStream, String base64, String miniatura) {
+    public Image(Long id, InputStream inputStream, String base64, String miniatura, String contentType) {
 	this.id = id;
 	this.inputStream = inputStream;
 	this.base64 = base64;
 	this.miniatura = miniatura;
+	this.contentType = contentType;
     }
     
     public Image() {
@@ -55,6 +57,14 @@ public class Image implements Serializable{
 	this.miniatura = miniatura;
     }
 
+    public String getContentType() {
+	return contentType;
+    }
+
+    public void setContentType(String contentType) {
+	this.contentType = contentType;
+    }
+    
     @Override
     public int hashCode() {
 	final int prime = 31;
@@ -84,4 +94,5 @@ public class Image implements Serializable{
     public String toString() {
 	return "Foto [base64=" + base64 + "]";
     }
+
 }

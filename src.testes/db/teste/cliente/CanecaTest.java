@@ -19,7 +19,7 @@ public class CanecaTest {
     @Test
     public void salvar() {
 	
-	Caneca obj = new Caneca(null, 1, new Tema(1L, null ), new Modelo(2L, null), new Image(1L, null, null, null), new Cliente(2L, null, null), "Imagem com tuututu tatata");
+	Caneca obj = new Caneca(null, 1, new Tema(1L, null ), new Modelo(2L, null), new Image(1L, null, null, null, null), new Cliente(2L, null, null), "Imagem com tuututu tatata");
 	
 	obj = repository.save(obj);
 	
@@ -29,7 +29,7 @@ public class CanecaTest {
     @Test
     public void update() {
 	
-	Caneca obj = new Caneca(2L, 2, new Tema(1L, null ), new Modelo(3L, null), new Image(1L, null, null, null), new Cliente(2L, null, null), "");
+	Caneca obj = new Caneca(2L, 2, new Tema(1L, null ), new Modelo(3L, null), new Image(1L, null, null, null, null), new Cliente(2L, null, null), "");
 	
 	obj = repository.update(obj);
 	

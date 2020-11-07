@@ -29,12 +29,13 @@ public class ImageDaoJdbc implements ImageRepository {
     public Image save(Image image) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	String sql = "insert into " + tableName + " (image, base64, miniatura) values (?, ?, ?)";
+	String sql = "insert into " + tableName + " (image, base64, miniatura, content_type) values (?, ?, ?, ?)";
 	try {
 	    st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	    st.setBlob(1, image.getInputStream());
 	    st.setString(2, image.getBase64());
 	    st.setString(3, image.getMiniatura());
+	    st.setString(4, image.getContentType());
 	    if (st.executeUpdate() > 0) {
 		rs = st.getGeneratedKeys();
 		if (rs.next()) {
@@ -53,13 +54,14 @@ public class ImageDaoJdbc implements ImageRepository {
     @Override
     public Image update(Image image) {
 	PreparedStatement st = null;
-	String sql = "update " + tableName + " set image = ?, base64 = ?, miniatura = ? where id = ?";
+	String sql = "update " + tableName + " set image = ?, base64 = ?, miniatura = ?, content_type = ? where id = ?";
 	try {
 	    st = conn.prepareStatement(sql);
 	    st.setBlob(1, image.getInputStream());
 	    st.setString(2, image.getBase64());
 	    st.setString(3, image.getMiniatura());
-	    st.setLong(4, image.getId());
+	    st.setString(4, image.getContentType());
+	    st.setLong(5, image.getId());
 	    st.executeUpdate();
 	    return this.findById(image.getId());
 	} catch (SQLException e) {
@@ -109,7 +111,7 @@ public class ImageDaoJdbc implements ImageRepository {
     }
     
     private Image setNewImage(ResultSet rs) throws SQLException {
-	return new Image(rs.getLong("id"), rs.getBinaryStream("image"), rs.getString("base64"), rs.getString("miniatura"));
+	return new Image(rs.getLong("id"), rs.getBinaryStream("image"), rs.getString("base64"), rs.getString("miniatura"), rs.getString("content_type"));
     }
 
     @Override

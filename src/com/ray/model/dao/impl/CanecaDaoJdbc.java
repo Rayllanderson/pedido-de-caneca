@@ -1,6 +1,5 @@
 package com.ray.model.dao.impl;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -105,7 +104,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	PreparedStatement st = null;
 	ResultSet rs = null;
 	String sql = "select canecas.*, temas.nome as tema_nome, modelos.nome as modelo_nome, "
-		+ "fotos.image as image, fotos.base64 as base64, fotos.miniatura as miniatura, "
+		+ "fotos.image as image, fotos.base64 as base64, fotos.miniatura as miniatura, fotos.content_type as content_type, "
 		+ "clientes.nome as cli_nome, clientes.telefone as cli_tel from canecas "
 		+ "inner join temas on id_tema = temas.id inner join modelos on id_modelo = modelos.id "
 		+ "inner join fotos on id_foto = fotos.id inner join clientes on id_cliente = clientes.id "
@@ -129,7 +128,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
     private Caneca setNewCaneca(ResultSet rs) throws SQLException {
 	Tema tema = new Tema(rs.getLong("id_tema"), rs.getString("tema_nome"));
 	Modelo modelo = new Modelo (rs.getLong("id_modelo"), rs.getString("modelo_nome"));
-	Image foto = new Image(rs.getLong("id_foto"), rs.getBinaryStream("image"), rs.getString("base64"), rs.getString("miniatura"));
+	Image foto = new Image(rs.getLong("id_foto"), rs.getBinaryStream("image"), rs.getString("base64"), rs.getString("miniatura"), rs.getString("content_type"));
 	Cliente cli = new Cliente(rs.getLong("id_cliente"), rs.getString("cli_nome"), rs.getString("cli_tel"));
 	Caneca caneca = new Caneca();
 	caneca.setId(rs.getLong("id"));
@@ -145,7 +144,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
     private Caneca setAllCanecas(ResultSet rs) throws SQLException {
 	Tema tema = new Tema(rs.getLong("id_tema"), rs.getString("tema_nome"));
 	Modelo modelo = new Modelo (rs.getLong("id_modelo"), rs.getString("modelo_nome"));
-	Image foto = new Image(rs.getLong("id_foto"), null, null, rs.getString("miniatura"));
+	Image foto = new Image(rs.getLong("id_foto"), null, null, rs.getString("miniatura"), null);
 	Cliente cli = new Cliente(rs.getLong("id_cliente"), rs.getString("cli_nome"), rs.getString("cli_tel"));
 	Caneca caneca = new Caneca();
 	caneca.setId(rs.getLong("id"));

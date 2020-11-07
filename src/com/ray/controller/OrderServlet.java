@@ -113,7 +113,7 @@ public class OrderServlet extends HttpServlet {
 	InputStream fileContent = filePart.getInputStream();
 	String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
 	//criar validacoes em breve
-	return new Image(null, fileContent, "", "");
+	return new Image(null, fileContent, "", "", filePart.getContentType());
     }
 
 
