@@ -1,6 +1,7 @@
 package com.ray.filters;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,7 +19,7 @@ import com.ray.model.entities.Cliente;
 
 
 
-@WebFilter(urlPatterns = { "/order.jsp", "/order/*"})
+@WebFilter(urlPatterns = { "/order.jsp", "/order/*", "/carrinho.jsp", "/carrinho/*"})
 public class Autenticacao implements Filter {
 
     private ServletContext context;
@@ -39,7 +40,7 @@ public class Autenticacao implements Filter {
 	Cliente cliente = (Cliente) req.getSession().getAttribute("cliente");
 	HttpSession session = req.getSession(false);
 	request.setCharacterEncoding("UTF-8");
-	System.out.println("Ola eu sou o filter passando por aqui. session = " + session);
+//	System.out.println("Ola eu sou o filter passando por aqui. session = " + session);
 	if (session == null || cliente == null) { // checking whether the session exists
 	    this.context.log("Unauthorized access request");
 	    res.sendRedirect(req.getContextPath() + "/index.jsp");
