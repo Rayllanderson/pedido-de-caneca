@@ -47,6 +47,12 @@ public class CarrinhoServlet extends HttpServlet {
 	}
     }
 
+    /**
+     * Enquanto a thread que cria miniatura não termina, ela irá buscar ela mesma no banco de dados pra verificar se a criação da miniatura já terminou.
+     * @param response
+     * @param action
+     * @param canecas
+     */
     private void loadMiniature(HttpServletResponse response, String action, List<Caneca> canecas ) {
 	for (Caneca c : canecas) {
 	    while (c.getImage().getMiniatura().equals("")) {

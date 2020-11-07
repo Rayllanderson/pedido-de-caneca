@@ -67,7 +67,7 @@
 			 <div class="group">
 			 	<div class="form-group">
 				    <label for="validationCustom04">Tema</label>
-				      <select class="custom-select" id="validationCustom04" name="tema-id" required>
+				      <select class="custom-select" id="temas" name="tema-id" required>
 				        <option selected disabled value="">Selecione o tema</option>
 				       	<c:forEach items="${temas}" var="tema">
 							<option id="tema-id"  value="${tema.id}"> 
@@ -174,9 +174,14 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
 
 
 $("#btn-submit").on('click', function () {
-	 $('#btn-submit').prop('disabled', true);
-	 $("#btn-submit").html('Envidando...');
-	 $("#order-form").submit();
+	if($("#temas").val() == null){
+		 alertBootstrap("Você não selecionou nenhum tema", "alert alert-danger", "Ei!");
+		$('#temas').focus();
+	 }else{ 
+		$('#btn-submit').prop('disabled', true);
+		 $("#btn-submit").html('Enviando...');
+		 $("#order-form").submit();
+	 }
 });
 </script>
 
