@@ -21,6 +21,7 @@ import com.ray.model.entities.Tema;
 import com.ray.model.entities.enums.Modelo;
 import com.ray.model.exceptions.RequisicaoInvalidaException;
 import com.ray.model.service.CanecaService;
+import com.ray.model.validacoes.ImageValidation;
 import com.ray.model.validacoes.ModeloValidation;
 import com.ray.model.validacoes.ThemeValidation;
 import com.ray.util.ThreadMiniature;
@@ -120,7 +121,7 @@ public class OrderServlet extends HttpServlet {
      */
     private void checkFileType(HttpServletRequest request, HttpServletResponse response)
 	    throws IOException, ServletException {
-	if (fileTypeIsValid(request)) {
+	if (ImageValidation.fileTypeIsValid(request)) {
 	    response.setStatus(HttpServletResponse.SC_OK);
 	    return;
 	} else {
@@ -130,25 +131,9 @@ public class OrderServlet extends HttpServlet {
     }
 
     /**
-     * Verifica se o arquivo é uma imagem. <br>
-     * Arquivos de imagens não aceitos: GIF
-     * @param request
-     * @return true caso o tipo do arquivo seja válido. False caso não seja.
-     * @throws IOException
-     * @throws ServletException
-     */
-    private boolean fileTypeIsValid(HttpServletRequest request) throws IOException, ServletException {
-	Part filePart = request.getPart("pictureFile");
-	if (filePart.getContentType().contains("image") && !(filePart.getContentType().contains("gif"))) {
-	    return true;
-	}
-	return false;
-    }
-
-    /**
-     * Cria uma imagem apenas com o inputstream. Seta base 64 e miniatura pra ""
-     * Caso o arquivo seja inválido ou não tenha imagem, retorn imagem com ID 0, que
-     * é a imagem de caneca sem foto
+     * Cria uma imagem apenas com o inputstream. Seta base 64 e miniatura pra "" (Vazio) <br>
+     * Caso o arquivo seja inválido ou não tenha imagem, retorna imagem com ID 0 <br>
+     * Imagem com ID 0 significa que a caneca não possui nenhuma imagem, setará a caneca como "Caneca sem foto"
      * 
      * @param request
      * @return
@@ -157,13 +142,12 @@ public class OrderServlet extends HttpServlet {
      */
     private Image createImage(HttpServletRequest request) throws IOException, ServletException {
 	Part filePart = request.getPart("pictureFile"); // Retrieves <input type="file" name="pictureFile">
-	if (fileTypeIsValid(request)) {
+	if (ImageValidation.fileTypeIsValid(request)) {
 	    InputStream fileContent = filePart.getInputStream();
 //	    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
 	    return new Image(null, fileContent, "", "", filePart.getContentType());
 	} else {
 	    return new Image(0L, null, null, null, null); // caneca sem foto
 	}
-
     }
 }
