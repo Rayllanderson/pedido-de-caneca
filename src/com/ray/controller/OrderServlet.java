@@ -22,7 +22,7 @@ import com.ray.model.entities.Image;
 import com.ray.model.entities.Modelo;
 import com.ray.model.entities.Tema;
 import com.ray.model.service.CanecaService;
-import com.ray.util.ArquivosUtil;
+import com.ray.util.ThreadMiniature;
 
 /**
  * mudar o nome também
@@ -78,19 +78,12 @@ public class OrderServlet extends HttpServlet {
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	
 	Image image = createImage(request);
+	image = imageRepository.save(image);
 	
 	if(image != null) {
-	  //thread de criar base 64 aqui!
+	  Thread t = new Thread(new ThreadMiniature(image));
+	  t.start();
 	}
-	
-	image.setBase64(ArquivosUtil.createBase64(image.getInputStream()));
-	try {
-	    image.setMiniatura(ArquivosUtil.createMiniatureBase64(image.getBase64()));
-	} catch (Exception e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-	image = imageRepository.save(image);
 	
 	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, modelo, image, cliente, descricao);
 	
