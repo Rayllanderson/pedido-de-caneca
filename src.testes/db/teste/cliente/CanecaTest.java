@@ -9,8 +9,8 @@ import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.entities.Caneca;
 import com.ray.model.entities.Cliente;
 import com.ray.model.entities.Image;
-import com.ray.model.entities.Modelo;
 import com.ray.model.entities.Tema;
+import com.ray.model.entities.enums.Modelo;
 
 public class CanecaTest {
 
@@ -19,17 +19,18 @@ public class CanecaTest {
     @Test
     public void salvar() {
 	
-	Caneca obj = new Caneca(null, 1, new Tema(1L, null ), new Modelo(2L, null), new Image(1L, null, null, null, null), new Cliente(2L, null, null), "Imagem com tuututu tatata");
+	Caneca obj = new Caneca(null, 1, new Tema(1L, null ), Modelo.PADRAO, new Image(0L, null, null, null, null), new Cliente(22L, null, null), "Imagem com tuututu tatata");
 	
 	obj = repository.save(obj);
 	
 	System.out.println(obj);
     }
 
+
     @Test
     public void update() {
 	
-	Caneca obj = new Caneca(2L, 2, new Tema(1L, null ), new Modelo(3L, null), new Image(1L, null, null, null, null), new Cliente(2L, null, null), "");
+	Caneca obj = new Caneca(117L, 2, new Tema(1L, null ), Modelo.CHOPP, new Image(0L, null, null, null, null), new Cliente(22L, null, null), "");
 	
 	obj = repository.update(obj);
 	

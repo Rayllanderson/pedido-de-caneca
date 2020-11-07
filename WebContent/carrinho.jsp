@@ -39,7 +39,7 @@
 </style>
 
 </head>
-<body onload="loadMiniature()">
+<body>
 
 <div class="container mt-5">
 <!--Section: Block Content-->
@@ -78,8 +78,8 @@
               <div>
                 <div class="d-flex justify-content-between">
                   <div>
-                    <h5>Blue denim shirt</h5>
-                    <p class="mt-3 mb-4 text-muted text-uppercase small">Tema: ${caneca.tema}</p>
+                    <h5>Tema: ${caneca.tema}</h5>
+                    <p class="mt-3 mb-4 text-muted text-uppercase small">Modelo: ${caneca.modelo} </p>
                     <p class="mb-5 text-muted text-uppercase small">Quantidade: ${caneca.quantidade}</p>
                   </div>
                 </div>

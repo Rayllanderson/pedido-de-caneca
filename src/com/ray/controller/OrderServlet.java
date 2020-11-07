@@ -2,7 +2,6 @@ package com.ray.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Paths;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -13,14 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import com.ray.model.dao.ImageRepository;
-import com.ray.model.dao.ModeloRepository;
 import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.dao.TemaRepository;
 import com.ray.model.entities.Caneca;
 import com.ray.model.entities.Cliente;
 import com.ray.model.entities.Image;
-import com.ray.model.entities.Modelo;
 import com.ray.model.entities.Tema;
+import com.ray.model.entities.enums.Modelo;
 import com.ray.model.service.CanecaService;
 import com.ray.util.ThreadMiniature;
 
@@ -34,7 +32,6 @@ public class OrderServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private ImageRepository imageRepository;
-    private ModeloRepository modeloRepository;
     private TemaRepository temaRepository;
     private CanecaService canecaService;
 
@@ -51,13 +48,11 @@ public class OrderServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 	request.getSession().setAttribute("temas", temaRepository.findAll());
-	request.getSession().setAttribute("modelos", modeloRepository.findAll());
 	request.getRequestDispatcher("order.jsp").forward(request, response);
     }
 
     private void startRepositories() {
 	imageRepository = RepositoryFactory.createImageDao();
-	modeloRepository = RepositoryFactory.createModeloDao();
 	temaRepository = RepositoryFactory.createTemaDao();
 	canecaService = new CanecaService();
     }
@@ -83,8 +78,10 @@ public class OrderServlet extends HttpServlet {
 	    throws IOException, ServletException {
 	String descricao = request.getParameter("descricao");
 	String quantidade = request.getParameter("quantidade");
+	
 	Tema tema = temaRepository.findById(Long.valueOf(request.getParameter("tema-id")));
-	Modelo modelo = modeloRepository.findById(Long.parseLong(request.getParameter("modelo-id")));
+	
+	Modelo modelo = Modelo.valueOf(Integer.parseInt(request.getParameter("modelo-id")));
 
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 

@@ -83,11 +83,12 @@
 				 <div class="form-group">
 				    <label for="validationCustom04">Modelo</label>
 				      <select class="custom-select" id="validationCustom04" name="modelo-id" required>
-				     <c:forEach items="${modelos}" var="modelo">
-							<option id="modelo-id" value="${modelo.id}"> 
-									${modelo.nome}
+							<option id="modelo-id" value= 1> 
+									Caneca Padrão
 							</option>
-				     </c:forEach>
+							<option id="modelo-id" value= 2> 
+									Caneca de Chopp
+							</option>
 				      
 				      </select>
 				     <div class="invalid-feedback">

@@ -13,4 +13,6 @@ function loadMiniature(){
      }
    });
 }
-	
+
+loadMiniature();
+

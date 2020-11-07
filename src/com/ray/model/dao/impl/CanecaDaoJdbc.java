@@ -14,7 +14,7 @@ import com.ray.model.dao.CanecaRepository;
 import com.ray.model.entities.Caneca;
 import com.ray.model.entities.Cliente;
 import com.ray.model.entities.Image;
-import com.ray.model.entities.Modelo;
+import com.ray.model.entities.enums.Modelo;
 import com.ray.model.entities.Tema;
 
 public class CanecaDaoJdbc implements CanecaRepository {
@@ -38,7 +38,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	    st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	    st.setInt(1, caneca.getQuantidade());
 	    st.setLong(2, caneca.getImage().getId());
-	    st.setLong(3, caneca.getModelo().getId());
+	    st.setLong(3, caneca.getModelo().getCode());
 	    st.setLong(4, caneca.getTema().getId());
 	    st.setLong(5, caneca.getCliente().getId());
 	    st.setString(6, caneca.getDescricao());
@@ -66,7 +66,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	    st = conn.prepareStatement(sql);
 	    st.setInt(1, caneca.getQuantidade());
 	    st.setLong(2, caneca.getImage().getId());
-	    st.setLong(3, caneca.getModelo().getId());
+	    st.setLong(3, caneca.getModelo().getCode());
 	    st.setLong(4, caneca.getTema().getId());
 	    st.setLong(5, caneca.getCliente().getId());
 	    st.setString(6, caneca.getDescricao());
@@ -103,10 +103,10 @@ public class CanecaDaoJdbc implements CanecaRepository {
     public Caneca findById(Long id) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	String sql = "select canecas.*, temas.nome as tema_nome, modelos.nome as modelo_nome, "
+	String sql = "select canecas.*, temas.nome as tema_nome, "
 		+ "fotos.image as image, fotos.base64 as base64, fotos.miniatura as miniatura, fotos.content_type as content_type, "
 		+ "clientes.nome as cli_nome, clientes.telefone as cli_tel from canecas "
-		+ "inner join temas on id_tema = temas.id inner join modelos on id_modelo = modelos.id "
+		+ "inner join temas on id_tema = temas.id "
 		+ "inner join fotos on id_foto = fotos.id inner join clientes on id_cliente = clientes.id "
 		+ "where canecas.id = ?";
 	try {
@@ -127,7 +127,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 
     private Caneca setNewCaneca(ResultSet rs) throws SQLException {
 	Tema tema = new Tema(rs.getLong("id_tema"), rs.getString("tema_nome"));
-	Modelo modelo = new Modelo (rs.getLong("id_modelo"), rs.getString("modelo_nome"));
+	Modelo modelo = Modelo.valueOf(rs.getInt("id_modelo"));
 	Image foto = new Image(rs.getLong("id_foto"), rs.getBinaryStream("image"), rs.getString("base64"), rs.getString("miniatura"), rs.getString("content_type"));
 	Cliente cli = new Cliente(rs.getLong("id_cliente"), rs.getString("cli_nome"), rs.getString("cli_tel"));
 	Caneca caneca = new Caneca();
@@ -143,7 +143,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
     
     private Caneca setAllCanecas(ResultSet rs) throws SQLException {
 	Tema tema = new Tema(rs.getLong("id_tema"), rs.getString("tema_nome"));
-	Modelo modelo = new Modelo (rs.getLong("id_modelo"), rs.getString("modelo_nome"));
+	Modelo modelo = Modelo.valueOf(rs.getInt("id_modelo"));
 	Image foto = new Image(rs.getLong("id_foto"), null, null, rs.getString("miniatura"), null);
 	Cliente cli = new Cliente(rs.getLong("id_cliente"), rs.getString("cli_nome"), rs.getString("cli_tel"));
 	Caneca caneca = new Caneca();
@@ -162,10 +162,10 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	PreparedStatement st = null;
 	ResultSet rs = null;
 	List<Caneca> modelos = new ArrayList<>();
-	String sql = "select canecas.*, temas.nome as tema_nome, modelos.nome as modelo_nome, "
+	String sql = "select canecas.*, temas.nome as tema_nome, "
 		+ "fotos.miniatura as miniatura, "
 		+ "clientes.nome as cli_nome, clientes.telefone as cli_tel from canecas "
-		+ "inner join temas on id_tema = temas.id inner join modelos on id_modelo = modelos.id "
+		+ "inner join temas on id_tema = temas.id "
 		+ "inner join fotos on id_foto = fotos.id inner join clientes on id_cliente = clientes.id "
 		+ "where id_cliente = " + clientId;
 	try {

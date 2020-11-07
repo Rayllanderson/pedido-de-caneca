@@ -1,6 +1,7 @@
 package com.ray.model.entities;
 
 import java.io.Serializable;
+import com.ray.model.entities.enums.Modelo;
 
 public class Caneca implements Serializable{
 
