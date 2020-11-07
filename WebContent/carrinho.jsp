@@ -39,7 +39,7 @@
 </style>
 
 </head>
-<body>
+<body onload="loadMiniature()">
 
 <div class="container mt-5">
 <!--Section: Block Content-->
@@ -57,11 +57,13 @@
 
           <h5 class="mb-4">Cart (<span>2</span> items)</h5>
 
+ <data id="start">  
+
 	<c:forEach items="${canecas}" var="caneca">
-          <div class="row mb-4">
+          <div class="row mb-4" id="start">
             <div class="col-md-5 col-lg-3 col-xl-3">
               <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
-              
+           
                 <c:if test="${!caneca.image.miniatura.isEmpty() && caneca.image.miniatura != null}">
                      <img class="img-fluid w-100" id="img" src="${caneca.image.miniatura }" />
                 </c:if>
@@ -69,7 +71,7 @@
                <c:if test="${caneca.image.miniatura.isEmpty() || caneca.image.miniatura == null}">
                      <img class="img-fluid w-100" id="img" src="src/img/loading miniature (3).gif" />
                </c:if>
-               
+             
               </div>
             </div>
             <div class="col-md-7 col-lg-9 col-xl-9">
@@ -95,7 +97,7 @@
           </div>
           <hr class="mb-4">
       </c:forEach>
-          
+ </data>        
           
           <p class="text-primary mb-0"><i class="fas fa-info-circle mr-1"></i> Do not delay the purchase, adding
             items to your cart does not mean booking them.</p>
@@ -152,6 +154,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+<script src="src/js/ajax/loadMiniature.js"></script>
 </body>
 
 
