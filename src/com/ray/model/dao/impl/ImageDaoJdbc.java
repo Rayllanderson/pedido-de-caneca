@@ -74,7 +74,7 @@ public class ImageDaoJdbc implements ImageRepository {
     @Override
     public void deleteById(Long id) {
 	PreparedStatement st = null;
-	String sql = "delete from " + tableName + " where id = ?";
+	String sql = "delete from " + tableName + " where id = ? and id <> 0;";
 	try {
 	    st = conn.prepareStatement(sql);
 	    st.setLong(1, id);

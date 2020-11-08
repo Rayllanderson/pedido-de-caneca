@@ -23,7 +23,8 @@ public class CanecaService {
     }
     
     /**
-     * Recupera todas as canecas do cliente, verifica se a caneca de fato pertence ao cliente, se possuir, deleta e retorna true, senao, retorna false
+     * Recupera todas as canecas do cliente, verifica se a caneca de fato pertence ao cliente, se pertencer, deleta e retorna true, senao, retorna false
+     * Nota: Este método também exlui a imagem da caneca
      * @param id- id da caneca
      * @param clientId - id do cliente para verificar se a caneca pertence ao cliente
      */
