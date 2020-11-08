@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import com.ray.model.dao.CanecaRepository;
 import com.ray.model.dao.ImageRepository;
 import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.dao.TemaRepository;
@@ -38,6 +39,7 @@ public class OrderServlet extends HttpServlet {
     private ImageRepository imageRepository;
     private TemaRepository temaRepository;
     private CanecaService canecaService;
+    private CanecaRepository canecaRepository;
 
     @Override
     public void init() throws ServletException {
@@ -51,6 +53,12 @@ public class OrderServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
+	String action = request.getParameter("action");
+	if (action != null) {
+	    if (action.equals("edit")) {
+		setCanecaToEdit(request, response);
+	    }
+	}
 	request.getSession().setAttribute("temas", temaRepository.findAll());
 	request.getRequestDispatcher("order.jsp").forward(request, response);
     }
@@ -59,6 +67,7 @@ public class OrderServlet extends HttpServlet {
 	imageRepository = RepositoryFactory.createImageDao();
 	temaRepository = RepositoryFactory.createTemaDao();
 	canecaService = new CanecaService();
+	canecaRepository = RepositoryFactory.createCanecaDao();
     }
 
     /**
@@ -104,8 +113,8 @@ public class OrderServlet extends HttpServlet {
 	canecaService.save(caneca);
 
 	response.sendRedirect("carrinho");
-	
-	if(t != null) {
+
+	if (t != null) {
 	    t.start();
 	}
     }
@@ -131,9 +140,12 @@ public class OrderServlet extends HttpServlet {
     }
 
     /**
-     * Cria uma imagem apenas com o inputstream. Seta base 64 e miniatura pra "" (Vazio) <br>
-     * Caso o arquivo seja inválido ou não tenha imagem, retorna imagem com ID 0 <br>
-     * Imagem com ID 0 significa que a caneca não possui nenhuma imagem, setará a caneca como "Caneca sem foto"
+     * Cria uma imagem apenas com o inputstream. Seta base 64 e miniatura pra ""
+     * (Vazio) <br>
+     * Caso o arquivo seja inválido ou não tenha imagem, retorna imagem com ID 0
+     * <br>
+     * Imagem com ID 0 significa que a caneca não possui nenhuma imagem, setará a
+     * caneca como "Caneca sem foto"
      * 
      * @param request
      * @return
@@ -148,6 +160,31 @@ public class OrderServlet extends HttpServlet {
 	    return new Image(null, fileContent, "", "", filePart.getContentType());
 	} else {
 	    return new Image(0L, null, null, null, null); // caneca sem foto
+	}
+    }
+
+    /**
+     * 
+     * @param request
+     * @param response
+     */
+    private void setCanecaToEdit(HttpServletRequest request, HttpServletResponse response) {
+	try {
+	    Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
+	    Long canecaId = Long.valueOf(request.getParameter("id"));
+	    Caneca caneca = canecaRepository.findById(canecaId);
+	    boolean clientIsValid = caneca.getCliente().equals(cliente);
+	    if (clientIsValid) {
+		request.getSession().setAttribute("caneca", caneca);
+		response.setStatus(200);
+		return;
+	    } else {
+		response.setStatus(400);
+		return;
+	    }
+	} catch (NullPointerException e) {
+	    response.setStatus(400);
+	    return;
 	}
     }
 }

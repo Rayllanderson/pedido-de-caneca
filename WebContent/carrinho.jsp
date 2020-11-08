@@ -99,8 +99,10 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                   <a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3"><i
+                  <div style="display: inline;" data-toggle="modal" data-target="#edit-modal" data-id="${caneca.id}">
+                   <a href="#" id="edit" class="edit card-link-secondary small text-uppercase mr-3"><i
                         class="fas fa-edit mr-1"></i> Editar Caneca </a>
+                   </div>
                   	<div style="display: inline;" data-toggle="modal" data-target="#exampleModalCenter" data-id="${caneca.id}" >
                    		 <a href="#!" type="button" class="card-link-secondary small text-uppercase"><i
                         class="fas fa-trash-alt mr-1"  ></i> Remover Caneca </a>
@@ -184,6 +186,16 @@
 </div>
 
 
+	<!-- Modal confirmar remover caneca -->
+<div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+       	<button id="btn-edit" style="display: none"></button>
+     </div>
+  </div>
+
+</div>
+
 
 <!-- JQuery -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -196,6 +208,9 @@
 <script src="src/js/alert.js"></script>
 <script src="src/js/ajax/loadMiniature.js"></script>
 <script src="src/js/ajax/excluirCaneca.js"></script>
+<script src="src/js/ajax/redirecionarEditar.js"></script>
+
+
 </body>
 
 </html>

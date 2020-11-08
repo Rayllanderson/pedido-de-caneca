@@ -121,7 +121,7 @@
 				 
 				<div class="form-group">
 				    <label for="exampleFormControlTextarea1">Adicione mais detalhes</label>
-				    <textarea class="form-control" id="exampleFormControlTextarea1" name="descricao" rows="4" placeholder="Dê mais detalhes, diga pra gente como você quer a caneca (opcional)"></textarea>
+				    <textarea class="form-control" id="txt-area" name="descricao" rows="4" placeholder="Dê mais detalhes, diga pra gente como você quer a caneca (opcional)"></textarea>
 				  </div>
 				  <div class="col mb-4">
 			 		 <button type="submit" id="btn-submit" class="btn btn-primary float-right">Próximo</button>
@@ -184,6 +184,10 @@ $("#btn-submit").on('click', function () {
 		 $("#order-form").submit();
 	 }
 });
+
+
+var descricao ="${caneca.descricao}";
+document.getElementById("txt-area").value = descricao
 </script>
 
 
