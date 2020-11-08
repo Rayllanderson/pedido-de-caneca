@@ -83,7 +83,7 @@
 				 
 				 <div class="form-group">
 				    <label for="validationCustom04">Modelo</label>
-				      <select class="custom-select" id="validationCustom04" name="modelo-id" required>
+				      <select class="custom-select" id="modelo" name="modelo-id" required>
 							<option id="modelo-id" value= 1> 
 									Caneca Padrão
 							</option>
@@ -99,7 +99,7 @@
 				 
 				 <div class="form-group" >
 				  <label for="numberExample">Quantidade de canecas</label>
-				  <input type="number" id="numberExample" class="form-control" style="width: 80px; text-align: center" min="1" max="9999" value="1" name="quantidade" required>
+				  <input type="number" id="qtd" class="form-control" style="width: 80px; text-align: center" min="1" max="9999" value="1" name="quantidade" required>
 				 
 				</div>
 				
@@ -163,9 +163,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+<script type="text/javascript">var hasImage = false;</script>
 <script src="src/js/alert.js"></script>
 <script src="src/js/preview-foto.js"></script>
 <script src="src/js/checkFileType.js"></script>
+
 <script type="text/javascript">
 
 $(".alert").hide();
@@ -187,10 +189,54 @@ $("#btn-submit").on('click', function () {
 });
 
 
-var descricao ="${caneca.descricao}";
-document.getElementById("txt-area").value = descricao
+
 </script>
 
+<script type="text/javascript">
+//capturando os atributos
+
+var tema = "${caneca.tema.id}"
+var quantidade = "${caneca.quantidade}"
+var descricao ="${caneca.descricao}";
+var modelo = "${caneca.modelo}";
+
+//setando atributos
+$('#temas').val(tema);
+$("#txt-area").val(descricao);
+$("#qtd").val(quantidade)
+setModelo(modelo);
+
+var target = document.querySelector("#preview");
+
+var img = "${caneca.image.getBase64Html()}" //sera base64 aqui
+setImage(img)
+
+
+function setModelo(modelo){
+	switch (modelo){
+		case 'PADRAO':
+			$('#modelo').val(1);
+			break;
+		case 'CHOPP':
+			$('#modelo').val(2);
+			break;
+	}
+}
+
+function setImage(image){
+	if (img){
+	hasImage = true;
+	console.log(hasImage)
+	target.src = img;
+	$('#div-preview').show();
+	target.style.width = '100%';
+	target.style.height = '100%';
+	target.style.borderRadius = '1em';//
+	}
+	
+}
+
+</script>
 
 </body>
 

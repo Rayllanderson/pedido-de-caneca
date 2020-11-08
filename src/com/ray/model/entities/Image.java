@@ -65,6 +65,10 @@ public class Image implements Serializable{
 	this.contentType = contentType;
     }
     
+    public String getBase64Html() {
+  	return "data:" + this.getContentType() + ";base64," + base64;
+      }
+    
     @Override
     public int hashCode() {
 	final int prime = 31;
@@ -94,5 +98,4 @@ public class Image implements Serializable{
     public String toString() {
 	return "Foto [base64=" + base64 + "]";
     }
-
 }

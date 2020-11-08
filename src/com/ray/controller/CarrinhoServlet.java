@@ -51,6 +51,11 @@ public class CarrinhoServlet extends HttpServlet {
 	}
     }
 
+    /**
+     * Se alguma thumb estiver com valor vazio (ou seja, carregando), return true;
+     * @param canecas
+     * @return
+     */
     private boolean thumbIsLoading(List<Caneca> canecas) {
 	for (Caneca c : canecas) {
 	    if(c.getImage().getMiniatura().equals("")) {

@@ -124,6 +124,32 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	    DB.closeStatement(st);
 	}
     }
+    
+    @Override
+    public Caneca findByIdWihoutIS(Long id) {
+	PreparedStatement st = null;
+	ResultSet rs = null;
+	String sql = "select canecas.*, temas.nome as tema_nome, "
+		+ "fotos.image as image, fotos.base64 as base64, fotos.miniatura as miniatura, fotos.content_type as content_type, "
+		+ "clientes.nome as cli_nome, clientes.telefone as cli_tel from canecas "
+		+ "inner join temas on id_tema = temas.id "
+		+ "inner join fotos on id_foto = fotos.id inner join clientes on id_cliente = clientes.id "
+		+ "where canecas.id = ?";
+	try {
+	    st = conn.prepareStatement(sql);
+	    st.setLong(1, id);
+	    rs = st.executeQuery();
+	    if (rs.next()) {
+		return setNewCaneca(rs);
+	    } else {
+		return null;
+	    }
+	} catch (SQLException e) {
+	    throw new DbException(e.getMessage());
+	} finally {
+	    DB.closeStatement(st);
+	}
+    }
 
     private Caneca setNewCaneca(ResultSet rs) throws SQLException {
 	Tema tema = new Tema(rs.getLong("id_tema"), rs.getString("tema_nome"));
