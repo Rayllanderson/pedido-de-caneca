@@ -13,6 +13,7 @@ import com.ray.model.dao.CanecaRepository;
 import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.entities.Caneca;
 import com.ray.model.entities.Cliente;
+import com.ray.model.service.CanecaService;
 
 @WebServlet("/carrinho")
 public class CarrinhoServlet extends HttpServlet {
@@ -20,10 +21,12 @@ public class CarrinhoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private CanecaRepository canecaRepository;
+    private CanecaService canecaService;
 
     @Override
     public void init() throws ServletException {
 	canecaRepository = RepositoryFactory.createCanecaDao();
+	canecaService = new CanecaService();
 	super.init();
     }
 
@@ -41,14 +44,14 @@ public class CarrinhoServlet extends HttpServlet {
 		response.setStatus(200);
 		return;
 	    }else if(action.equals("delete")) {
-		Long id = Long.valueOf(request.getParameter("id1"));
-		System.out.println(id);
+		delete(request, response, cliente);
 	    }
 	} else {
 	    request.getSession().setAttribute("canecas", canecas);
 	    request.getRequestDispatcher("carrinho.jsp").forward(request, response);
 	}
     }
+
 
     /**
      * Enquanto a thread que cria miniatura não termina, ela irá buscar ela mesma no banco de dados pra verificar se a criação da miniatura já terminou.
@@ -64,4 +67,11 @@ public class CarrinhoServlet extends HttpServlet {
 	}
 	
     }
+    
+    private void delete(HttpServletRequest request, HttpServletResponse response, Cliente cliente) {
+   	Long id = Long.valueOf(request.getParameter("id1"));
+   	canecaService.deleteById(id);
+   	request.getSession().setAttribute("canecas", canecaRepository.findAll(cliente.getId()));
+   	response.setStatus(200);
+       }
 }
