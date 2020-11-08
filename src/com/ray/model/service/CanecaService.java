@@ -6,21 +6,35 @@ import com.ray.model.entities.Caneca;
 
 public class CanecaService {
     
-    private CanecaRepository repository = RepositoryFactory.createCanecaDao();
+    private CanecaRepository canecaRepository; 
+    private ImageService imageService;
     
+    public CanecaService() {
+	this.canecaRepository = RepositoryFactory.createCanecaDao();
+	this.imageService = new ImageService();
+    }
     
     public Caneca save(Caneca caneca) {
-	return repository.save(caneca);
+	return canecaRepository.save(caneca);
     }
     
     public Caneca update(Caneca caneca) {
-	return repository.update(caneca);
+	return canecaRepository.update(caneca);
     }
     
-    public void deleteById(Long id) {
-	repository.deleteById(id);
+    /**
+     * Recupera todas as canecas do cliente, verifica se a caneca de fato pertence ao cliente, se possuir, deleta e retorna true, senao, retorna false
+     * @param id- id da caneca
+     * @param clientId - id do cliente para verificar se a caneca pertence ao cliente
+     */
+    public boolean deleteById(Long id, Long clientId) {
+	for(Caneca c : canecaRepository.findAll(clientId)) {
+	    if (c.getId().equals(id)) {
+		canecaRepository.deleteById(id);
+		imageService.deleteById(c.getImage().getId());
+		return true;
+	    }
+	}
+	return false;
     }
-    
-    
-
 }

@@ -43,8 +43,8 @@ public class CarrinhoServlet extends HttpServlet {
 		request.getSession().setAttribute("canecas", canecaRepository.findAll(cliente.getId()));
 		response.setStatus(200);
 		return;
-	    }else if(action.equals("delete")) {
-		delete(request, response, cliente);
+	    } else if (action.equals("delete")) {
+		delete(request, response, cliente.getId());
 	    }
 	} else {
 	    request.getSession().setAttribute("canecas", canecas);
@@ -52,26 +52,31 @@ public class CarrinhoServlet extends HttpServlet {
 	}
     }
 
-
     /**
-     * Enquanto a thread que cria miniatura não termina, ela irá buscar ela mesma no banco de dados pra verificar se a criação da miniatura já terminou.
+     * Enquanto a thread que cria miniatura não termina, ela irá buscar ela mesma no
+     * banco de dados pra verificar se a criação da miniatura já terminou.
+     * 
      * @param response
      * @param action
      * @param canecas
      */
-    private void loadMiniature(HttpServletResponse response, String action, List<Caneca> canecas ) {
+    private void loadMiniature(HttpServletResponse response, String action, List<Caneca> canecas) {
 	for (Caneca c : canecas) {
 	    while (c.getImage().getMiniatura().equals("")) {
 		c = canecaRepository.findById(c.getId());
 	    }
 	}
-	
+
     }
-    
-    private void delete(HttpServletRequest request, HttpServletResponse response, Cliente cliente) {
-   	Long id = Long.valueOf(request.getParameter("id1"));
-   	canecaService.deleteById(id);
-   	request.getSession().setAttribute("canecas", canecaRepository.findAll(cliente.getId()));
-   	response.setStatus(200);
-       }
+
+    private void delete(HttpServletRequest request, HttpServletResponse response, Long clienteId) {
+	Long id = Long.valueOf(request.getParameter("id1"));
+	if (canecaService.deleteById(id, clienteId)) {
+	    request.getSession().setAttribute("canecas", canecaRepository.findAll(clienteId));
+	    response.setStatus(204);
+	}else {
+	    response.setStatus(404);
+	}
+
+    }
 }
