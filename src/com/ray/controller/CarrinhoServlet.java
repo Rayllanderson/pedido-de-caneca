@@ -36,11 +36,10 @@ public class CarrinhoServlet extends HttpServlet {
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	String action = request.getParameter("action");
 	List<Caneca> canecas = canecaRepository.findAll(cliente.getId());
-
+	setQuantidadeCanecas(request, canecas);
 	if (action != null) {
-	    if (action.equals("load-miniature")) {
-		loadMiniature(response, action, canecas);
-		request.getSession().setAttribute("canecas", canecaRepository.findAll(cliente.getId()));
+	    if (action.equals("load-miniature") && thumbIsLoading(canecas)) {
+		loadThumb(response, action, canecas);
 		response.setStatus(200);
 		return;
 	    } else if (action.equals("delete")) {
@@ -52,6 +51,15 @@ public class CarrinhoServlet extends HttpServlet {
 	}
     }
 
+    private boolean thumbIsLoading(List<Caneca> canecas) {
+	for (Caneca c : canecas) {
+	    if(c.getImage().getMiniatura().equals("")) {
+		return true;
+	    }
+	}
+	return false;
+    }
+
     /**
      * Enquanto a thread que cria miniatura não termina, ela irá buscar ela mesma no
      * banco de dados pra verificar se a criação da miniatura já terminou.
@@ -59,24 +67,34 @@ public class CarrinhoServlet extends HttpServlet {
      * @param response
      * @param action
      * @param canecas
+     * @throws IOException 
      */
-    private void loadMiniature(HttpServletResponse response, String action, List<Caneca> canecas) {
+    private void loadThumb(HttpServletResponse response, String action, List<Caneca> canecas) throws IOException {
 	for (Caneca c : canecas) {
 	    while (c.getImage().getMiniatura().equals("")) {
 		c = canecaRepository.findById(c.getId());
 	    }
 	}
-
     }
 
     private void delete(HttpServletRequest request, HttpServletResponse response, Long clienteId) {
 	Long id = Long.valueOf(request.getParameter("id1"));
 	if (canecaService.deleteById(id, clienteId)) {
-	    request.getSession().setAttribute("canecas", canecaRepository.findAll(clienteId));
+//	    List<Caneca> canecas = canecaRepository.findAll(clienteId);
+//	    request.getSession().setAttribute("canecas", canecas);
+//	    request.getSession().setAttribute("size", canecas.size());
 	    response.setStatus(204);
 	}else {
 	    response.setStatus(404);
 	}
-
+    }
+    
+    private void setQuantidadeCanecas(HttpServletRequest request, List<Caneca> canecas) {
+	request.getSession().setAttribute("size", canecas.size());
+	if(canecas.size() == 1) {
+	    request.getSession().setAttribute("txt", "Caneca");
+	}else {
+	    request.getSession().setAttribute("txt", "Canecas");
+	}
     }
 }

@@ -68,11 +68,8 @@
       <!-- Card -->
       <div class="card wish-list mb-3">
         <div class="card-body">
-
-          <h5 class="mb-4">Cart (<span>2</span> items)</h5>
-
- <data id="start">  
-
+ <data id="start"> 
+          <h5 class="mb-4">Carrinho (<span>${size}</span> ${txt})</h5>
 	<c:forEach items="${canecas}" var="caneca">
           <div class="row mb-4" id="start">
             <div class="col-md-5 col-lg-3 col-xl-3">
@@ -113,7 +110,7 @@
             </div>
           </div>
           <hr class="mb-4">
-      </c:forEach>
+   </c:forEach>
  </data>        
           
           <p class="text-primary mb-0"><i class="fas fa-info-circle mr-1"></i> Do not delay the purchase, adding
@@ -209,6 +206,7 @@
 <script src="src/js/ajax/loadMiniature.js"></script>
 <script src="src/js/ajax/excluirCaneca.js"></script>
 <script src="src/js/ajax/redirecionarEditar.js"></script>
+
 
 
 </body>

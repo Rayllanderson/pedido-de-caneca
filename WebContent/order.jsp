@@ -66,6 +66,7 @@
 			 method="POST" id="order-form" enctype="multipart/form-data">		
 			 <div class="group">
 			 	<div class="form-group">
+			 		<input type="text" value="${caneca.id}" style="display: none">
 				    <label for="validationCustom04">Tema</label>
 				      <select class="custom-select" id="temas" name="tema-id" required>
 				        <option selected disabled value="">Selecione o tema</option>
@@ -176,7 +177,7 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
 
 $("#btn-submit").on('click', function () {
 	if($("#temas").val() == null){
-		 alertBootstrap("Você não selecionou nenhum tema", "alert alert-danger", "Ei!");
+		 alertBootstrap("Você não selecionou nenhum tema", "alert alert-warning", "Ei!");
 		$('#temas').focus();
 	 }else{ 
 		$('#btn-submit').prop('disabled', true);

@@ -6,8 +6,8 @@ function loadMiniature(){
      type: 'GET',
      success:function(){
         // $('#img').load('src/jsp/miniature.jsp').html;
-			$.get("carrinho.jsp", function(responseXml) {          
-				$("#start").html($(responseXml).find("data").html());
+			$.get("carrinho", function(response) {  
+				$("#start").html($(response).find("data").html());
 			});
 		console.log('Success')
      },
