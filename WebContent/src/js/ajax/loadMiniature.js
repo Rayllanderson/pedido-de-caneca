@@ -1,3 +1,5 @@
+$('.alert').hide();
+
 function loadMiniature(){
 	$.ajax({
      url: 'carrinho?action=load-miniature',

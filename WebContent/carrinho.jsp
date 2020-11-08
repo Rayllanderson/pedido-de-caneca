@@ -12,6 +12,7 @@
 
 <title>Resumo do pedido</title>
 
+<link rel="stylesheet" href="src/css/alert.css">
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 <!-- Bootstrap core CSS -->
@@ -45,6 +46,14 @@
 
 </head>
 <body>
+
+<!-- ALERT -->
+			<div class="fixed-top">
+				<div class="alert alert-success" id="success-alert">
+				   <button type="button" class="close" onclick="$('.alert').hide();">x</button>
+				   <h4 id="titulo"></h4> <p id="alertMsg"></p>
+				</div>
+			</div>
 
 <div class="container mt-5">
 <!--Section: Block Content-->
@@ -168,7 +177,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger" id="excluir">Excluir</button>
+        <button type="button" class="btn btn-danger" id="btn-delete">Excluir</button>
       </div>
     </div>
   </div>
@@ -184,17 +193,9 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+<script src="src/js/alert.js"></script>
 <script src="src/js/ajax/loadMiniature.js"></script>
+<script src="src/js/ajax/excluirCaneca.js"></script>
 </body>
-
-<script type="text/javascript">
-
-$('#exampleModalCenter').on('show.bs.modal', function (event) {
-	  var button = $(event.relatedTarget)
-	  var id = button.data('id') // Extract info from data-* attributes
-	  console.log(id);
-});
-
-</script>
 
 </html>

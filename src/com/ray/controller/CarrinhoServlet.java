@@ -40,6 +40,9 @@ public class CarrinhoServlet extends HttpServlet {
 		request.getSession().setAttribute("canecas", canecaRepository.findAll(cliente.getId()));
 		response.setStatus(200);
 		return;
+	    }else if(action.equals("delete")) {
+		Long id = Long.valueOf(request.getParameter("id1"));
+		System.out.println(id);
 	    }
 	} else {
 	    request.getSession().setAttribute("canecas", canecas);
