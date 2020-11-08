@@ -14,12 +14,10 @@
 
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-<!-- Google Fonts -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
 <!-- Bootstrap core CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <!-- Material Design Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet"> 
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet"> -->
 
 <style type="text/css">
 
@@ -27,12 +25,19 @@
 		 border-radius: 1em !important;
 	}
 	
- 	.n-c{
+ /*	.n-c{
 		background-color: #28a745  !important;
 	}
 	
 	 .f-p{
 		background-color: #007bff  !important;
+	}
+	*/
+	#img{
+		 transition: transform .2s}
+	
+	#img:hover{
+		 transform: scale(1.05);
 	}
 	
 
@@ -65,7 +70,7 @@
               <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
            
                 <c:if test="${!caneca.image.miniatura.isEmpty() && caneca.image.miniatura != null}">
-                     <img class="img-fluid w-100" id="img" src="${caneca.image.miniatura }" />
+                     <img class="img-fluid w-100 img-thumbnail" id="img" src="${caneca.image.miniatura }" />
                 </c:if>
                
                <c:if test="${caneca.image.miniatura.isEmpty() || caneca.image.miniatura == null}">
@@ -87,9 +92,10 @@
                   <div>
                    <a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3"><i
                         class="fas fa-edit mr-1"></i> Editar Caneca </a>
-                  
-                    <a href="#!" type="button" class="card-link-secondary small text-uppercase"><i
-                        class="fas fa-trash-alt mr-1"></i> Remover Caneca </a>
+                  	<div style="display: inline;" data-toggle="modal" data-target="#exampleModalCenter" data-id="${caneca.id}" >
+                   		 <a href="#!" type="button" class="card-link-secondary small text-uppercase"><i
+                        class="fas fa-trash-alt mr-1"  ></i> Remover Caneca </a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -143,8 +149,32 @@
 
 </section>
 <!--Section: Block Content-->
-
 </div>
+
+
+
+	<!-- Modal confirmar remover caneca -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="exampleModalLongTitle">Atenção <i class="fas fa-exclamation-triangle"></i></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       	Você tem certeza que deseja remover esta caneca?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="excluir">Excluir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <!-- JQuery -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -157,5 +187,14 @@
 <script src="src/js/ajax/loadMiniature.js"></script>
 </body>
 
+<script type="text/javascript">
+
+$('#exampleModalCenter').on('show.bs.modal', function (event) {
+	  var button = $(event.relatedTarget)
+	  var id = button.data('id') // Extract info from data-* attributes
+	  console.log(id);
+});
+
+</script>
 
 </html>
