@@ -31,12 +31,26 @@
 	
 	a{
 	cursor: pointer;}
-
-
+	
+.loader{
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url('src/img/loading page.gif') 
+              50% 50% no-repeat #e93976;
+}
+#loading-img{
+	background: url("src/img/loading page.gif");
+}
 	
 </style>
 </head>
 <body>
+
+<div class="loader" id="loading"></div>
 		
 		<!-- ALERT -->
 			<div class="fixed-top">
@@ -242,6 +256,13 @@ function setImage(image){
 	}
 }
 
+</script>
+
+<script type="text/javascript">
+$(document).ready(function()
+{
+    $("#loading").hide();
+});
 </script>
 
 </body>
