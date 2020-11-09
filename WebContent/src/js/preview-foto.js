@@ -14,8 +14,8 @@ $('#file').on('change', () => {
         target.style.borderRadius = '1em';//
         $('.text-preview').text('Preview da sua foto') //Não se preocupe se sua imagem parecer distorcida, este é apenas um preview. Ela chegará em qualidade original pra gente!'
         reader.readAsDataURL(file)
-		hasImage = true;
-		console.log(hasImage)
+		hasChangedImage(true)
+		console.log('aaaa')
     } 
 });
 
@@ -23,8 +23,8 @@ $('#excluir').on('click', () =>{
 	document.getElementById("file").value = "";
 	$('#exampleModalCenter').modal('hide');
 	$('#div-preview').hide();
-	hasImage = false;
-	console.log(hasImage)
+	hasChangedImage(true)
+	console.log('bbbb')
 })
 
 /*function LoadData(){

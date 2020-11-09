@@ -22,6 +22,7 @@ import com.ray.model.entities.Tema;
 import com.ray.model.entities.enums.Modelo;
 import com.ray.model.exceptions.RequisicaoInvalidaException;
 import com.ray.model.service.CanecaService;
+import com.ray.model.service.ImageService;
 import com.ray.model.validacoes.ImageValidation;
 import com.ray.model.validacoes.ModeloValidation;
 import com.ray.model.validacoes.ThemeValidation;
@@ -40,6 +41,7 @@ public class OrderServlet extends HttpServlet {
     private TemaRepository temaRepository;
     private CanecaService canecaService;
     private CanecaRepository canecaRepository;
+    private ImageService imageService;
 
     @Override
     public void init() throws ServletException {
@@ -66,8 +68,9 @@ public class OrderServlet extends HttpServlet {
     private void startRepositories() {
 	imageRepository = RepositoryFactory.createImageDao();
 	temaRepository = RepositoryFactory.createTemaDao();
-	canecaService = new CanecaService();
 	canecaRepository = RepositoryFactory.createCanecaDao();
+	canecaService = new CanecaService();
+	imageService = new ImageService();
     }
 
     /**
@@ -82,7 +85,7 @@ public class OrderServlet extends HttpServlet {
 		if (action.equals("check-file-type")) {
 		    checkFileType(request, response);
 		} else if (action.equals("next")) {
-		    salvarCaneca(request, response);
+		    saveOrUpdate(request, response);
 		}
 	    }
 	} catch (RequisicaoInvalidaException e) {
@@ -90,7 +93,7 @@ public class OrderServlet extends HttpServlet {
 	}
     }
 
-    private void salvarCaneca(HttpServletRequest request, HttpServletResponse response)
+    private void saveOrUpdate(HttpServletRequest request, HttpServletResponse response)
 	    throws IOException, ServletException {
 	String descricao = request.getParameter("descricao");
 	String quantidade = request.getParameter("quantidade");
@@ -102,20 +105,72 @@ public class OrderServlet extends HttpServlet {
 
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 
-	Image image = createImage(request);
+	String id = request.getParameter("id");
+	boolean hasId = !id.isEmpty();
 	Thread t = null;
+	if (hasId) {
+	    t = update(request, descricao, quantidade, tema, modelo, cliente, id, t);
+	} else {
+	    t = save(request, descricao, quantidade, tema, modelo, cliente, t);
+	}
+	response.sendRedirect("carrinho");
+	if (t != null) {
+	    t.start();
+	}
+    }
+
+    private Thread save(HttpServletRequest request, String descricao, String quantidade, Tema tema, Modelo modelo,
+	    Cliente cliente, Thread t) throws IOException, ServletException {
+	Image image;
+	image = createImage(request);
 	if (image.getId() == null) { // usuario escolheu uma foto
 	    image = imageRepository.save(image);
 	    t = new Thread(new ThreadMiniature(image));
 	}
-
 	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, modelo, image, cliente, descricao);
 	canecaService.save(caneca);
+	return t;
+    }
 
-	response.sendRedirect("carrinho");
+    private Thread update(HttpServletRequest request, String descricao, String quantidade, Tema tema, Modelo modelo,
+	    Cliente cliente, String id, Thread t) throws IOException, ServletException {
+	Image image;
+	Caneca caneca = new Caneca(Long.valueOf(id), Integer.valueOf(quantidade), tema, modelo, null, cliente,
+		descricao);
+	// carregando a caneca que está sendo editada
+	Caneca c = (Caneca) request.getSession().getAttribute("caneca");
+	// atualiza a imagem caso o user tenha mudado
+	image = updateImage(request, c);
+	t = new Thread(new ThreadMiniature(image));
+	caneca.setImage(image);
+	canecaService.update(caneca);
+	request.getSession().setAttribute("caneca", "");
+	return t;
+    }
 
-	if (t != null) {
-	    t.start();
+    private Image updateImage(HttpServletRequest request, Caneca c) throws IOException, ServletException {
+	boolean hasChangedImage = request.getParameter("hasChangedImage").equals("true") ? true : false;
+	boolean hadImageBefore = !(c.getImage().getId() == 0);
+	boolean hadNoImageBefore = (c.getImage().getId() == 0);
+	if (hasChangedImage) {
+	    Image image = createImage(request);
+	    boolean hasImage = image.getId() == null;
+	    if (hasImage) {
+		if (hadImageBefore) {
+		    image.setId(c.getImage().getId());
+		    return imageService.update(image);
+		}else if (hadNoImageBefore) {
+		    return imageService.save(image);
+		}
+	    }else if(hadImageBefore) {
+		Long oldImageId = c.getImage().getId();
+		c.setImage(image);
+		canecaService.update(c);
+		imageService.deleteById(oldImageId);
+	    }
+	    return image;
+	} else {
+	    return imageRepository.findById(c.getImage().getId());
 	}
     }
 
