@@ -15,7 +15,7 @@ $('#btn-edit').on('click', function() {
 		data: { id: id1 },
 		success: function() {
 			$('#edit-modal').modal('hide')
-			window.location.href = "order.jsp";
+			window.location.href = "edit-order.jsp";
 		}, error: function() {
 			$('#edit-modal').modal('hide')
 			alertBootstrap("Não foi possível realizar sua solicitação. Recarregue a página e tente novamente", "alert alert-danger", "Erro")

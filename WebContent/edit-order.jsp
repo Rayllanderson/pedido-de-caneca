@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="src/css/alert.css">
 <script src="src/js/fa.js"></script>
 
-<title>Insert title here</title>
+<title>Editando Caneca</title>
 
 <style type="text/css">
 	
@@ -66,6 +66,10 @@
 			 method="POST" id="order-form" enctype="multipart/form-data">		
 			 <div class="group">
 			 	<div class="form-group">
+			 		<div style="display: none">
+				 		<input type="text" id="id" name="id">
+				 		<input name="hasChangedImage" id="hasChangedImage">
+			 		</div>
 				    <label for="validationCustom04">Tema</label>
 				      <select class="custom-select" id="temas" name="tema-id" required>
 				        <option selected disabled value="">Selecione o tema</option>
@@ -162,6 +166,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+<script type="text/javascript">
+function hasChangedImage(value){
+	$('#hasChangedImage').val(value)
+}
+
+</script>
 <script src="src/js/alert.js"></script>
 <script src="src/js/preview-foto.js"></script>
 <script src="src/js/checkFileType.js"></script>
@@ -189,6 +199,50 @@ $("#btn-submit").on('click', function () {
 
 </script>
 
+<script type="text/javascript">
+//capturando os atributos
+var id = "${caneca.id}"
+var tema = "${caneca.tema.id}"
+var quantidade = "${caneca.quantidade}"
+var descricao ="${caneca.descricao}";
+var modelo = "${caneca.modelo}";
+
+//setando atributos
+$('#id').val(id)
+$('#temas').val(tema);
+$("#txt-area").val(descricao);
+$("#qtd").val(quantidade == '' ? 1 : quantidade)
+setModelo(modelo);
+
+var target = document.querySelector("#preview");
+
+var img = "${caneca.image.getBase64Html()}"
+setImage(img)
+
+
+function setModelo(modelo){
+	switch (modelo){
+		case 'PADRAO':
+			$('#modelo').val(1);
+			break;
+		case 'CHOPP':
+			$('#modelo').val(2);
+			break;
+	}
+}
+
+function setImage(image){
+	if (img){
+	hasChangedImage(false);
+	target.src = img;
+	$('#div-preview').show();
+	target.style.width = '100%';
+	target.style.height = '100%';
+	target.style.borderRadius = '1em';//
+	}
+}
+
+</script>
 
 </body>
 

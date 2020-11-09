@@ -60,9 +60,10 @@ public class OrderServlet extends HttpServlet {
 	    if (action.equals("edit")) {
 		setCanecaToEdit(request, response);
 	    }
+	} else {
+	    request.getSession().setAttribute("temas", temaRepository.findAll());
+	    request.getRequestDispatcher("order.jsp").forward(request, response);
 	}
-	request.getSession().setAttribute("temas", temaRepository.findAll());
-	request.getRequestDispatcher("order.jsp").forward(request, response);
     }
 
     private void startRepositories() {
@@ -106,7 +107,7 @@ public class OrderServlet extends HttpServlet {
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 
 	String id = request.getParameter("id");
-	boolean hasId = !id.isEmpty();
+	boolean hasId = id != null;
 	Thread t = null;
 	if (hasId) {
 	    t = update(request, descricao, quantidade, tema, modelo, cliente, id, t);
@@ -148,6 +149,26 @@ public class OrderServlet extends HttpServlet {
 	return t;
     }
 
+    /**
+     * realiza o update da imagem. <br>
+     * <strong> Caso 1: o cliente mudou de imagem: </strong>este método irá realizar
+     * um update na imagem, substituindo a imagem antiga; <br>
+     * <strong> Caso 2: o cliente removeu a imagem: </strong>Caso o cliente remova a
+     * imagem, ele retornará uma imagem com ID 0 (sem imagem) e excluirá do banco a
+     * antiga imagem; <br>
+     * <strong> Case 3: o cliente não possuía imagem, mas colocou uma nova imagem
+     * agora: </strong>Nesse caso, este método criará uma nova imagem, salvando uma
+     * nova imagem no banco de dados; <br>
+     * <strong> Caso 4: o cliente não alterou nada na imagem: </strong> Este método
+     * apenas retornará a imagem que está salva no banco de dados via id;
+     * 
+     * @param request
+     * @param c       - antiga caneca a ser editada
+     * @return caso a imagem seja alterada, retornará ela, senao retornará a imagem
+     *         que estava antes;
+     * @throws IOException
+     * @throws ServletException
+     */
     private Image updateImage(HttpServletRequest request, Caneca c) throws IOException, ServletException {
 	boolean hasChangedImage = request.getParameter("hasChangedImage").equals("true") ? true : false;
 	boolean hadImageBefore = !(c.getImage().getId() == 0);
@@ -159,10 +180,10 @@ public class OrderServlet extends HttpServlet {
 		if (hadImageBefore) {
 		    image.setId(c.getImage().getId());
 		    return imageService.update(image);
-		}else if (hadNoImageBefore) {
+		} else if (hadNoImageBefore) {
 		    return imageService.save(image);
 		}
-	    }else if(hadImageBefore) {
+	    } else if (hadImageBefore) {
 		Long oldImageId = c.getImage().getId();
 		c.setImage(image);
 		canecaService.update(c);
@@ -222,8 +243,11 @@ public class OrderServlet extends HttpServlet {
      * 
      * @param request
      * @param response
+     * @throws IOException
+     * @throws ServletException
      */
-    private void setCanecaToEdit(HttpServletRequest request, HttpServletResponse response) {
+    private void setCanecaToEdit(HttpServletRequest request, HttpServletResponse response)
+	    throws ServletException, IOException {
 	try {
 	    Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	    Long canecaId = Long.valueOf(request.getParameter("id"));
@@ -232,6 +256,7 @@ public class OrderServlet extends HttpServlet {
 	    if (clientIsValid) {
 		request.getSession().setAttribute("caneca", caneca);
 		response.setStatus(200);
+		request.getSession().setAttribute("temas", temaRepository.findAll());
 		return;
 	    } else {
 		response.setStatus(400);
