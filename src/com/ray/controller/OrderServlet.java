@@ -96,7 +96,7 @@ public class OrderServlet extends HttpServlet {
     }
 
     private void saveOrUpdate(HttpServletRequest request, HttpServletResponse response)
-	    throws IOException, ServletException {
+	    throws IOException, ServletException, RequisicaoInvalidaException {
 	String descricao = request.getParameter("descricao");
 	String quantidade = request.getParameter("quantidade");
 
@@ -258,7 +258,7 @@ public class OrderServlet extends HttpServlet {
 	    Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	    Long canecaId = Long.valueOf(request.getParameter("id"));
 	    if (ClientValidation.clientIsValid(cliente, canecaId)) {
-		Caneca caneca = canecaRepository.findById(canecaId);
+		Caneca caneca = canecaRepository.findByIdWihoutIS(canecaId);
 		request.getSession().setAttribute("caneca", caneca);
 		response.setStatus(200);
 		request.getSession().setAttribute("temas", temaRepository.findAll());

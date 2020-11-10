@@ -130,7 +130,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	PreparedStatement st = null;
 	ResultSet rs = null;
 	String sql = "select canecas.*, temas.nome as tema_nome, "
-		+ "fotos.image as image, fotos.base64 as base64, fotos.miniatura as miniatura, fotos.content_type as content_type, "
+		+ "fotos.base64 as base64, fotos.miniatura as miniatura, fotos.content_type as content_type, "
 		+ "clientes.nome as cli_nome, clientes.telefone as cli_tel from canecas "
 		+ "inner join temas on id_tema = temas.id "
 		+ "inner join fotos on id_foto = fotos.id inner join clientes on id_cliente = clientes.id "
@@ -140,7 +140,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	    st.setLong(1, id);
 	    rs = st.executeQuery();
 	    if (rs.next()) {
-		return setNewCaneca(rs);
+		return setNewCanecaWithoutIS(rs);
 	    } else {
 		return null;
 	    }
@@ -155,6 +155,22 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	Tema tema = new Tema(rs.getLong("id_tema"), rs.getString("tema_nome"));
 	Modelo modelo = Modelo.valueOf(rs.getInt("id_modelo"));
 	Image foto = new Image(rs.getLong("id_foto"), rs.getBinaryStream("image"), rs.getString("base64"), rs.getString("miniatura"), rs.getString("content_type"));
+	Cliente cli = new Cliente(rs.getLong("id_cliente"), rs.getString("cli_nome"), rs.getString("cli_tel"));
+	Caneca caneca = new Caneca();
+	caneca.setId(rs.getLong("id"));
+	caneca.setQuantidade(rs.getInt("quantidade"));
+	caneca.setTema(tema);
+	caneca.setModelo(modelo);
+	caneca.setImage(foto);
+	caneca.setCliente(cli);
+	caneca.setDescricao(rs.getString("descricao"));
+	return caneca;
+    }
+    
+    private Caneca setNewCanecaWithoutIS(ResultSet rs) throws SQLException {
+	Tema tema = new Tema(rs.getLong("id_tema"), rs.getString("tema_nome"));
+	Modelo modelo = Modelo.valueOf(rs.getInt("id_modelo"));
+	Image foto = new Image(rs.getLong("id_foto"), null, rs.getString("base64"), rs.getString("miniatura"), rs.getString("content_type"));
 	Cliente cli = new Cliente(rs.getLong("id_cliente"), rs.getString("cli_nome"), rs.getString("cli_tel"));
 	Caneca caneca = new Caneca();
 	caneca.setId(rs.getLong("id"));

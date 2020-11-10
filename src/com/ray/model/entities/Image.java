@@ -66,7 +66,7 @@ public class Image implements Serializable{
     }
     
     public String getBase64Html() {
-  	return "data:" + this.getContentType() + ";base64," + base64;
+  	return base64.isEmpty() ? "" : "data:" + this.getContentType() + ";base64," + base64;
       }
     
     @Override

@@ -246,7 +246,7 @@ function setModelo(modelo){
 }
 
 function setImage(image){
-	if (img){
+	if (image){
 	hasChangedImage(false);
 	target.src = img;
 	$('#div-preview').show();

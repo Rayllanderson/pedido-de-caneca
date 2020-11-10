@@ -1,7 +1,6 @@
 package com.ray.filters;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -19,7 +18,7 @@ import com.ray.model.entities.Cliente;
 
 
 
-@WebFilter(urlPatterns = { "/order.jsp", "/order/*", "/carrinho.jsp", "/carrinho/*"})
+@WebFilter(urlPatterns = { "/order.jsp", "/order/*", "/edit-order.jsp", "/carrinho.jsp", "/carrinho/*"})
 public class Autenticacao implements Filter {
 
     private ServletContext context;

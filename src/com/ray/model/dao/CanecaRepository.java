@@ -22,9 +22,9 @@ public interface CanecaRepository {
     List<Caneca> findAll(Long clientId);
 
     /**
-     * Retornará a caneca sem InputStream, visto que ela não é serializável
+     * Retornará a caneca sem InputStream, visto que InputStream não é serializável
      * @param id
-     * @return objeto Caneca sem inputStream
+     * @return objeto Caneca com imagem sem InputStream
      */
     Caneca findByIdWihoutIS(Long id);
 
