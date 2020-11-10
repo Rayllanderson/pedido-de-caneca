@@ -8,12 +8,11 @@ public interface ImageRepository {
 
     Image save(Image image);
 
-    Image update(Image image);
+    Image update(Image image, boolean updateInputStream);
 
     void deleteById(Long id);
 
     Image findById(Long id);
 
     List<Image> findAll();
-
 }

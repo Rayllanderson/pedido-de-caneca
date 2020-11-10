@@ -14,8 +14,8 @@ public class ImageService {
 	return repository.save(image);
     }
 
-    public Image update(Image image) {
-	return repository.update(image);
+    public Image update(Image image, boolean updateInputStream) {
+	return repository.update(image, updateInputStream);
     }
 
     public void deleteById(Long id) {

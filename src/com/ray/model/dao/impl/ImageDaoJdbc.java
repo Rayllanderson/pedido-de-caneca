@@ -52,16 +52,22 @@ public class ImageDaoJdbc implements ImageRepository {
     }
 
     @Override
-    public Image update(Image image) {
+    public Image update(Image image, boolean updateInputStream) {
 	PreparedStatement st = null;
-	String sql = "update " + tableName + " set image = ?, base64 = ?, miniatura = ?, content_type = ? where id = ?";
+	String sql = updateInputStream ? "update " + tableName + " set base64 = ?, miniatura = ?, content_type = ?, image = ? where id = ?" :
+	    "update " + tableName + " set base64 = ?, miniatura = ?, content_type = ? where id = ?";
 	try {
+	    int pos = 5;
 	    st = conn.prepareStatement(sql);
-	    st.setBlob(1, image.getInputStream());
-	    st.setString(2, image.getBase64());
-	    st.setString(3, image.getMiniatura());
-	    st.setString(4, image.getContentType());
-	    st.setLong(5, image.getId());
+	    st.setString(1, image.getBase64());
+	    st.setString(2, image.getMiniatura());
+	    st.setString(3, image.getContentType());
+	    if(updateInputStream) {
+		st.setBlob(4, image.getInputStream());
+	    }else {
+		pos = 4;
+	    }
+	    st.setLong(pos, image.getId());
 	    st.executeUpdate();
 	    return this.findById(image.getId());
 	} catch (SQLException e) {

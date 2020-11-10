@@ -173,13 +173,14 @@ public class OrderServlet extends HttpServlet {
 	boolean hasChangedImage = request.getParameter("hasChangedImage").equals("true") ? true : false;
 	boolean hadImageBefore = !(c.getImage().getId() == 0);
 	boolean hadNoImageBefore = (c.getImage().getId() == 0);
+	boolean updateInputStream = true;
 	if (hasChangedImage) {
 	    Image image = createImage(request);
 	    boolean hasImage = image.getId() == null;
 	    if (hasImage) {
 		if (hadImageBefore) {
 		    image.setId(c.getImage().getId());
-		    return imageService.update(image);
+		    return imageService.update(image, updateInputStream);
 		} else if (hadNoImageBefore) {
 		    return imageService.save(image);
 		}
