@@ -16,7 +16,12 @@ public class ClientValidation {
     public static boolean clientIsValid(Cliente client, Long canecaId) {
 	CanecaRepository repository = RepositoryFactory.createCanecaDao();
 	Caneca caneca = repository.findById(canecaId);
-	return caneca.getCliente().equals(client);
+	try{
+	    return caneca.getCliente().equals(client);
+	}catch (Exception e) {
+	    e.printStackTrace();
+	    return false;
+	}
     }
 
 }

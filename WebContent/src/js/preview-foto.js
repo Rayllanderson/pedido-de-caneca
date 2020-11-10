@@ -15,7 +15,6 @@ $('#file').on('change', () => {
         $('.text-preview').text('Preview da sua foto') //Não se preocupe se sua imagem parecer distorcida, este é apenas um preview. Ela chegará em qualidade original pra gente!'
         reader.readAsDataURL(file)
 		hasChangedImage(true)
-		console.log('aaaa')
     } 
 });
 
@@ -24,7 +23,6 @@ $('#excluir').on('click', () =>{
 	$('#exampleModalCenter').modal('hide');
 	$('#div-preview').hide();
 	hasChangedImage(true)
-	console.log('bbbb')
 })
 
 /*function LoadData(){

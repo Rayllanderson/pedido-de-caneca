@@ -111,6 +111,7 @@ public class OrderServlet extends HttpServlet {
 	boolean hasId = id != null;
 	Thread t = null;
 	if (hasId) {
+	    System.out.println(id);
 	    if (ClientValidation.clientIsValid(cliente, Long.valueOf(id))) {
 		t = update(request, descricao, quantidade, tema, modelo, cliente, id, t);
 	    }else {
@@ -150,7 +151,7 @@ public class OrderServlet extends HttpServlet {
 	t = new Thread(new ThreadMiniature(image));
 	caneca.setImage(image);
 	canecaService.update(caneca);
-	request.getSession().setAttribute("caneca", "");
+//	request.getSession().setAttribute("caneca", "");
 	return t;
     }
 

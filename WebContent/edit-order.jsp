@@ -198,71 +198,29 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
 	$('.group').css('width', '80%');
 }
 
-
-$("#btn-submit").on('click', function () {
-	if($("#temas").val() == null){
-		 alertBootstrap("Você não selecionou nenhum tema", "alert alert-warning", "Ei!");
-		$('#temas').focus();
-	 }else{ 
-		$('#btn-submit').prop('disabled', true);
-		 $("#btn-submit").html('Enviando...');
-		 $("#order-form").submit();
-	 }
+</script>
+<script src="src/js/edit-caneca.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#loading").hide();
 });
 
-
-</script>
-
-<script type="text/javascript">
 //capturando os atributos
-var id = "${caneca.id}"
+var canecaId = "${caneca.id}"
 var tema = "${caneca.tema.id}"
 var quantidade = "${caneca.quantidade}"
 var descricao ="${caneca.descricao}";
 var modelo = "${caneca.modelo}";
+var img = "${caneca.image.getBase64Html()}"
 
 //setando atributos
-$('#id').val(id)
+$('#id').val(canecaId)
 $('#temas').val(tema);
 $("#txt-area").val(descricao);
 $("#qtd").val(quantidade == '' ? 1 : quantidade)
 setModelo(modelo);
-
-var target = document.querySelector("#preview");
-
-var img = "${caneca.image.getBase64Html()}"
 setImage(img)
 
-
-function setModelo(modelo){
-	switch (modelo){
-		case 'PADRAO':
-			$('#modelo').val(1);
-			break;
-		case 'CHOPP':
-			$('#modelo').val(2);
-			break;
-	}
-}
-
-function setImage(image){
-	if (image){
-	hasChangedImage(false);
-	target.src = img;
-	$('#div-preview').show();
-	target.style.width = '100%';
-	target.style.height = '100%';
-	target.style.borderRadius = '1em';//
-	}
-}
-
-</script>
-
-<script type="text/javascript">
-$(document).ready(function()
-{
-    $("#loading").hide();
-});
 </script>
 
 </body>

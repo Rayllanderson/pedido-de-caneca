@@ -141,9 +141,9 @@
             <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 "></li>
              
           </ul>
-
-          <button type="button" class="f-p btn btn-primary btn-block waves-effect waves-light">Finalizar Pedido</button>
-
+		<form action="email1" method="post">
+          <button type="submit" class="f-p btn btn-primary btn-block waves-effect waves-light">Finalizar Pedido</button>
+		</form>
         </div>
       </div>
       <!-- Card -->
@@ -206,7 +206,6 @@
 <script src="src/js/ajax/loadMiniature.js"></script>
 <script src="src/js/ajax/excluirCaneca.js"></script>
 <script src="src/js/ajax/redirecionarEditar.js"></script>
-
 </body>
 
 </html>

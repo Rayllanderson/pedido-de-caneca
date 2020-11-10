@@ -8,10 +8,8 @@
 </head>
 <body>
 				
-				<form id="upload-form" class="upload-box" action="testea" method="post" enctype="multipart/form-data">
-				    <input type="file" id="file" name="pictureFile" />
-				    <input type="text" name="nome" id="nome">
-				    <input type="submit" id="submit" value="Enviar"> 
+				<form class="upload-box" action="email1" method="post">
+				    <button class="btn btn-primary">Send</button>
 				</form>
 
 
