@@ -187,6 +187,7 @@
 <div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
+    	<p class="p-2 mt-1">Redirecionando...</p>
        	<button id="btn-edit" style="display: none"></button>
      </div>
   </div>
@@ -206,8 +207,6 @@
 <script src="src/js/ajax/loadMiniature.js"></script>
 <script src="src/js/ajax/excluirCaneca.js"></script>
 <script src="src/js/ajax/redirecionarEditar.js"></script>
-
-
 
 </body>
 

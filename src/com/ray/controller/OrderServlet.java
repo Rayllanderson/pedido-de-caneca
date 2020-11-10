@@ -23,6 +23,7 @@ import com.ray.model.entities.enums.Modelo;
 import com.ray.model.exceptions.RequisicaoInvalidaException;
 import com.ray.model.service.CanecaService;
 import com.ray.model.service.ImageService;
+import com.ray.model.validacoes.ClientValidation;
 import com.ray.model.validacoes.ImageValidation;
 import com.ray.model.validacoes.ModeloValidation;
 import com.ray.model.validacoes.ThemeValidation;
@@ -110,7 +111,11 @@ public class OrderServlet extends HttpServlet {
 	boolean hasId = id != null;
 	Thread t = null;
 	if (hasId) {
-	    t = update(request, descricao, quantidade, tema, modelo, cliente, id, t);
+	    if (ClientValidation.clientIsValid(cliente, Long.valueOf(id))) {
+		t = update(request, descricao, quantidade, tema, modelo, cliente, id, t);
+	    }else {
+		throw new RequisicaoInvalidaException("Caneca não pertence ao usuário");
+	    }
 	} else {
 	    t = save(request, descricao, quantidade, tema, modelo, cliente, t);
 	}
@@ -186,7 +191,7 @@ public class OrderServlet extends HttpServlet {
 		}
 	    } else if (hadImageBefore) {
 		Long oldImageId = c.getImage().getId();
-		c.setImage(image);
+		c.setImage(image); // desvinculando a imagem da caneca para ser deletada
 		canecaService.update(c);
 		imageService.deleteById(oldImageId);
 	    }
@@ -252,9 +257,8 @@ public class OrderServlet extends HttpServlet {
 	try {
 	    Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	    Long canecaId = Long.valueOf(request.getParameter("id"));
-	    Caneca caneca = canecaRepository.findById(canecaId);
-	    boolean clientIsValid = caneca.getCliente().equals(cliente);
-	    if (clientIsValid) {
+	    if (ClientValidation.clientIsValid(cliente, canecaId)) {
+		Caneca caneca = canecaRepository.findById(canecaId);
 		request.getSession().setAttribute("caneca", caneca);
 		response.setStatus(200);
 		request.getSession().setAttribute("temas", temaRepository.findAll());
