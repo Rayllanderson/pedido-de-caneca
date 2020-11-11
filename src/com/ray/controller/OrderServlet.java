@@ -19,13 +19,12 @@ import com.ray.model.entities.Caneca;
 import com.ray.model.entities.Cliente;
 import com.ray.model.entities.Image;
 import com.ray.model.entities.Tema;
-import com.ray.model.entities.enums.Modelo;
+import com.ray.model.entities.enums.Etapa;
 import com.ray.model.exceptions.RequisicaoInvalidaException;
 import com.ray.model.service.CanecaService;
 import com.ray.model.service.ImageService;
 import com.ray.model.validacoes.ClientValidation;
 import com.ray.model.validacoes.ImageValidation;
-import com.ray.model.validacoes.ModeloValidation;
 import com.ray.model.validacoes.ThemeValidation;
 import com.ray.util.ThreadMiniature;
 
@@ -102,9 +101,6 @@ public class OrderServlet extends HttpServlet {
 
 	Tema tema = temaRepository.findById(Long.valueOf(request.getParameter("tema-id")));
 	ThemeValidation.validateTheme(tema);
-
-	Modelo modelo = ModeloValidation.getModeloByNumber(Integer.parseInt(request.getParameter("modelo-id")));
-
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 
 	String id = request.getParameter("id");
@@ -113,12 +109,12 @@ public class OrderServlet extends HttpServlet {
 	if (hasId) {
 	    System.out.println(id);
 	    if (ClientValidation.clientIsValid(cliente, Long.valueOf(id))) {
-		t = update(request, descricao, quantidade, tema, modelo, cliente, id, t);
+		t = update(request, descricao, quantidade, tema, cliente, id, t);
 	    }else {
 		throw new RequisicaoInvalidaException("Caneca não pertence ao usuário");
 	    }
 	} else {
-	    t = save(request, descricao, quantidade, tema, modelo, cliente, t);
+	    t = save(request, descricao, quantidade, tema, cliente, t);
 	}
 	response.sendRedirect("carrinho");
 	if (t != null) {
@@ -126,7 +122,7 @@ public class OrderServlet extends HttpServlet {
 	}
     }
 
-    private Thread save(HttpServletRequest request, String descricao, String quantidade, Tema tema, Modelo modelo,
+    private Thread save(HttpServletRequest request, String descricao, String quantidade, Tema tema,
 	    Cliente cliente, Thread t) throws IOException, ServletException {
 	Image image;
 	image = createImage(request);
@@ -134,15 +130,15 @@ public class OrderServlet extends HttpServlet {
 	    image = imageRepository.save(image);
 	    t = new Thread(new ThreadMiniature(image));
 	}
-	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, modelo, image, cliente, descricao);
+	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, image, cliente, descricao);
 	canecaService.save(caneca);
 	return t;
     }
 
-    private Thread update(HttpServletRequest request, String descricao, String quantidade, Tema tema, Modelo modelo,
+    private Thread update(HttpServletRequest request, String descricao, String quantidade, Tema tema,
 	    Cliente cliente, String id, Thread t) throws IOException, ServletException {
 	Image image;
-	Caneca caneca = new Caneca(Long.valueOf(id), Integer.valueOf(quantidade), tema, modelo, null, cliente,
+	Caneca caneca = new Caneca(Long.valueOf(id), Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, null, cliente,
 		descricao);
 	// carregando a caneca que está sendo editada
 	Caneca c = (Caneca) request.getSession().getAttribute("caneca");

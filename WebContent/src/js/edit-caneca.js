@@ -9,18 +9,6 @@ $("#btn-submit").on('click', function () {
 	 }
 });
 
-
-function setModelo(modelo){
-	switch (modelo){
-		case 'PADRAO':
-			$('#modelo').val(1);
-			break;
-		case 'CHOPP':
-			$('#modelo').val(2);
-			break;
-	}
-}
-
 var target = document.querySelector("#preview");
 function setImage(image){
 	if (image){

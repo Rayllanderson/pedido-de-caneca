@@ -4,7 +4,6 @@ package com.ray.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -37,7 +36,7 @@ import com.ray.util.Html;
 public class EmailServlet extends HttpServlet {
 
     private final String USERNAME = "rayllandersonemailjava@gmail.com";
-    private final String PASSWORD = "*";
+    private final String PASSWORD = "-**";
     private CanecaRepository repository;
 
     private static final long serialVersionUID = 1L;
@@ -149,7 +148,6 @@ public class EmailServlet extends HttpServlet {
 	html.append(Html.p("Tema: " + c.getTema()));
 	html.append(Html.p("Quantidade: " + c.getQuantidade()));
 	html.append(Html.p("Foto personalizada? " + fotoPersonalizada));
-	html.append(Html.p("Tipo: " + c.getModelo()));
 	html.append("<hr>");
 	return html.toString();
     }

@@ -90,7 +90,6 @@
                 <div class="d-flex justify-content-between">
                   <div>
                     <h5>Tema: ${caneca.tema}</h5>
-                    <p class="mt-3 mb-4 text-muted text-uppercase small">Modelo: ${caneca.modelo} </p>
                     <p class="mb-5 text-muted text-uppercase small">Quantidade: ${caneca.quantidade}</p>
                   </div>
                 </div>

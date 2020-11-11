@@ -98,22 +98,6 @@
 				      </div>
 				 </div>
 				 
-				 <div class="form-group">
-				    <label for="validationCustom04">Modelo</label>
-				      <select class="custom-select" id="modelo" name="modelo-id" required>
-							<option id="modelo-id" value= 1> 
-									Caneca Padrão
-							</option>
-							<option id="modelo-id" value= 2> 
-									Caneca de Chopp
-							</option>
-				      
-				      </select>
-				     <div class="invalid-feedback">
-				        Por favor, selecione uma opção
-				      </div>
-				 </div>
-				 
 				 <div class="form-group" >
 				  <label for="numberExample">Quantidade de canecas</label>
 				  <input type="number" id="qtd" class="form-control" style="width: 80px; text-align: center" min="1" max="9999" value="1" name="quantidade" required>
@@ -210,7 +194,6 @@ var canecaId = "${caneca.id}"
 var tema = "${caneca.tema.id}"
 var quantidade = "${caneca.quantidade}"
 var descricao ="${caneca.descricao}";
-var modelo = "${caneca.modelo}";
 var img = "${caneca.image.getBase64Html()}"
 
 //setando atributos
@@ -218,7 +201,6 @@ $('#id').val(canecaId)
 $('#temas').val(tema);
 $("#txt-area").val(descricao);
 $("#qtd").val(quantidade == '' ? 1 : quantidade)
-setModelo(modelo);
 setImage(img)
 
 </script>

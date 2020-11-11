@@ -1,7 +1,7 @@
 package com.ray.model.entities;
 
 import java.io.Serializable;
-import com.ray.model.entities.enums.Modelo;
+import com.ray.model.entities.enums.Etapa;
 
 public class Caneca implements Serializable{
 
@@ -10,18 +10,18 @@ public class Caneca implements Serializable{
     private Long id;
     private Integer quantidade;
     private Tema tema;
-    private Modelo modelo;
+    private Etapa etapa;
     private Image image;
     private String descricao;
     
     private Cliente cliente;
 
-    public Caneca(Long id, Integer quantidade, Tema tema, Modelo modelo, Image image, Cliente cliente, String descricao) {
+    public Caneca(Long id, Integer quantidade, Tema tema, Etapa etapa, Image image, Cliente cliente, String descricao) {
 	super();
 	this.id = id;
 	this.quantidade = quantidade;
 	this.tema = tema;
-	this.modelo = modelo;
+	this.etapa = etapa;
 	this.image = image;
 	this.cliente = cliente;
 	this.descricao = descricao;
@@ -53,12 +53,12 @@ public class Caneca implements Serializable{
 	this.tema = tema;
     }
 
-    public Modelo getModelo() {
-	return modelo;
+    public Etapa getEtapa() {
+	return etapa;
     }
 
-    public void setModelo(Modelo modelo) {
-	this.modelo = modelo;
+    public void setEtapa(Etapa etapa) {
+	this.etapa = etapa;
     }
 
     public Image getImage() {
@@ -96,7 +96,7 @@ public class Caneca implements Serializable{
 
     @Override
     public String toString() {
-	return "Caneca [id=" + id + ", quantidade=" + quantidade + ", tema=" + tema + ", modelo=" + modelo + ", foto="
+	return "Caneca [id=" + id + ", quantidade=" + quantidade + ", tema=" + tema + ", modelo=" + etapa + ", foto="
 		+ image + ", descricao= " + descricao + ", cliente = " + cliente + "]";
     }
 
