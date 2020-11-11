@@ -113,8 +113,7 @@
    </c:forEach>
  </data>        
           
-          <p class="text-primary mb-0"><i class="fas fa-info-circle mr-1"></i> Do not delay the purchase, adding
-            items to your cart does not mean booking them.</p>
+          <p class="text-primary mb-0"><i class="fas fa-info-circle mr-1"></i> Não se preocupe se sua foto parecer borrada. Receberemos ela em qualidade original.</p>
 
         </div>
       </div>
@@ -141,7 +140,7 @@
             <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 "></li>
              
           </ul>
-		<form action="email1" method="post">
+		<form action="email" method="post">
           <button type="submit" class="f-p btn btn-primary btn-block waves-effect waves-light">Finalizar Pedido</button>
 		</form>
         </div>

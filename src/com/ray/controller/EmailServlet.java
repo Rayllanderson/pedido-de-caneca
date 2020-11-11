@@ -31,8 +31,9 @@ import com.ray.model.dao.CanecaRepository;
 import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.entities.Caneca;
 import com.ray.model.entities.Cliente;
+import com.ray.util.Html;
 
-@WebServlet("/email1")
+@WebServlet("/email")
 public class EmailServlet extends HttpServlet {
 
     private final String USERNAME = "rayllandersonemailjava@gmail.com";
@@ -104,6 +105,7 @@ public class EmailServlet extends HttpServlet {
 	    MimeBodyPart texto = new MimeBodyPart();
 
 	    int index = 1;
+	    html.append(Html.h1("Dados da(s) Caneca(s)"));
 	    for (Caneca c : canecas) {
 		boolean hasImage = c.getImage().getId() != 0;
 		MimeBodyPart anexo = new MimeBodyPart();
@@ -120,7 +122,7 @@ public class EmailServlet extends HttpServlet {
 		index++;
 	    }
 	    multipart.addBodyPart(texto);
-
+	    
 	    texto.setContent(html.toString(), "text/html; charset=utf-8");
 	    // Attach multipart to message
 	    message.setContent(multipart);
@@ -132,7 +134,7 @@ public class EmailServlet extends HttpServlet {
 	    response.setCharacterEncoding("UTF-8");
 	    response.getWriter().write("email enviado com sucesso!");
 	    response.setStatus(200);
-	} catch (MessagingException mex) {
+	} catch (MessagingException mex) {//talvez enviar email dizendo que due falha, mas manda os dados do cliente
 	    mex.printStackTrace();
 	    response.getWriter().write("Ocorreu um erro");
 	    response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
@@ -140,25 +142,19 @@ public class EmailServlet extends HttpServlet {
     }
 
     private String dadosCanecas(int index, Caneca c) {
-	final String START_TAG = "<h4>";
-	final String END_TAG = "</h4>";
-	
 	StringBuilder html = new StringBuilder();
-	html.append("<h1> Dados da(s) Caneca(s) </h1>");
 	String fotoPersonalizada = (c.getImage().getId() != 0) ? "Sim" : "Não";
 //	String nomeArquivo = hasImage ? "Caneca " + index + "." + contentType.split("/")[1] : "";
-	html.append("<h2>Caneca " + index + "</h2>");
-	html.append(START_TAG + "Tema: " + c.getTema() + END_TAG);
-	html.append(START_TAG + "Quantidade: " + c.getQuantidade() + END_TAG);
-	html.append(START_TAG + "Foto personalizada? " + fotoPersonalizada + END_TAG);
-	html.append(START_TAG + "Tipo: " + c.getModelo() + END_TAG);
+	html.append(Html.h2("Caneca " + index));
+	html.append(Html.p("Tema: " + c.getTema()));
+	html.append(Html.p("Quantidade: " + c.getQuantidade()));
+	html.append(Html.p("Foto personalizada? " + fotoPersonalizada));
+	html.append(Html.p("Tipo: " + c.getModelo()));
 	html.append("<hr>");
 	return html.toString();
     }
 
     private String dadosCliente(Cliente cliente) {
-	final String START_TAG = "<h4>";
-	final String END_TAG = "</h4>";
 	
 	String telefone = cliente.getTelefone();
 	telefone = telefone.replace("(", "").replace(")", "").replace("-", "").replace(" ", "");
@@ -168,9 +164,9 @@ public class EmailServlet extends HttpServlet {
 	
 	StringBuilder html = new StringBuilder();
 	html.append("<h1> Dados do Cliente </h1>");
-	html.append(START_TAG + "Nome: " + cliente.getNome() + END_TAG);
-	html.append(START_TAG + "Telefone: " + cliente.getTelefone() + END_TAG);
-	html.append("<a href=\"" + href + "\">Clique aqui pra mandar mensagem para o cliente</a>");
+	html.append(Html.p("Nome: " + cliente.getNome()));
+	html.append(Html.p("Telefone: " + cliente.getTelefone()));
+	html.append(Html.a("Clique aqui pra mandar mensagem para o cliente", href));
 	html.append("<hr>");
 	return html.toString();
     }
