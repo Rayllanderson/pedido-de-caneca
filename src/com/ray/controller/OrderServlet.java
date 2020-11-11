@@ -151,7 +151,7 @@ public class OrderServlet extends HttpServlet {
 	t = new Thread(new ThreadMiniature(image));
 	caneca.setImage(image);
 	canecaService.update(caneca);
-//	request.getSession().setAttribute("caneca", "");
+	request.getSession().setAttribute("caneca", "");
 	return t;
     }
 

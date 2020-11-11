@@ -35,7 +35,7 @@ public class CarrinhoServlet extends HttpServlet {
 	    throws ServletException, IOException {
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	String action = request.getParameter("action");
-	List<Caneca> canecas = canecaRepository.findAll(cliente.getId());
+	List<Caneca> canecas = canecaService.findAll(cliente.getId(), false);
 	setQuantidadeCanecas(request, canecas);
 	if (action != null) {
 	    if (action.equals("load-miniature") && thumbIsLoading(canecas)) {

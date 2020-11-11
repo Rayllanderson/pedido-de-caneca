@@ -151,6 +151,12 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	}
     }
 
+    /**
+     * seta a caneca com todos os atributos
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
     private Caneca setNewCaneca(ResultSet rs) throws SQLException {
 	Tema tema = new Tema(rs.getLong("id_tema"), rs.getString("tema_nome"));
 	Modelo modelo = Modelo.valueOf(rs.getInt("id_modelo"));
@@ -182,22 +188,6 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	caneca.setDescricao(rs.getString("descricao"));
 	return caneca;
     }
-    
-    private Caneca setAllCanecas(ResultSet rs) throws SQLException {
-	Tema tema = new Tema(rs.getLong("id_tema"), rs.getString("tema_nome"));
-	Modelo modelo = Modelo.valueOf(rs.getInt("id_modelo"));
-	Image foto = new Image(rs.getLong("id_foto"), null, null, rs.getString("miniatura"), null);
-	Cliente cli = new Cliente(rs.getLong("id_cliente"), rs.getString("cli_nome"), rs.getString("cli_tel"));
-	Caneca caneca = new Caneca();
-	caneca.setId(rs.getLong("id"));
-	caneca.setQuantidade(rs.getInt("quantidade"));
-	caneca.setTema(tema);
-	caneca.setModelo(modelo);
-	caneca.setImage(foto);
-	caneca.setCliente(cli);
-	caneca.setDescricao(rs.getString("descricao"));
-	return caneca;
-    }
 
     @Override
     public List<Caneca> findAll(Long clientId) {
@@ -205,7 +195,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	ResultSet rs = null;
 	List<Caneca> modelos = new ArrayList<>();
 	String sql = "select canecas.*, temas.nome as tema_nome, "
-		+ "fotos.miniatura as miniatura, "
+		+ "fotos.image as image, fotos.base64 as base64, fotos.miniatura as miniatura, fotos.content_type as content_type, "
 		+ "clientes.nome as cli_nome, clientes.telefone as cli_tel from canecas "
 		+ "inner join temas on id_tema = temas.id "
 		+ "inner join fotos on id_foto = fotos.id inner join clientes on id_cliente = clientes.id "
@@ -214,7 +204,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	    st = conn.prepareStatement(sql);
 	    rs = st.executeQuery();
 	    while (rs.next()) {
-		modelos.add(setAllCanecas(rs));
+		modelos.add(setNewCaneca(rs));
 	    }
 	    return modelos;
 	} catch (SQLException e) {

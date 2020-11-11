@@ -1,5 +1,7 @@
 package com.ray.model.service;
 
+import java.util.List;
+
 import com.ray.model.dao.CanecaRepository;
 import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.entities.Caneca;
@@ -37,5 +39,25 @@ public class CanecaService {
 	    }
 	}
 	return false;
+    }
+    
+    /**
+     * 
+     * @param clienteId - todas as canecas de acordo com o id do cliente
+     * @param withInputStream - <br>setar true para caso queira a lista completa, com todos os atributos. <br>Setar falso caso queira a lista parcialmente completa, sem inputstream, base64 e contentType
+     * @return todas as canecas
+     */
+    public List<Caneca> findAll(Long clienteId, boolean withInputStream){
+	List<Caneca> canecas = canecaRepository.findAll(clienteId);
+	if(withInputStream) {
+	    return canecas;
+	}
+	
+	for(Caneca c : canecas) {
+	    c.getImage().setInputStream(null);
+	    c.getImage().setBase64(null);
+	    c.getImage().setContentType(null);
+	}
+	return canecas;
     }
 }

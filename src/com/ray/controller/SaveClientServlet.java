@@ -38,12 +38,13 @@ public class SaveClientServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
+	request.setCharacterEncoding("UTF-8");
+	response.setContentType("text/plain");
+	response.setCharacterEncoding("UTF-8");
 	String nome = request.getParameter("nome");
 	String telefone = request.getParameter("telefone");
 	Cliente cliente = new Cliente(null, nome, telefone); //salvar o cliente on db
 	cliente = repository.save(cliente);
-	response.setContentType("text/plain");
-	response.setCharacterEncoding("UTF-8");
 //	// invalidando a ultima sessão / fazer isso no final
 //	HttpSession oldSession = request.getSession(false);
 //	if (oldSession != null) {

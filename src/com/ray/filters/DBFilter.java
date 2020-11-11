@@ -22,6 +22,7 @@ public class DBFilter implements javax.servlet.Filter {
 	try {
 //	    req = (HttpServletRequest) request;
 //	    session = req.getSession();
+	    request.setCharacterEncoding("UTF-8");
 	    chain.doFilter(request, response);
 	} catch (Exception e) {
 	    e.printStackTrace();
