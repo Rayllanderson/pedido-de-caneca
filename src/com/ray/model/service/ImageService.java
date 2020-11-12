@@ -2,20 +2,20 @@ package com.ray.model.service;
 
 import com.ray.model.dao.ImageRepository;
 import com.ray.model.dao.RepositoryFactory;
-import com.ray.model.entities.Image;
+import com.ray.model.entities.Arquivo;
 
 public class ImageService {
 
     ImageRepository repository = RepositoryFactory.createImageDao();
 
-    public Image save(Image image) {
-	image.setBase64("");
-	image.setMiniatura("");
-	return repository.save(image);
+    public Arquivo save(Arquivo arquivo) {
+	arquivo.setBase64("");
+	arquivo.setMiniatura("");
+	return repository.save(arquivo);
     }
 
-    public Image update(Image image, boolean updateInputStream) {
-	return repository.update(image, updateInputStream);
+    public Arquivo update(Arquivo arquivo, boolean updateInputStream) {
+	return repository.update(arquivo, updateInputStream);
     }
 
     public void deleteById(Long id) {

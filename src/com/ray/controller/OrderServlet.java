@@ -17,7 +17,7 @@ import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.dao.TemaRepository;
 import com.ray.model.entities.Caneca;
 import com.ray.model.entities.Cliente;
-import com.ray.model.entities.Image;
+import com.ray.model.entities.Arquivo;
 import com.ray.model.entities.Tema;
 import com.ray.model.entities.enums.Etapa;
 import com.ray.model.exceptions.RequisicaoInvalidaException;
@@ -124,28 +124,28 @@ public class OrderServlet extends HttpServlet {
 
     private Thread save(HttpServletRequest request, String descricao, String quantidade, Tema tema,
 	    Cliente cliente, Thread t) throws IOException, ServletException {
-	Image image;
-	image = createImage(request);
-	if (image.getId() == null) { // usuario escolheu uma foto
-	    image = imageRepository.save(image);
-	    t = new Thread(new ThreadMiniature(image));
+	Arquivo arquivo;
+	arquivo = createImage(request);
+	if (arquivo.getId() == null) { // usuario escolheu uma foto
+	    arquivo = imageRepository.save(arquivo);
+	    t = new Thread(new ThreadMiniature(arquivo));
 	}
-	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, image, cliente, descricao);
+	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, arquivo, cliente, descricao);
 	canecaService.save(caneca);
 	return t;
     }
 
     private Thread update(HttpServletRequest request, String descricao, String quantidade, Tema tema,
 	    Cliente cliente, String id, Thread t) throws IOException, ServletException {
-	Image image;
+	Arquivo arquivo;
 	Caneca caneca = new Caneca(Long.valueOf(id), Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, null, cliente,
 		descricao);
 	// carregando a caneca que está sendo editada
 	Caneca c = (Caneca) request.getSession().getAttribute("caneca");
 	// atualiza a imagem caso o user tenha mudado
-	image = updateImage(request, c);
-	t = new Thread(new ThreadMiniature(image));
-	caneca.setImage(image);
+	arquivo = updateImage(request, c);
+	t = new Thread(new ThreadMiniature(arquivo));
+	caneca.setImage(arquivo);
 	canecaService.update(caneca);
 	request.getSession().setAttribute("caneca", "");
 	return t;
@@ -171,28 +171,28 @@ public class OrderServlet extends HttpServlet {
      * @throws IOException
      * @throws ServletException
      */
-    private Image updateImage(HttpServletRequest request, Caneca c) throws IOException, ServletException {
+    private Arquivo updateImage(HttpServletRequest request, Caneca c) throws IOException, ServletException {
 	boolean hasChangedImage = request.getParameter("hasChangedImage").equals("true") ? true : false;
 	boolean hadImageBefore = !(c.getImage().getId() == 0);
 	boolean hadNoImageBefore = (c.getImage().getId() == 0);
 	boolean updateInputStream = true;
 	if (hasChangedImage) {
-	    Image image = createImage(request);
-	    boolean hasImage = image.getId() == null;
+	    Arquivo arquivo = createImage(request);
+	    boolean hasImage = arquivo.getId() == null;
 	    if (hasImage) {
 		if (hadImageBefore) {
-		    image.setId(c.getImage().getId());
-		    return imageService.update(image, updateInputStream);
+		    arquivo.setId(c.getImage().getId());
+		    return imageService.update(arquivo, updateInputStream);
 		} else if (hadNoImageBefore) {
-		    return imageService.save(image);
+		    return imageService.save(arquivo);
 		}
 	    } else if (hadImageBefore) {
 		Long oldImageId = c.getImage().getId();
-		c.setImage(image); // desvinculando a imagem da caneca para ser deletada
+		c.setImage(arquivo); // desvinculando a imagem da caneca para ser deletada
 		canecaService.update(c);
 		imageService.deleteById(oldImageId);
 	    }
-	    return image;
+	    return arquivo;
 	} else {
 	    return imageRepository.findById(c.getImage().getId());
 	}
@@ -231,14 +231,14 @@ public class OrderServlet extends HttpServlet {
      * @throws IOException
      * @throws ServletException
      */
-    private Image createImage(HttpServletRequest request) throws IOException, ServletException {
+    private Arquivo createImage(HttpServletRequest request) throws IOException, ServletException {
 	if (ImageValidation.fileTypeIsValid(request, "pictureFile")) {
 	    Part filePart = request.getPart("pictureFile"); // Retrieves <input type="file" name="pictureFile">
 	    InputStream fileContent = filePart.getInputStream();
 //	    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-	    return new Image(null, fileContent, "", "", filePart.getContentType());
+	    return new Arquivo(null, fileContent, "", "", filePart.getContentType());
 	} else {
-	    return new Image(0L, null, null, null, null); // caneca sem foto
+	    return new Arquivo(0L, null, null, null, null); // caneca sem foto
 	}
     }
 

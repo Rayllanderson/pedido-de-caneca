@@ -26,6 +26,7 @@ function checkFileType(file, e) {
 		error: function() {
 			console.log("error");
 			alertBootstrap("O tipo do arquivo não é compatível.", "alert alert-danger", "Ops...");
+			document.getElementById("files").value = "";
 			return;
 		}
 	});
@@ -38,7 +39,7 @@ $(document).ready(function() {
 	if (window.File && window.FileList && window.FileReader) {
 		$("#files").on("change", function(e) {
 			var files = e.target.files,
-				filesLength = files.length;
+				filesLength = 3;
 			for (var i = 0; i < filesLength; i++) {
 				var f = files[i]
 				var fileReader = new FileReader();

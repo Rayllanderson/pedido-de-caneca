@@ -14,7 +14,7 @@ import javax.servlet.http.Part;
 
 import com.ray.model.dao.ImageRepository;
 import com.ray.model.dao.RepositoryFactory;
-import com.ray.model.entities.Image;
+import com.ray.model.entities.Arquivo;
 import com.ray.util.ArquivosUtil;
 
 @MultipartConfig

@@ -2,17 +2,17 @@ package com.ray.model.dao;
 
 import java.util.List;
 
-import com.ray.model.entities.Image;
+import com.ray.model.entities.Arquivo;
 
 public interface ImageRepository {
 
-    Image save(Image image);
+    Arquivo save(Arquivo arquivo);
 
-    Image update(Image image, boolean updateInputStream);
+    Arquivo update(Arquivo arquivo, boolean updateInputStream);
 
     void deleteById(Long id);
 
-    Image findById(Long id);
+    Arquivo findById(Long id);
 
-    List<Image> findAll();
+    List<Arquivo> findAll(Long canecaId);
 }

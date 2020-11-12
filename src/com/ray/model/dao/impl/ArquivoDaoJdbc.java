@@ -10,32 +10,38 @@ import java.util.List;
 
 import com.ray.db.DB;
 import com.ray.db.DbException;
+import com.ray.model.dao.CanecaRepository;
 import com.ray.model.dao.ImageRepository;
-import com.ray.model.entities.Image;
+import com.ray.model.dao.RepositoryFactory;
+import com.ray.model.entities.Arquivo;
+import com.ray.model.entities.Caneca;
 
-public class ImageDaoJdbc implements ImageRepository {
+public class ArquivoDaoJdbc implements ImageRepository {
 
     private Connection conn;
-    private String tableName = "fotos";
+    private String tableName = "arquivos";
+    private CanecaRepository canecaRepository;
     
-    public ImageDaoJdbc(Connection conn) {
+    public ArquivoDaoJdbc(Connection conn) {
 	this.conn = conn;
+	this.canecaRepository = RepositoryFactory.createCanecaDao();
     }
 
     /**
      * Retorna a imagem que foi salva no banco de dados
      */
     @Override
-    public Image save(Image image) {
+    public Arquivo save(Arquivo arquivo) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	String sql = "insert into " + tableName + " (image, base64, miniatura, content_type) values (?, ?, ?, ?)";
+	String sql = "insert into " + tableName + " (image, base64, miniatura, content_type, id_caneca) values (?, ?, ?, ?, ?)";
 	try {
 	    st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	    st.setBlob(1, image.getInputStream());
-	    st.setString(2, image.getBase64());
-	    st.setString(3, image.getMiniatura());
-	    st.setString(4, image.getContentType());
+	    st.setBlob(1, arquivo.getInputStream());
+	    st.setString(2, arquivo.getBase64());
+	    st.setString(3, arquivo.getMiniatura());
+	    st.setString(4, arquivo.getContentType());
+	    st.setLong(5, arquivo.getCaneca().getId());
 	    if (st.executeUpdate() > 0) {
 		rs = st.getGeneratedKeys();
 		if (rs.next()) {
@@ -52,24 +58,24 @@ public class ImageDaoJdbc implements ImageRepository {
     }
 
     @Override
-    public Image update(Image image, boolean updateInputStream) {
+    public Arquivo update(Arquivo arquivo, boolean updateInputStream) {
 	PreparedStatement st = null;
 	String sql = updateInputStream ? "update " + tableName + " set base64 = ?, miniatura = ?, content_type = ?, image = ? where id = ?" :
 	    "update " + tableName + " set base64 = ?, miniatura = ?, content_type = ? where id = ?";
 	try {
 	    int pos = 5;
 	    st = conn.prepareStatement(sql);
-	    st.setString(1, image.getBase64());
-	    st.setString(2, image.getMiniatura());
-	    st.setString(3, image.getContentType());
+	    st.setString(1, arquivo.getBase64());
+	    st.setString(2, arquivo.getMiniatura());
+	    st.setString(3, arquivo.getContentType());
 	    if(updateInputStream) {
-		st.setBlob(4, image.getInputStream());
+		st.setBlob(4, arquivo.getInputStream());
 	    }else {
 		pos = 4;
 	    }
-	    st.setLong(pos, image.getId());
+	    st.setLong(pos, arquivo.getId());
 	    st.executeUpdate();
-	    return this.findById(image.getId());
+	    return this.findById(arquivo.getId());
 	} catch (SQLException e) {
 	    throw new DbException(e.getMessage());
 	} finally {
@@ -96,7 +102,7 @@ public class ImageDaoJdbc implements ImageRepository {
     }
 
     @Override
-    public Image findById(Long id) {
+    public Arquivo findById(Long id) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
 	String sql = "select * from " + tableName + " where id = ?";
@@ -116,18 +122,20 @@ public class ImageDaoJdbc implements ImageRepository {
 	}
     }
     
-    private Image setNewImage(ResultSet rs) throws SQLException {
-	return new Image(rs.getLong("id"), rs.getBinaryStream("image"), rs.getString("base64"), rs.getString("miniatura"), rs.getString("content_type"));
+    private Arquivo setNewImage(ResultSet rs) throws SQLException {
+	Caneca c = canecaRepository.findById(rs.getLong("id_caneca"));
+	return new Arquivo(rs.getLong("id"), rs.getBinaryStream("image"), rs.getString("base64"), rs.getString("miniatura"), rs.getString("content_type"), c);
     }
 
     @Override
-    public List<Image> findAll() {
+    public List<Arquivo> findAll(Long canecaId) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	List <Image> modelos = new ArrayList<>();
-	String sql = "select * from " + tableName;
+	List <Arquivo> modelos = new ArrayList<>();
+	String sql = "select * from arquivos where id_caneca = " + canecaId;
 	try {
 	    st = conn.prepareStatement(sql);
+//	    st.setLong(1, canecaId);
 	    rs = st.executeQuery();
 	    while(rs.next()) {
 		modelos.add(setNewImage(rs));

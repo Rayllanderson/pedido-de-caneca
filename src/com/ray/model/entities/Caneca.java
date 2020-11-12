@@ -1,6 +1,9 @@
 package com.ray.model.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.ray.model.entities.enums.Etapa;
 
 public class Caneca implements Serializable{
@@ -11,18 +14,17 @@ public class Caneca implements Serializable{
     private Integer quantidade;
     private Tema tema;
     private Etapa etapa;
-    private Image image;
     private String descricao;
     
+    private List<Arquivo> fotos = new ArrayList<>();;
     private Cliente cliente;
 
-    public Caneca(Long id, Integer quantidade, Tema tema, Etapa etapa, Image image, Cliente cliente, String descricao) {
+    public Caneca(Long id, Integer quantidade, Tema tema, Etapa etapa, Cliente cliente, String descricao) {
 	super();
 	this.id = id;
 	this.quantidade = quantidade;
 	this.tema = tema;
 	this.etapa = etapa;
-	this.image = image;
 	this.cliente = cliente;
 	this.descricao = descricao;
     }
@@ -61,14 +63,26 @@ public class Caneca implements Serializable{
 	this.etapa = etapa;
     }
 
-    public Image getImage() {
-	return image;
+    public Cliente getCliente() {
+	return cliente;
     }
 
-    public void setImage(Image image) {
-	this.image = image;
+    public void setCliente(Cliente cliente) {
+	this.cliente = cliente;
     }
 
+    public String getDescricao() {
+	return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+	this.descricao = descricao;
+    }
+
+    public List<Arquivo> getFotos() {
+	return fotos;
+    }
+    
     @Override
     public int hashCode() {
 	final int prime = 31;
@@ -97,22 +111,6 @@ public class Caneca implements Serializable{
     @Override
     public String toString() {
 	return "Caneca [id=" + id + ", quantidade=" + quantidade + ", tema=" + tema + ", etapa=" + etapa + ", foto="
-		+ image + ", descricao= " + descricao + ", cliente = " + cliente + "]";
-    }
-
-    public Cliente getCliente() {
-	return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-	this.cliente = cliente;
-    }
-
-    public String getDescricao() {
-	return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-	this.descricao = descricao;
+		+ fotos + ", descricao= " + descricao + ", cliente = " + cliente + "]";
     }
 }

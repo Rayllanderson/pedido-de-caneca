@@ -3,25 +3,28 @@ package com.ray.model.entities;
 import java.io.InputStream;
 import java.io.Serializable;
 
-public class Image implements Serializable{
+public class Arquivo implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private Long id;
     private InputStream inputStream;
     private String base64;
     private String miniatura;
     private String contentType;
+    private Caneca caneca;
 
-    public Image(Long id, InputStream inputStream, String base64, String miniatura, String contentType) {
+    public Arquivo(Long id, InputStream inputStream, String base64, String miniatura, String contentType,
+	    Caneca caneca) {
 	this.id = id;
 	this.inputStream = inputStream;
 	this.base64 = base64;
 	this.miniatura = miniatura;
 	this.contentType = contentType;
+	this.setCaneca(caneca);
     }
-    
-    public Image() {
+
+    public Arquivo() {
 	// TODO Auto-generated constructor stub
     }
 
@@ -64,11 +67,19 @@ public class Image implements Serializable{
     public void setContentType(String contentType) {
 	this.contentType = contentType;
     }
-    
+
     public String getBase64Html() {
-  	return base64.isEmpty() ? "" : "data:" + this.getContentType() + ";base64," + base64;
-      }
-    
+	return base64.isEmpty() ? "" : "data:" + this.getContentType() + ";base64," + base64;
+    }
+
+    public Caneca getCaneca() {
+	return caneca;
+    }
+
+    public void setCaneca(Caneca caneca) {
+	this.caneca = caneca;
+    }
+
     @Override
     public int hashCode() {
 	final int prime = 31;
@@ -85,7 +96,7 @@ public class Image implements Serializable{
 	    return false;
 	if (getClass() != obj.getClass())
 	    return false;
-	Image other = (Image) obj;
+	Arquivo other = (Arquivo) obj;
 	if (id == null) {
 	    if (other.id != null)
 		return false;
@@ -96,6 +107,6 @@ public class Image implements Serializable{
 
     @Override
     public String toString() {
-	return "Foto [base64=" + base64 + "]";
+	return "Arquivo [miniatura=" + miniatura + ", contentType=" + contentType + ", caneca=" + caneca + "]";
     }
 }
