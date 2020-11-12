@@ -96,7 +96,7 @@ public class Caneca implements Serializable{
 
     @Override
     public String toString() {
-	return "Caneca [id=" + id + ", quantidade=" + quantidade + ", tema=" + tema + ", modelo=" + etapa + ", foto="
+	return "Caneca [id=" + id + ", quantidade=" + quantidade + ", tema=" + tema + ", etapa=" + etapa + ", foto="
 		+ image + ", descricao= " + descricao + ", cliente = " + cliente + "]";
     }
 

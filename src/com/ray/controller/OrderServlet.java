@@ -209,7 +209,7 @@ public class OrderServlet extends HttpServlet {
      */
     private void checkFileType(HttpServletRequest request, HttpServletResponse response)
 	    throws IOException, ServletException {
-	if (ImageValidation.fileTypeIsValid(request)) {
+	if (ImageValidation.fileTypeIsValid(request, "file")) {
 	    response.setStatus(HttpServletResponse.SC_OK);
 	    return;
 	} else {
@@ -232,8 +232,8 @@ public class OrderServlet extends HttpServlet {
      * @throws ServletException
      */
     private Image createImage(HttpServletRequest request) throws IOException, ServletException {
-	Part filePart = request.getPart("pictureFile"); // Retrieves <input type="file" name="pictureFile">
-	if (ImageValidation.fileTypeIsValid(request)) {
+	if (ImageValidation.fileTypeIsValid(request, "pictureFile")) {
+	    Part filePart = request.getPart("pictureFile"); // Retrieves <input type="file" name="pictureFile">
 	    InputStream fileContent = filePart.getInputStream();
 //	    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
 	    return new Image(null, fileContent, "", "", filePart.getContentType());

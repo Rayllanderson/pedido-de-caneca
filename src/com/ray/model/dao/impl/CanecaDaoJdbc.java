@@ -18,7 +18,7 @@ import com.ray.model.entities.enums.Etapa;
 import com.ray.model.entities.Tema;
 
 public class CanecaDaoJdbc implements CanecaRepository {
-    
+
     private Connection conn;
     private String tableName = "canecas";
 
@@ -33,7 +33,8 @@ public class CanecaDaoJdbc implements CanecaRepository {
     public Caneca save(Caneca caneca) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	String sql = "insert into " + tableName + " (quantidade, id_foto, id_etapa, id_tema, id_cliente, descricao) values (?, ?, ?, ?, ?, ?)";
+	String sql = "insert into " + tableName
+		+ " (quantidade, id_foto, id_etapa, id_tema, id_cliente, descricao) values (?, ?, ?, ?, ?, ?)";
 	try {
 	    st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 	    st.setInt(1, caneca.getQuantidade());
@@ -124,7 +125,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	    DB.closeStatement(st);
 	}
     }
-    
+
     @Override
     public Caneca findByIdWihoutIS(Long id) {
 	PreparedStatement st = null;
@@ -153,6 +154,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
 
     /**
      * seta a caneca com todos os atributos
+     * 
      * @param rs
      * @return
      * @throws SQLException
@@ -160,7 +162,8 @@ public class CanecaDaoJdbc implements CanecaRepository {
     private Caneca setNewCaneca(ResultSet rs) throws SQLException {
 	Tema tema = new Tema(rs.getLong("id_tema"), rs.getString("tema_nome"));
 	Etapa etapa = Etapa.valueOf(rs.getInt("id_etapa"));
-	Image foto = new Image(rs.getLong("id_foto"), rs.getBinaryStream("image"), rs.getString("base64"), rs.getString("miniatura"), rs.getString("content_type"));
+	Image foto = new Image(rs.getLong("id_foto"), rs.getBinaryStream("image"), rs.getString("base64"),
+		rs.getString("miniatura"), rs.getString("content_type"));
 	Cliente cli = new Cliente(rs.getLong("id_cliente"), rs.getString("cli_nome"), rs.getString("cli_tel"));
 	Caneca caneca = new Caneca();
 	caneca.setId(rs.getLong("id"));
@@ -172,11 +175,12 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	caneca.setDescricao(rs.getString("descricao"));
 	return caneca;
     }
-    
+
     private Caneca setNewCanecaWithoutIS(ResultSet rs) throws SQLException {
 	Tema tema = new Tema(rs.getLong("id_tema"), rs.getString("tema_nome"));
 	Etapa etapa = Etapa.valueOf(rs.getInt("id_etapa"));
-	Image foto = new Image(rs.getLong("id_foto"), null, rs.getString("base64"), rs.getString("miniatura"), rs.getString("content_type"));
+	Image foto = new Image(rs.getLong("id_foto"), null, rs.getString("base64"), rs.getString("miniatura"),
+		rs.getString("content_type"));
 	Cliente cli = new Cliente(rs.getLong("id_cliente"), rs.getString("cli_nome"), rs.getString("cli_tel"));
 	Caneca caneca = new Caneca();
 	caneca.setId(rs.getLong("id"));
@@ -193,7 +197,7 @@ public class CanecaDaoJdbc implements CanecaRepository {
     public List<Caneca> findAll(Long clientId) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	List<Caneca> modelos = new ArrayList<>();
+	List<Caneca> canecas = new ArrayList<>();
 	String sql = "select canecas.*, temas.nome as tema_nome, "
 		+ "fotos.image as image, fotos.base64 as base64, fotos.miniatura as miniatura, fotos.content_type as content_type, "
 		+ "clientes.nome as cli_nome, clientes.telefone as cli_tel from canecas "
@@ -204,13 +208,14 @@ public class CanecaDaoJdbc implements CanecaRepository {
 	    st = conn.prepareStatement(sql);
 	    rs = st.executeQuery();
 	    while (rs.next()) {
-		modelos.add(setNewCaneca(rs));
+		canecas.add(setNewCaneca(rs));
 	    }
-	    return modelos;
+	    return canecas;
 	} catch (SQLException e) {
 	    throw new DbException(e.getMessage());
 	} finally {
 	    DB.closeStatement(st);
 	}
     }
+
 }

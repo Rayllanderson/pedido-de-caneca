@@ -1,4 +1,4 @@
-
+$('.alert').hide();
 function alertBootstrap(msg, classe, titulo) {
 	$(".alert").show();
 

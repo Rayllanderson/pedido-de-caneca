@@ -14,33 +14,6 @@ import com.ray.model.entities.Tema;
 public class TemaTest {
 
     private TemaRepository repository = RepositoryFactory.createTemaDao();
-    
-    @Test
-    public void salvar() {
-	
-	Tema cliente = new Tema(null, "Dia das Mães");
-	
-	cliente = repository.save(cliente);
-	
-	System.out.println(cliente);
-    }
-
-    @Test
-    public void update() {
-	
-	Tema cliente = new Tema(2L, "Dia dos Pais");
-	
-	cliente = repository.update(cliente);
-	
-	System.out.println(cliente);
-    }
-
-    @Test
-    public void deletar() {
-	
-	repository.deleteById(3L);
-	
-    }
 
     @Test
     public void find() {

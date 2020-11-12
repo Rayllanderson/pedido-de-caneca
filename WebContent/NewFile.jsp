@@ -9,7 +9,8 @@
 <body>
 				
 				<form class="upload-box" action="email1" method="post">
-				    <button class="btn btn-primary">Send</button>
+				    <input id="file-input" type="file" multiple>
+					<div id="preview"></div>
 				</form>
 
 
@@ -44,30 +45,9 @@ $(document).ready(function (e) {
     }));
  */   
     
-    
-    $("#file").on("change", function() {
-    	 var file = document.querySelector("#file").files[0];
-    	var myFormData = new FormData();
-        myFormData.append('pictureFile', file);
+ 
 
-        $.ajax({
-          url: 'testea',
-          type: 'POST',
-          cache:false,
-          processData: false, // important
-          contentType: false, // important
-          data: myFormData,
-          success:function(data){
-              console.log("successf");
-              console.log(data);
-          },
-          error: function(data){
-              console.log("error");
-              console.log(data);
-          }
-        });
 
-    });
 </script>
 </body>
 </html>

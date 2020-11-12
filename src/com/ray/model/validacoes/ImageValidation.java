@@ -16,8 +16,8 @@ public class ImageValidation {
      * @throws IOException
      * @throws ServletException
      */
-    public static boolean fileTypeIsValid(HttpServletRequest request) throws IOException, ServletException {
-	Part filePart = request.getPart("pictureFile");
+    public static boolean fileTypeIsValid(HttpServletRequest request, String requestPartName) throws IOException, ServletException {
+	Part filePart = request.getPart(requestPartName);
 	if (filePart.getContentType().contains("image") && !(filePart.getContentType().contains("gif"))) {
 	    return true;
 	}
