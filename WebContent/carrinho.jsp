@@ -74,12 +74,12 @@
           <div class="row mb-4" id="start">
             <div class="col-md-5 col-lg-3 col-xl-3">
               <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
-           
-                <c:if test="${!caneca.image.miniatura.isEmpty() && caneca.image.miniatura != null}">
-                     <img class="img-fluid w-100 img-thumbnail" id="img" src="${caneca.image.miniatura }" />
+           	
+                <c:if test="${!imagem.miniatura.isEmpty() && imagem.miniatura != null}">
+                     <img class="img-fluid w-100 img-thumbnail" id="img" src="${imagem.miniatura}" />
                 </c:if>
                
-               <c:if test="${caneca.image.miniatura.isEmpty() || caneca.image.miniatura == null}">
+               <c:if test="${imagem.miniatura.isEmpty() || imagem.miniatura == null}">
                      <img class="img-fluid w-100" id="img" src="src/img/loading miniature (3).gif" />
                </c:if>
              

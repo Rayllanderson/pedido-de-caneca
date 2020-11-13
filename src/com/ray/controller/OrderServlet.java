@@ -2,6 +2,11 @@ package com.ray.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -110,7 +115,7 @@ public class OrderServlet extends HttpServlet {
 	    System.out.println(id);
 	    if (ClientValidation.clientIsValid(cliente, Long.valueOf(id))) {
 		t = update(request, descricao, quantidade, tema, cliente, id, t);
-	    }else {
+	    } else {
 		throw new RequisicaoInvalidaException("Caneca não pertence ao usuário");
 	    }
 	} else {
@@ -122,23 +127,22 @@ public class OrderServlet extends HttpServlet {
 	}
     }
 
-    private Thread save(HttpServletRequest request, String descricao, String quantidade, Tema tema,
-	    Cliente cliente, Thread t) throws IOException, ServletException {
-	Arquivo arquivo;
-	arquivo = createImage(request);
-	if (arquivo.getId() == null) { // usuario escolheu uma foto
-	    arquivo = imageRepository.save(arquivo);
-	    t = new Thread(new ThreadMiniature(arquivo));
+    private Thread save(HttpServletRequest request, String descricao, String quantidade, Tema tema, Cliente cliente,
+	    Thread t) throws IOException, ServletException {
+	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, cliente, descricao);
+	caneca = canecaService.save(caneca);
+	List <Arquivo> imagens = createImages(request, caneca);
+//	t = new Thread(new ThreadMiniature(imagens));
+	for (Arquivo image : imagens) {
+	    imageService.save(image);
 	}
-	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, arquivo, cliente, descricao);
-	canecaService.save(caneca);
 	return t;
     }
 
-    private Thread update(HttpServletRequest request, String descricao, String quantidade, Tema tema,
-	    Cliente cliente, String id, Thread t) throws IOException, ServletException {
+    private Thread update(HttpServletRequest request, String descricao, String quantidade, Tema tema, Cliente cliente,
+	    String id, Thread t) throws IOException, ServletException {
 	Arquivo arquivo;
-	Caneca caneca = new Caneca(Long.valueOf(id), Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, null, cliente,
+	Caneca caneca = new Caneca(Long.valueOf(id), Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, cliente,
 		descricao);
 	// carregando a caneca que está sendo editada
 	Caneca c = (Caneca) request.getSession().getAttribute("caneca");
@@ -231,15 +235,19 @@ public class OrderServlet extends HttpServlet {
      * @throws IOException
      * @throws ServletException
      */
-    private Arquivo createImage(HttpServletRequest request) throws IOException, ServletException {
-	if (ImageValidation.fileTypeIsValid(request, "pictureFile")) {
-	    Part filePart = request.getPart("pictureFile"); // Retrieves <input type="file" name="pictureFile">
-	    InputStream fileContent = filePart.getInputStream();
-//	    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-	    return new Arquivo(null, fileContent, "", "", filePart.getContentType());
-	} else {
-	    return new Arquivo(0L, null, null, null, null); // caneca sem foto
+    private List<Arquivo> createImages(HttpServletRequest request, Caneca caneca) throws IOException, ServletException {
+	List<Part> fileParts = request.getParts().stream()
+		.filter(part -> "files".equals(part.getName()) && part.getSize() > 0).collect(Collectors.toList());
+	List<Arquivo> imagens = new ArrayList<>();
+	for (Part filePart : fileParts) {
+	    if (ImageValidation.fileTypeIsValid(request, filePart)) {
+		InputStream fileContent = filePart.getInputStream();
+		imagens.add(new Arquivo(null, fileContent, "", "", filePart.getContentType(), caneca));
+	    } else {
+		imagens.add(new Arquivo(0L, null, null, null, null, caneca)); // caneca sem foto
+	    }
 	}
+	return imagens;
     }
 
     /**

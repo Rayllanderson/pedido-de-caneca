@@ -110,7 +110,7 @@
 				 <div class="form-group" >
 				   <label style="display: block">Foto personalizada</label>
 				   <label for="files" class="btn btn-outline-primary" >escolha a foto aqui</label>
-				   <input id="files" type="file" multiple accept="image/*" style="display: none">
+				   <input id="files" type="file" name="files" multiple accept="image/*" style="display: none">
 					<div id="preview"></div> 
 				 </div>
 				 

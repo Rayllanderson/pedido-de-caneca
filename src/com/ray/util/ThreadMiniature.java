@@ -1,5 +1,7 @@
 package com.ray.util;
 
+import java.util.List;
+
 import com.ray.model.entities.Arquivo;
 import com.ray.model.service.ImageService;
 
@@ -8,8 +10,8 @@ public class ThreadMiniature implements Runnable {
     private ImageService imageService;
     private Arquivo arquivo;
 
-    public ThreadMiniature(Arquivo arquivo) {
-	this.arquivo = arquivo;
+    public ThreadMiniature(Arquivo imagem) {
+	this.arquivo = imagem;
 	this.imageService = new ImageService();
     }
 

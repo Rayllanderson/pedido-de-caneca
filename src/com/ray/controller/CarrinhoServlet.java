@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ray.model.dao.CanecaRepository;
+import com.ray.model.dao.ImageRepository;
 import com.ray.model.dao.RepositoryFactory;
+import com.ray.model.entities.Arquivo;
 import com.ray.model.entities.Caneca;
 import com.ray.model.entities.Cliente;
 import com.ray.model.service.CanecaService;
@@ -22,11 +24,13 @@ public class CarrinhoServlet extends HttpServlet {
 
     private CanecaRepository canecaRepository;
     private CanecaService canecaService;
+    private ImageRepository imgRepository;
 
     @Override
     public void init() throws ServletException {
 	canecaRepository = RepositoryFactory.createCanecaDao();
 	canecaService = new CanecaService();
+	imgRepository = RepositoryFactory.createImageDao();
 	super.init();
     }
 
@@ -35,20 +39,23 @@ public class CarrinhoServlet extends HttpServlet {
 	    throws ServletException, IOException {
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	String action = request.getParameter("action");
-	List<Caneca> canecas = canecaService.findAll(cliente.getId(), false);
+	List<Caneca> canecas = canecaRepository.findAll(cliente.getId());
+	List<Arquivo> imagens = imgRepository.findAll(canecas.get(0).getId());
+	Arquivo image = imagens.get(0);
 	setQuantidadeCanecas(request, canecas);
-	if (action != null) {
-	    if (action.equals("load-miniature") && thumbIsLoading(canecas)) {
-		loadThumb(response, action, canecas);
-		response.setStatus(200);
-		return;
-	    } else if (action.equals("delete")) {
-		delete(request, response, cliente.getId());
-	    }
-	} else {
+//	if (action != null) {
+//	    if (action.equals("load-miniature") && thumbIsLoading(canecas)) {
+//		loadThumb(response, action, canecas);
+//		response.setStatus(200);
+//		return;
+//	    } else if (action.equals("delete")) {
+//		delete(request, response, cliente.getId());
+//	    }
+//	} else {
 	    request.getSession().setAttribute("canecas", canecas);
+	    request.getSession().setAttribute("imagem", image);
 	    request.getRequestDispatcher("carrinho.jsp").forward(request, response);
-	}
+	//}
     }
 
     /**
