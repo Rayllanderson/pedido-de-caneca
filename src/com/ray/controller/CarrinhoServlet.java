@@ -40,22 +40,22 @@ public class CarrinhoServlet extends HttpServlet {
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	String action = request.getParameter("action");
 	List<Caneca> canecas = canecaRepository.findAll(cliente.getId());
-	List<Arquivo> imagens = imgRepository.findAll(canecas.get(0).getId());
+	List<Arquivo> imagens = imgRepository.findAll(canecas.get(1).getId());
 	Arquivo image = imagens.get(0);
 	setQuantidadeCanecas(request, canecas);
-//	if (action != null) {
-//	    if (action.equals("load-miniature") && thumbIsLoading(canecas)) {
-//		loadThumb(response, action, canecas);
-//		response.setStatus(200);
-//		return;
-//	    } else if (action.equals("delete")) {
-//		delete(request, response, cliente.getId());
-//	    }
-//	} else {
+	if (action != null) {
+	    if (action.equals("load-miniature") && thumbIsLoading(imagens)) {
+		loadThumb(imagens);
+		response.setStatus(200);
+		return;
+	    } else if (action.equals("delete")) {
+		delete(request, response, cliente.getId());
+	    }
+	} else {
 	    request.getSession().setAttribute("canecas", canecas);
 	    request.getSession().setAttribute("imagem", image);
 	    request.getRequestDispatcher("carrinho.jsp").forward(request, response);
-	//}
+	}
     }
 
     /**
@@ -63,9 +63,9 @@ public class CarrinhoServlet extends HttpServlet {
      * @param canecas
      * @return
      */
-    private boolean thumbIsLoading(List<Caneca> canecas) {
-	for (Caneca c : canecas) {
-	    if(c.getImage().getMiniatura().equals("")) {
+    private boolean thumbIsLoading(List<Arquivo> imagens) {
+	for (Arquivo i : imagens) {
+	    if(i.getMiniatura().equals("")) {
 		return true;
 	    }
 	}
@@ -81,10 +81,10 @@ public class CarrinhoServlet extends HttpServlet {
      * @param canecas
      * @throws IOException 
      */
-    private void loadThumb(HttpServletResponse response, String action, List<Caneca> canecas) throws IOException {
-	for (Caneca c : canecas) {
-	    while (c.getImage().getMiniatura().equals("")) {
-		c = canecaRepository.findById(c.getId());
+    private void loadThumb(List<Arquivo> imagens) throws IOException {
+	for (Arquivo i : imagens) {
+	    while (i.getMiniatura().equals("")) {
+		i = imgRepository.findById(i.getId());
 	    }
 	}
     }

@@ -18,6 +18,7 @@ public class ThreadMiniature implements Runnable {
     @Override
     public void run() {
 	try {
+	    System.out.println("dddddddddddddddd");
 	    boolean hasImage = arquivo.getId() != 0;
 	    boolean hasntMiniature = arquivo.getMiniatura() == null || arquivo.getMiniatura().isEmpty();
 	    boolean dontUpdateInpuStream = false;
