@@ -40,12 +40,11 @@ public class CarrinhoServlet extends HttpServlet {
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	String action = request.getParameter("action");
 	List<Caneca> canecas = canecaRepository.findAll(cliente.getId());
-	List<Arquivo> imagens = imgRepository.findAll(canecas.get(1).getId());
-	Arquivo image = imagens.get(0);
+	canecas.forEach(x -> x.getFotos().addAll(imgRepository.findAll(x.getId())));
 	setQuantidadeCanecas(request, canecas);
 	if (action != null) {
-	    if (action.equals("load-miniature") && thumbIsLoading(imagens)) {
-		loadThumb(imagens);
+	    if (action.equals("load-miniature") && thumbIsLoading(canecas)) {
+		canecas.forEach(x -> loadThumb(x.getFotos()));
 		response.setStatus(200);
 		return;
 	    } else if (action.equals("delete")) {
@@ -53,22 +52,25 @@ public class CarrinhoServlet extends HttpServlet {
 	    }
 	} else {
 	    request.getSession().setAttribute("canecas", canecas);
-	    request.getSession().setAttribute("imagem", image);
 	    request.getRequestDispatcher("carrinho.jsp").forward(request, response);
 	}
     }
 
     /**
      * Se alguma thumb estiver com valor vazio (ou seja, carregando), return true;
+     * 
      * @param canecas
      * @return
      */
-    private boolean thumbIsLoading(List<Arquivo> imagens) {
-	for (Arquivo i : imagens) {
-	    if(i.getMiniatura().equals("")) {
-		return true;
+    private boolean thumbIsLoading(List<Caneca> canecas) {
+	for (Caneca caneca : canecas) {
+	    for (Arquivo i : caneca.getFotos()) {
+		if (i.getMiniatura().equals("")) {
+		    return true;
+		}
 	    }
 	}
+
 	return false;
     }
 
@@ -79,9 +81,8 @@ public class CarrinhoServlet extends HttpServlet {
      * @param response
      * @param action
      * @param canecas
-     * @throws IOException 
      */
-    private void loadThumb(List<Arquivo> imagens) throws IOException {
+    private void loadThumb(List<Arquivo> imagens){
 	for (Arquivo i : imagens) {
 	    while (i.getMiniatura().equals("")) {
 		i = imgRepository.findById(i.getId());
@@ -96,16 +97,16 @@ public class CarrinhoServlet extends HttpServlet {
 //	    request.getSession().setAttribute("canecas", canecas);
 //	    request.getSession().setAttribute("size", canecas.size());
 	    response.setStatus(204);
-	}else {
+	} else {
 	    response.setStatus(404);
 	}
     }
-    
+
     private void setQuantidadeCanecas(HttpServletRequest request, List<Caneca> canecas) {
 	request.getSession().setAttribute("size", canecas.size());
-	if(canecas.size() == 1) {
+	if (canecas.size() == 1) {
 	    request.getSession().setAttribute("txt", "Caneca");
-	}else {
+	} else {
 	    request.getSession().setAttribute("txt", "Canecas");
 	}
     }
