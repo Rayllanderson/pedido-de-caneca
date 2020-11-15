@@ -1,80 +1,102 @@
-    var nameDiv = "#filediv2";
-    var count = 0;
-    var spanCount = $('.count');
-    var i = 0;
-    spanCount.text(i)
-    var showPlusButton = true;
-    $('#file1').on('change', function() {
-        if (showPlusButton) {
-            $('#plus').show();
-            showPlusButton = false;
-        }
-        count++;
-        i++
-        spanCount.text(i)
-        preview(1);
-    });
+var nameDiv = "#filediv2";
+var count = 0;
+var showPlusButton = true;
 
-    $('#file2').on('change', function() {
-        preview(2);
-        i++
-        spanCount.text(i)
+// ------------------ on change ------------------
+$('#file1').on('change', function() {
+	if (showPlusButton) {
+		$('#plus').show();
+		showPlusButton = false;
+	}
+	count++;
+	checkFileType('file1', 1)
+});
 
-    });
+$('#file2').on('change', function() {
+	checkFileType('file2', 2)
 
-    $('#file3').on('change', function() {
-        preview(3);
-        i++
-        spanCount.text(i)
-    });
+});
 
-    $('#plus').on("click", function() {
-        $(nameDiv).show();
-        count++;
-        nameDiv = "#filediv3"
-        if (count >= 3) {
-            $('#plus').hide();
-        }
-    })
+$('#file3').on('change', function() {
+	checkFileType('file3', 3)
+});
 
-    $('#remove1').on('click', function() {
-        excluir(1)
-        i--;
-        spanCount.text(i)
-    });
-    $('#remove2').on('click', function() {
-        excluir(2)
-        i--;
-        spanCount.text(i)
-    });
-    $('#remove3').on('click', function() {
-        excluir(3)
-        i--;
-        spanCount.text(i)
-    });
 
-    function preview(index) {
-        var target = document.querySelector("#preview" + index);
-        var file = document.querySelector("#file" + index).files[0];
-        var reader = new FileReader();
-        reader.onloadend = function() {
-            target.src = reader.result;
-        };
-        if (file) {
-            $('#div-preview' + index).show();
-            target.style.width = '100%';
-            target.style.height = '100%';
-            target.style.borderRadius = '1em'; //
-            $('.text-preview').text('Preview da sua foto')
-            reader.readAsDataURL(file)
-                //  hasChangedImage(true)
-        }
-    }
+// ------------------- on click ---------------------
 
-    function excluir(index) {
-        let fileName = `#file${index}`
-        let divName = `#div-preview${index}`
-        console.log(fileName)
-        $(fileName).val("");
-        $(divName).hide();
-    }
+$('#plus').on("click", function() {
+	$(nameDiv).show();
+	count++;
+	nameDiv = "#filediv3"
+	if (count >= 3) {
+		$('#plus').hide();
+	}
+})
+
+// --------------------- remover -------------------
+$('#remove1').on('click', function() {
+	excluir(1)
+});
+$('#remove2').on('click', function() {
+	excluir(2)
+
+});
+$('#remove3').on('click', function() {
+	excluir(3)
+});
+
+
+function excluir(index) {
+	let fileName = `#file${index}`
+	let divName = `#div-preview${index}`
+	console.log(fileName)
+	$(fileName).val("");
+	$(divName).hide();
+}
+
+
+ // --------------------- preview ---------------------
+function preview(index) {
+	var target = document.querySelector("#preview" + index);
+	var file = document.querySelector("#file" + index).files[0];
+	var reader = new FileReader();
+	reader.onloadend = function() {
+		target.src = reader.result;
+	};
+	if (file) {
+		$('#div-preview' + index).show();
+		target.style.width = '100%';
+		target.style.height = '100%';
+		target.style.borderRadius = '1em'; //
+		$('.text-preview').text('Preview da sua foto')
+		reader.readAsDataURL(file)
+		//  hasChangedImage(true)
+	}
+}
+
+
+function checkFileType(name, numero) {
+	var file = document.querySelector("#" + name).files[0];
+	var myFormData = new FormData();
+	myFormData.append('file', file);
+
+	$.ajax({
+		url: 'order?action=check-file-type',
+		type: 'POST',
+		cache: false,
+		processData: false, // important
+		contentType: false, // important
+		data: myFormData,
+		success: function() {
+			console.log("success");
+			preview(numero)
+		},
+		error: function() {
+			console.log("error");
+			alertBootstrap("O tipo do arquivo não é compatível.", "alert alert-danger", "Ops...");
+			document.getElementById(name).value = "";
+			excluir(numero)
+			return;
+		}
+	});
+};
