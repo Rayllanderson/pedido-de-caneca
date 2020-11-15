@@ -106,24 +106,55 @@
 				 
 				</div>
 				
-				<!-- input file  -->
-				 <div class="form-group" >
-				   <label style="display: block">Foto personalizada</label>
-				   <label for="files" class="btn btn-outline-primary" >escolha a foto aqui</label>
-				   <input id="files" type="file" name="files" multiple accept="image/*" style="display: none">
-					<div id="preview"></div> 
-				 </div>
-				 
-				 
-				<!-- 
-				  <div class="form-group" id="div-preview" style="display: none;" >
-					 <h5 class="text-preview"></h5>
-					 <img class="preview-foto img-fluid" id="preview"></img>
-					 <div id="remove" data-toggle="modal" data-target="#exampleModalCenter">
-					 	<a class="text-danger float-right mt-2 mb-4" id="remove-photo"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
-					 </div>
-				 </div>
-				  --> 
+		 <!-- input file  -->
+		        <div id="files">
+		            <div class="form-group" id="filediv">
+		                <label style="display: block">Foto personalizada máximo 3 (<span class="count"></span> de 3)</label>
+		                <label for="file1" class="btn btn-outline-primary">escolha a foto aqui</label>
+		                <input id="file1" type="file" name="file1" accept="image/*" style="display: none">
+		
+		                <div class="form-group" id="div-preview1" style="display: none;">
+		                    <h5 class="text-preview"></h5>
+		                    <img class="img-fluid" id="preview1"></img>
+		                    <div id="remove1">
+		                        <a class="text-danger float-right mt-2 mb-4" id="remove-photo1"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
+		                    </div>
+		                </div>
+		
+		            </div>
+		
+		            <div class="form-group" id="filediv2" style="display: none;">
+		                <label style="display: block">Foto personalizada máximo 3 (<span class="count"></span> de 3)</label>
+		                <label for="file2" class="btn btn-outline-primary">escolha a foto aqui</label>
+		                <input id="file2" type="file" name="file2" accept="image/*" style="display: none">
+		
+		                <div class="form-group" id="div-preview2" style="display: none;">
+		                    <h5 class="text-preview"></h5>
+		                    <img class="img-fluid" id="preview2"></img>
+		                    <div id="remove2">
+		                        <a class="text-danger float-right mt-2 mb-4" id="remove-photo2"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
+		                    </div>
+		                </div>
+		            </div>
+		
+		            <div class="form-group" id="filediv3" style="display: none;">
+		                <label style="display: block">Foto personalizada máximo 3 (<span class="count"></span> de 3)</label>
+		                <label for="file3" class="btn btn-outline-primary">escolha a foto aqui</label>
+		                <input id="file3" type="file" name="file3" accept="image/*" style="display: none">
+		
+		                <div class="form-group" id="div-preview3" style="display: none;">
+		                    <h5 class="text-preview"></h5>
+		                    <img class="img-fluid" id="preview3"></img>
+		                    <div id="remove3">
+		                        <a class="text-danger float-right mt-2 mb-4" id="remove-photo3"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
+		                    </div>
+		                </div>
+		            </div>
+		
+		            <label id="plus" class="btn btn-outline-primary" style="display: none;"> + </label>
+		        </div><!--  fim input -->
+		    
+		    
 				<div class="form-group">
 				    <label for="exampleFormControlTextarea1">Adicione mais detalhes</label>
 				    <textarea class="form-control" id="txt-area" name="descricao" rows="4" placeholder="Dê mais detalhes, diga pra gente como você quer a caneca (opcional)"></textarea>
@@ -171,7 +202,8 @@
 
 <!-- <script src="src/js/preview-foto.js"></script>
  -->
-<script src="src/js/previewPhoto.js"></script>
+ <!-- 
+<script src="src/js/previewPhoto.js"></script> -->
 <script type="text/javascript">
 
 $(".alert").hide();
@@ -197,5 +229,6 @@ $("#btn-submit").on('click', function () {
 
 </body>
 
+<script src="src/js/preview.js"></script>
 
 </html>

@@ -122,7 +122,6 @@ public class OrderServlet extends HttpServlet {
 	    t = save(request, descricao, quantidade, tema, cliente, t);
 	}
 	response.sendRedirect("carrinho");
-	t.start();
     }
 
     private Thread save(HttpServletRequest request, String descricao, String quantidade, Tema tema, Cliente cliente,
@@ -131,7 +130,7 @@ public class OrderServlet extends HttpServlet {
 	caneca = canecaService.save(caneca);
 	List<Arquivo> imagens = createImages(request, caneca);
 	imagens.replaceAll(x -> x = imageService.save(x));
-	t = new Thread(new ThreadMiniature(imagens.get(0)));
+	imagens.forEach(x -> new ThreadMiniature(x));
 	return t;
     }
 //

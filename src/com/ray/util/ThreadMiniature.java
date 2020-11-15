@@ -1,6 +1,5 @@
 package com.ray.util;
 
-import java.util.List;
 
 import com.ray.model.entities.Arquivo;
 import com.ray.model.service.ImageService;
@@ -8,25 +7,30 @@ import com.ray.model.service.ImageService;
 public class ThreadMiniature implements Runnable {
 
     private ImageService imageService;
-    private Arquivo arquivo;
+    private Arquivo foto;
 
+    /**
+     * Cria a base 64 e miniatura do arquivo. Após completar, da update
+     * @param imagem
+     */
     public ThreadMiniature(Arquivo imagem) {
-	this.arquivo = imagem;
+	this.foto = imagem;
 	this.imageService = new ImageService();
+	Thread t = new Thread(this);
+	t.start();
     }
 
     @Override
     public void run() {
 	try {
-	    System.out.println("dddddddddddddddd");
-	    boolean hasImage = arquivo.getId() != 0;
-	    boolean hasntMiniature = arquivo.getMiniatura() == null || arquivo.getMiniatura().isEmpty();
+	    boolean hasImage = foto.getId() != 0;
+	    boolean hasntMiniature = foto.getMiniatura() == null || foto.getMiniatura().isEmpty();
 	    boolean dontUpdateInpuStream = false;
 	    if (hasImage && hasntMiniature) {
 		System.out.println("Thread start");
-		arquivo.setBase64(ArquivosUtil.createBase64(arquivo.getInputStream()));
-		arquivo.setMiniatura(ArquivosUtil.createMiniatureBase64(arquivo.getBase64()));
-		imageService.update(arquivo, dontUpdateInpuStream);
+		foto.setBase64(ArquivosUtil.createBase64(foto.getInputStream()));
+		foto.setMiniatura(ArquivosUtil.createMiniatureBase64(foto.getBase64()));
+		imageService.update(foto, dontUpdateInpuStream);
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();

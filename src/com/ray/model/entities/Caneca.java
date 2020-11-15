@@ -113,4 +113,8 @@ public class Caneca implements Serializable{
 	return "Caneca [id=" + id + ", quantidade=" + quantidade + ", tema=" + tema + ", etapa=" + etapa + ", foto="
 		+ fotos + ", descricao= " + descricao + ", cliente = " + cliente + "]";
     }
+    
+    public String getFirstMiniature() {
+	return this.fotos.get(0).getMiniatura();
+    }
 }
