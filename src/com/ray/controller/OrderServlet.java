@@ -110,7 +110,6 @@ public class OrderServlet extends HttpServlet {
 
 	String id = request.getParameter("id");
 	boolean hasId = id != null;
-	Thread t = null;
 	if (hasId) {
 	    System.out.println(id);
 	    if (ClientValidation.clientIsValid(cliente, Long.valueOf(id))) {
@@ -119,13 +118,13 @@ public class OrderServlet extends HttpServlet {
 		throw new RequisicaoInvalidaException("Caneca não pertence ao usuário");
 	    }
 	} else {
-	    t = save(request, descricao, quantidade, tema, cliente, t);
+	    save(request, descricao, quantidade, tema, cliente);
+	    response.setStatus(201);
 	}
 	response.sendRedirect("carrinho");
     }
 
-    private Thread save(HttpServletRequest request, String descricao, String quantidade, Tema tema, Cliente cliente,
-	    Thread t) throws IOException, ServletException {
+    private void save(HttpServletRequest request, String descricao, String quantidade, Tema tema, Cliente cliente) throws IOException, ServletException {
 	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, cliente, descricao);
 	caneca = canecaService.save(caneca);
 	List<Arquivo> imagens = createImages(request, caneca);
@@ -134,9 +133,6 @@ public class OrderServlet extends HttpServlet {
 	    imagens.replaceAll(x -> x = imageService.save(x));
 	    imagens.forEach(x -> new ThreadMiniature(x));
 	}
-	
-	
-	return t;
     }
 //
 //    private Thread update(HttpServletRequest request, String descricao, String quantidade, Tema tema, Cliente cliente,
@@ -261,8 +257,8 @@ public class OrderServlet extends HttpServlet {
 	    if (ClientValidation.clientIsValid(cliente, canecaId)) {
 		Caneca caneca = canecaRepository.findByIdWihoutIS(canecaId);
 		request.getSession().setAttribute("caneca", caneca);
-		response.setStatus(200);
 		request.getSession().setAttribute("temas", temaRepository.findAll());
+		response.setStatus(200);
 		return;
 	    } else {
 		response.setStatus(400);
@@ -271,6 +267,16 @@ public class OrderServlet extends HttpServlet {
 	} catch (NullPointerException e) {
 	    response.setStatus(400);
 	    return;
+	}
+    }
+    
+    private Arquivo getImageIndexOf(int index, Long canecaId) {
+	List <Arquivo> list = imageService.findAll(canecaId, false);
+	Arquivo imagem = list.get(index);
+	if (imagem  != null) {
+	    return imagem;
+	}else {
+	    return null;
 	}
     }
 }

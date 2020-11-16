@@ -31,19 +31,16 @@ public class ImageService {
     /**
      * 
      * @param canecaId - todas as imagens de acordo com o id da caneca
-     * @param withInputStream - <br>setar true para caso queira a lista completa, com todos os atributos. <br>Setar falso caso queira a lista parcialmente completa, sem inputstream, base64 e contentType
+     * @param withInputStream - <br>setar true para caso queira a lista completa, com todos os atributos. 
+     * <br>Setar falso caso queira a lista parcialmente completa, sem inputstream
      * @return todas as canecas
      */
-    public List<Arquivo> findAll(Long canecaId, boolean fullList){
+    public List<Arquivo> findAll(Long canecaId, boolean withInputStream){
 	List<Arquivo> imagens = repository.findAll(canecaId);
-	if (fullList) {
+	if (withInputStream) {
 	    return imagens;
 	}
-	for(Arquivo image : imagens) {
-	    image.setInputStream(null);
-	    image.setBase64("");
-	    image.setContentType("");
-	}
+	imagens.forEach(x -> x.setInputStream(null));
 	return imagens;
     }
 }

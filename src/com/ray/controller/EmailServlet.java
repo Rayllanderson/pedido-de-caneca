@@ -105,21 +105,21 @@ public class EmailServlet extends HttpServlet {
 
 	    int index = 1;
 	    html.append(Html.h1("Dados da(s) Caneca(s)"));
-	    for (Caneca c : canecas) {
-		boolean hasImage = c.getImage().getId() != 0;
-		MimeBodyPart anexo = new MimeBodyPart();
-		String contentType = c.getImage().getContentType();
-		InputStream inputStream = c.getImage().getInputStream();
-		html.append(dadosCanecas(index, c)); //dados caneca no corpo
-		if (hasImage) {
-		    ByteArrayDataSource ds = new ByteArrayDataSource(inputStream, contentType);
-		    anexo.setDataHandler(new DataHandler(ds));
-		    anexo.setFileName("Caneca " + index + " cliente " + cliente.getNome() + "." + contentType.split("/")[1]);
-		    // Attach body parts
-		    multipart.addBodyPart(anexo);
-		}
-		index++;
-	    }
+//	    for (Caneca c : canecas) {
+//		boolean hasImage = c.getImage().getId() != 0;
+//		MimeBodyPart anexo = new MimeBodyPart();
+//		String contentType = c.getImage().getContentType();
+//		InputStream inputStream = c.getImage().getInputStream();
+//		html.append(dadosCanecas(index, c)); //dados caneca no corpo
+//		if (hasImage) {
+//		    ByteArrayDataSource ds = new ByteArrayDataSource(inputStream, contentType);
+//		    anexo.setDataHandler(new DataHandler(ds));
+//		    anexo.setFileName("Caneca " + index + " cliente " + cliente.getNome() + "." + contentType.split("/")[1]);
+//		    // Attach body parts
+//		    multipart.addBodyPart(anexo);
+//		}
+//		index++;
+//	    }
 	    multipart.addBodyPart(texto);
 	    
 	    texto.setContent(html.toString(), "text/html; charset=utf-8");
@@ -142,12 +142,12 @@ public class EmailServlet extends HttpServlet {
 
     private String dadosCanecas(int index, Caneca c) {
 	StringBuilder html = new StringBuilder();
-	String fotoPersonalizada = (c.getImage().getId() != 0) ? "Sim" : "Não";
+//	String fotoPersonalizada = (c.getImage().getId() != 0) ? "Sim" : "Não";
 //	String nomeArquivo = hasImage ? "Caneca " + index + "." + contentType.split("/")[1] : "";
 	html.append(Html.h2("Caneca " + index));
 	html.append(Html.p("Tema: " + c.getTema()));
 	html.append(Html.p("Quantidade: " + c.getQuantidade()));
-	html.append(Html.p("Foto personalizada? " + fotoPersonalizada));
+//	html.append(Html.p("Foto personalizada? " + fotoPersonalizada));
 	html.append("<hr>");
 	return html.toString();
     }
