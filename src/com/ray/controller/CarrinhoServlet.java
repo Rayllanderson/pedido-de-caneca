@@ -2,6 +2,7 @@ package com.ray.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,12 +41,12 @@ public class CarrinhoServlet extends HttpServlet {
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	String action = request.getParameter("action");
 	List<Caneca> canecas = canecaRepository.findAll(cliente.getId());
-	canecas.forEach(x -> x.getFotos().addAll(imgRepository.findAll(x.getId())));
-	canecas.stream().filter(x -> x.getFotos().isEmpty()).forEach(x -> x.getFotos().add(imgRepository.findById(0L))); //caneca sem foto
+	canecas.forEach(x -> x.getFotos().add(getFirstImage(x.getId()))); 
+//	canecas.stream().filter(x -> x.getFotos().isEmpty()).forEach(x -> x.getFotos().add(imgRepository.findById(0L))); //caneca sem foto
 	setQuantidadeCanecas(request, canecas);
 	if (action != null) {
 	    if (action.equals("load-miniature") && thumbIsLoading(canecas)) {
-		canecas.forEach(x -> loadThumb(x.getFotos()));
+		canecas.forEach(x -> loadThumb(x.getFotos(), false));
 		response.setStatus(200);
 		return;
 	    } else if (action.equals("delete")) {
@@ -55,6 +56,15 @@ public class CarrinhoServlet extends HttpServlet {
 	    request.getSession().setAttribute("canecas", canecas);
 	    request.getRequestDispatcher("carrinho.jsp").forward(request, response);
 	}
+    }
+
+    private Arquivo getFirstImage(Long canecaId) {
+	List<Arquivo> imagens = imgRepository.findAll(canecaId);
+	Optional<Arquivo> firstImage = imagens.stream().findFirst();
+	if (firstImage.isPresent()) {
+	    return firstImage.get();
+	}else
+	    return imgRepository.findById(0L); // caneca sem foto
     }
 
     /**
@@ -79,14 +89,20 @@ public class CarrinhoServlet extends HttpServlet {
      * Enquanto a thread que cria miniatura não termina, ela irá buscar ela mesma no
      * banco de dados pra verificar se a criação da miniatura já terminou.
      * 
-     * @param response
-     * @param action
-     * @param canecas
+     * @param loadAll - setar para true caso queira carregar todas as miniaturas. False para carregar apenas a primeira
+     * @param imagens - lista de imagens de uma caneca
      */
-    private void loadThumb(List<Arquivo> imagens){
-	for (Arquivo i : imagens) {
-	    while (i.getMiniatura().equals("")) {
-		i = imgRepository.findById(i.getId());
+    private void loadThumb(List<Arquivo> imagens, boolean loadAll){
+	if(loadAll) {
+	    for (Arquivo i : imagens) {
+		    while (i.getMiniatura().equals("")) {
+			i = imgRepository.findById(i.getId());
+		    }
+		}
+	}else {
+	    Arquivo firstImage = imagens.get(0);
+	    while (firstImage.getMiniatura().equals("")) {
+		firstImage = imgRepository.findById(firstImage.getId());
 	    }
 	}
     }

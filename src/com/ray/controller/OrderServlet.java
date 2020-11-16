@@ -226,7 +226,6 @@ public class OrderServlet extends HttpServlet {
      * Cria uma imagem apenas com o inputstream. Seta base 64 e miniatura pra ""
      * (Vazio) <br>
      * <br>
-     * 
      * @param request - para buscar as informações no lado do cliente
      * @return Uma lista contendo todas as imagens escolhidas do cliente. Retornará vazia caso o client não escolha nenhuma
      * @throws IOException
