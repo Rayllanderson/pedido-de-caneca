@@ -111,7 +111,7 @@
 		            <div class="form-group" id="filediv">
 		                <label style="display: block">Foto personalizada 1</label>
 		                <label for="file1" class="btn btn-outline-primary">escolha a foto aqui</label>
-		                <input id="file1" type="file" name="file1" accept="image/*">
+		                <input id="file1" type="file" name="file1" accept="image/*" style="display: none">
 		
 		                <div class="form-group" id="div-preview1" style="display: none;">
 		                    <h5 class="text-preview"></h5>

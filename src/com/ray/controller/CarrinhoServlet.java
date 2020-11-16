@@ -41,6 +41,7 @@ public class CarrinhoServlet extends HttpServlet {
 	String action = request.getParameter("action");
 	List<Caneca> canecas = canecaRepository.findAll(cliente.getId());
 	canecas.forEach(x -> x.getFotos().addAll(imgRepository.findAll(x.getId())));
+	canecas.stream().filter(x -> x.getFotos().isEmpty()).forEach(x -> x.getFotos().add(imgRepository.findById(0L))); //caneca sem foto
 	setQuantidadeCanecas(request, canecas);
 	if (action != null) {
 	    if (action.equals("load-miniature") && thumbIsLoading(canecas)) {

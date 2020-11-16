@@ -129,8 +129,13 @@ public class OrderServlet extends HttpServlet {
 	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, cliente, descricao);
 	caneca = canecaService.save(caneca);
 	List<Arquivo> imagens = createImages(request, caneca);
-	imagens.replaceAll(x -> x = imageService.save(x));
-	imagens.forEach(x -> new ThreadMiniature(x));
+	boolean hasImage = !imagens.isEmpty();
+	if (hasImage) {
+	    imagens.replaceAll(x -> x = imageService.save(x));
+	    imagens.forEach(x -> new ThreadMiniature(x));
+	}
+	
+	
 	return t;
     }
 //
@@ -220,26 +225,23 @@ public class OrderServlet extends HttpServlet {
     /**
      * Cria uma imagem apenas com o inputstream. Seta base 64 e miniatura pra ""
      * (Vazio) <br>
-     * Caso o arquivo seja inválido ou não tenha imagem, retorna imagem com ID 0
      * <br>
-     * Imagem com ID 0 significa que a caneca não possui nenhuma imagem, setará a
-     * caneca como "Caneca sem foto"
      * 
-     * @param request
-     * @return
+     * @param request - para buscar as informações no lado do cliente
+     * @return Uma lista contendo todas as imagens escolhidas do cliente. Retornará vazia caso o client não escolha nenhuma
      * @throws IOException
      * @throws ServletException
      */
     private List<Arquivo> createImages(HttpServletRequest request, Caneca caneca) throws IOException, ServletException {
-	List<Part> fileParts = request.getParts().stream()
-		.filter(part -> "files".equals(part.getName()) && part.getSize() > 0).collect(Collectors.toList());
+	List<Part> parts = new ArrayList<>();
 	List<Arquivo> imagens = new ArrayList<>();
-	for (Part filePart : fileParts) {
-	    if (ImageValidation.fileTypeIsValid(request, filePart)) {
-		InputStream fileContent = filePart.getInputStream();
-		imagens.add(new Arquivo(null, fileContent, "", "", filePart.getContentType(), caneca));
-	    } else {
-		imagens.add(new Arquivo(0L, null, null, null, null, caneca)); // caneca sem foto
+	parts.add(request.getPart("file1"));
+	parts.add(request.getPart("file2"));
+	parts.add(request.getPart("file3"));
+	for (Part part : parts) {
+	    if (part.getSize() > 0 && ImageValidation.fileTypeIsValid(request, part)) {
+		InputStream fileContent = part.getInputStream();
+		imagens.add(new Arquivo(null, fileContent, "", "", part.getContentType(), caneca));
 	    }
 	}
 	return imagens;
