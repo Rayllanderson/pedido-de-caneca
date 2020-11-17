@@ -8,16 +8,3 @@ $("#btn-submit").on('click', function () {
 		 $("#order-form").submit();
 	 }
 });
-
-var target = document.querySelector("#preview");
-function setImage(image){
-	if (image){
-	hasChangedImage(false);
-	target.src = image;
-	$('#div-preview').show();
-	$('.text-preview').text('Preview da sua foto') 
-	target.style.width = '100%';
-	target.style.height = '100%';
-	target.style.borderRadius = '1em';//
-	}
-}

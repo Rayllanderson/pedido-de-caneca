@@ -256,8 +256,9 @@ public class OrderServlet extends HttpServlet {
 	    Long canecaId = Long.valueOf(request.getParameter("id"));
 	    if (ClientValidation.clientIsValid(cliente, canecaId)) {
 		Caneca caneca = canecaRepository.findByIdWihoutIS(canecaId);
-		request.getSession().setAttribute("caneca", caneca);
+		caneca.getFotos().addAll(imageService.findAll(canecaId, false));
 		request.getSession().setAttribute("temas", temaRepository.findAll());
+		request.getSession().setAttribute("caneca", caneca);
 		response.setStatus(200);
 		return;
 	    } else {
@@ -267,16 +268,6 @@ public class OrderServlet extends HttpServlet {
 	} catch (NullPointerException e) {
 	    response.setStatus(400);
 	    return;
-	}
-    }
-    
-    private Arquivo getImageIndexOf(int index, Long canecaId) {
-	List <Arquivo> list = imageService.findAll(canecaId, false);
-	Arquivo imagem = list.get(index);
-	if (imagem  != null) {
-	    return imagem;
-	}else {
-	    return null;
 	}
     }
 }

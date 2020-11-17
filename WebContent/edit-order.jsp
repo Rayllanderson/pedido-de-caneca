@@ -80,7 +80,7 @@
 			 method="POST" id="order-form" enctype="multipart/form-data">		
 			 <div class="group">
 			 	<div class="form-group">
-			 		<div style="display: none">
+			 		<div style="display: block">
 				 		<input type="text" id="id" name="id">
 				 		<input name="hasChangedImage" id="hasChangedImage">
 			 		</div>
@@ -104,12 +104,53 @@
 				 
 				</div>
 				
-				<!-- input file  -->
-				 <div class="form-group" >
-				   <label style="display: block">Foto personalizada</label>
-				   <label for="file" class="btn btn-outline-primary" >escolha a foto aqui</label>
-				   <input type="file" id="file" name="pictureFile" style="display: none;" accept="image/*">
-				 </div>
+				 <!-- input file  -->
+		        <div id="files">
+		            <div class="form-group" id="filediv">
+		                <label style="display: block">Foto personalizada 1</label>
+		                <label for="file1" class="btn btn-outline-primary">escolha a foto aqui</label>
+		                <input id="file1" type="file" name="file1" accept="image/*" style="display: none">
+		
+		                <div class="form-group" id="div-preview1" style="display: none;">
+		                    <h5 class="text-preview"></h5>
+		                    <img class="img-fluid" id="preview1"></img>
+		                    <div id="remove1">
+		                        <a class="text-danger float-right mt-2 mb-4" id="remove-photo1"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
+		                    </div>
+		                </div>
+		
+		            </div>
+		
+		            <div class="form-group" id="filediv2" style="display: none;">
+		                <label style="display: block">Foto personalizada 2</label>
+		                <label for="file2" class="btn btn-outline-primary">escolha a foto aqui</label>
+		                <input id="file2" type="file" name="file2" accept="image/*" style="display: none">
+		
+		                <div class="form-group" id="div-preview2" style="display: none;">
+		                    <h5 class="text-preview"></h5>
+		                    <img class="img-fluid" id="preview2"></img>
+		                    <div id="remove2">
+		                        <a class="text-danger float-right mt-2 mb-4" id="remove-photo2"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
+		                    </div>
+		                </div>
+		            </div>
+		
+		            <div class="form-group" id="filediv3" style="display: none;">
+		                <label style="display: block">Foto personalizada 3</label>
+		                <label for="file3" class="btn btn-outline-primary">escolha a foto aqui</label>
+		                <input id="file3" type="file" name="file3" accept="image/*" style="display: none">
+		
+		                <div class="form-group" id="div-preview3" style="display: none;">
+		                    <h5 class="text-preview"></h5>
+		                    <img class="img-fluid" id="preview3"></img>
+		                    <div id="remove3">
+		                        <a class="text-danger float-right mt-2 mb-4" id="remove-photo3"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
+		                    </div>
+		                </div>
+		            </div>
+		
+		            <label id="plus" class="btn btn-outline-primary" style="display: none;"> + </label>
+		        </div><!--  fim input -->
 				 
 				 
 				 
@@ -171,8 +212,7 @@ function hasChangedImage(value){
 
 </script>
 <script src="src/js/alert.js"></script>
-<script src="src/js/preview-foto.js"></script>
-<script src="src/js/checkFileType.js"></script>
+<script src="src/js/edit-preview.js"></script>
 
 <script type="text/javascript">
 
@@ -194,14 +234,19 @@ var canecaId = "${caneca.id}"
 var tema = "${caneca.tema.id}"
 var quantidade = "${caneca.quantidade}"
 var descricao ="${caneca.descricao}";
-var img = "${caneca.image.getBase64Html()}"
+var imgs = [
+    <c:forEach items="${caneca.fotos}" var="imagem">
+  	  '<c:out value="${imagem.base64Html}" />',
+    </c:forEach>
+ ];
+
 
 //setando atributos
 $('#id').val(canecaId)
 $('#temas').val(tema);
 $("#txt-area").val(descricao);
 $("#qtd").val(quantidade == '' ? 1 : quantidade)
-setImage(img)
+setImage(imgs);
 
 </script>
 
