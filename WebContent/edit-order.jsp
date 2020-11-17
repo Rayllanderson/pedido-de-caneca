@@ -107,7 +107,7 @@
 				 <!-- input file  -->
 		        <div id="files">
 		            <div class="form-group" id="filediv">
-						<input type="text" id="id-1">
+						<input type="text" id="id-1" name="id-1" value="null" style="display: none;">
 		                <label style="display: block">Foto personalizada 1</label>
 		                <label for="file1" class="btn btn-outline-primary">escolha a foto aqui</label>
 		                <input id="file1" type="file" name="file1" accept="image/*" style="display: none">
@@ -123,7 +123,7 @@
 		            </div>
 		
 		            <div class="form-group" id="filediv2" style="display: none;">
-						<input type="text" id="id-2">
+						<input type="text" id="id-2" name="id-2" value="null" style="display: none;">
 		                <label style="display: block">Foto personalizada 2</label>
 		                <label for="file2" class="btn btn-outline-primary">escolha a foto aqui</label>
 		                <input id="file2" type="file" name="file2" accept="image/*" style="display: none">
@@ -138,7 +138,7 @@
 		            </div>
 		
 		            <div class="form-group" id="filediv3" style="display: none;">
-						<input type="text" id="id-3">
+						<input type="text" id="id-3" name="id-3" value="null" style="display: none;">
 		                <label style="display: block">Foto personalizada 3</label>
 		                <label for="file3" class="btn btn-outline-primary">escolha a foto aqui</label>
 		                <input id="file3" type="file" name="file3" accept="image/*" style="display: none">
