@@ -107,8 +107,7 @@ public class Arquivo implements Serializable {
 
     @Override
     public String toString() {
-	return "Arquivo [id=" + id + ", inputStream=" + inputStream + ", base64=" + base64 + ", miniatura=" + miniatura
-		+ ", contentType=" + contentType + ", caneca=" + caneca + "]";
+	return "Arquivo [id=" + id + "base64=" + getBase64Html();
     }
 
 }

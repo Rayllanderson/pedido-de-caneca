@@ -80,7 +80,7 @@
 			 method="POST" id="order-form" enctype="multipart/form-data">		
 			 <div class="group">
 			 	<div class="form-group">
-			 		<div style="display: block">
+			 		<div style="display: none">
 				 		<input type="text" id="id" name="id">
 				 		<input name="hasChangedImage" id="hasChangedImage">
 			 		</div>
@@ -107,6 +107,7 @@
 				 <!-- input file  -->
 		        <div id="files">
 		            <div class="form-group" id="filediv">
+						<input type="text" id="id-1">
 		                <label style="display: block">Foto personalizada 1</label>
 		                <label for="file1" class="btn btn-outline-primary">escolha a foto aqui</label>
 		                <input id="file1" type="file" name="file1" accept="image/*" style="display: none">
@@ -122,6 +123,7 @@
 		            </div>
 		
 		            <div class="form-group" id="filediv2" style="display: none;">
+						<input type="text" id="id-2">
 		                <label style="display: block">Foto personalizada 2</label>
 		                <label for="file2" class="btn btn-outline-primary">escolha a foto aqui</label>
 		                <input id="file2" type="file" name="file2" accept="image/*" style="display: none">
@@ -136,6 +138,7 @@
 		            </div>
 		
 		            <div class="form-group" id="filediv3" style="display: none;">
+						<input type="text" id="id-3">
 		                <label style="display: block">Foto personalizada 3</label>
 		                <label for="file3" class="btn btn-outline-primary">escolha a foto aqui</label>
 		                <input id="file3" type="file" name="file3" accept="image/*" style="display: none">
@@ -234,12 +237,14 @@ var canecaId = "${caneca.id}"
 var tema = "${caneca.tema.id}"
 var quantidade = "${caneca.quantidade}"
 var descricao ="${caneca.descricao}";
-var imgs = [
-    <c:forEach items="${caneca.fotos}" var="imagem">
-  	  '<c:out value="${imagem.base64Html}" />',
-    </c:forEach>
- ];
+var imgs = []
 
+    <c:forEach items="${caneca.fotos}" var="imagem">
+    imgs.push({ base64 : '<c:out value="${imagem.base64Html}" />',
+  		id:  '<c:out value="${imagem.id}" />' });
+    </c:forEach>
+
+console.log(imgs)
 
 //setando atributos
 $('#id').val(canecaId)

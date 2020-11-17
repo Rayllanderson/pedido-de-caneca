@@ -114,7 +114,7 @@ public class OrderServlet extends HttpServlet {
 	if (hasId) {
 	    System.out.println(id);
 	    if (ClientValidation.clientIsValid(cliente, Long.valueOf(id))) {
-//		t = update(request, descricao, quantidade, tema, cliente, id, t);
+		update(request, descricao, quantidade, tema, cliente, id);
 	    } else {
 		throw new RequisicaoInvalidaException("Caneca não pertence ao usuário");
 	    }
@@ -125,7 +125,8 @@ public class OrderServlet extends HttpServlet {
 	response.sendRedirect("carrinho");
     }
 
-    private void save(HttpServletRequest request, String descricao, String quantidade, Tema tema, Cliente cliente) throws IOException, ServletException {
+    private void save(HttpServletRequest request, String descricao, String quantidade, Tema tema, Cliente cliente)
+	    throws IOException, ServletException {
 	Caneca caneca = new Caneca(null, Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, cliente, descricao);
 	caneca = canecaService.save(caneca);
 	List<Arquivo> imagens = createImages(request, caneca);
@@ -135,69 +136,69 @@ public class OrderServlet extends HttpServlet {
 	    imagens.forEach(x -> new ThreadMiniature(x));
 	}
     }
-//
-//    private Thread update(HttpServletRequest request, String descricao, String quantidade, Tema tema, Cliente cliente,
-//	    String id, Thread t) throws IOException, ServletException {
-//	Arquivo arquivo;
-//	Caneca caneca = new Caneca(Long.valueOf(id), Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, cliente,
-//		descricao);
-//	// carregando a caneca que está sendo editada
-//	Caneca c = (Caneca) request.getSession().getAttribute("caneca");
-//	// atualiza a imagem caso o user tenha mudado
-//	arquivo = updateImage(request, c);
-//	t = new Thread(new ThreadMiniature(arquivo));
-//	caneca.setImage(arquivo);
-//	canecaService.update(caneca);
-//	request.getSession().setAttribute("caneca", "");
-//	return t;
-//    }
-//
-//    /**
-//     * realiza o update da imagem. <br>
-//     * <strong> Caso 1: o cliente mudou de imagem: </strong>este método irá realizar
-//     * um update na imagem, substituindo a imagem antiga; <br>
-//     * <strong> Caso 2: o cliente removeu a imagem: </strong>Caso o cliente remova a
-//     * imagem, ele retornará uma imagem com ID 0 (sem imagem) e excluirá do banco a
-//     * antiga imagem; <br>
-//     * <strong> Case 3: o cliente não possuía imagem, mas colocou uma nova imagem
-//     * agora: </strong>Nesse caso, este método criará uma nova imagem, salvando uma
-//     * nova imagem no banco de dados; <br>
-//     * <strong> Caso 4: o cliente não alterou nada na imagem: </strong> Este método
-//     * apenas retornará a imagem que está salva no banco de dados via id;
-//     * 
-//     * @param request
-//     * @param c       - antiga caneca a ser editada
-//     * @return caso a imagem seja alterada, retornará ela, senao retornará a imagem
-//     *         que estava antes;
-//     * @throws IOException
-//     * @throws ServletException
-//     */
-//    private Arquivo updateImage(HttpServletRequest request, Caneca c) throws IOException, ServletException {
-//	boolean hasChangedImage = request.getParameter("hasChangedImage").equals("true") ? true : false;
-//	boolean hadImageBefore = !(c.getImage().getId() == 0);
-//	boolean hadNoImageBefore = (c.getImage().getId() == 0);
-//	boolean updateInputStream = true;
-//	if (hasChangedImage) {
-//	    Arquivo arquivo = createImage(request);
-//	    boolean hasImage = arquivo.getId() == null;
-//	    if (hasImage) {
-//		if (hadImageBefore) {
-//		    arquivo.setId(c.getImage().getId());
-//		    return imageService.update(arquivo, updateInputStream);
-//		} else if (hadNoImageBefore) {
-//		    return imageService.save(arquivo);
-//		}
-//	    } else if (hadImageBefore) {
-//		Long oldImageId = c.getImage().getId();
-//		c.setImage(arquivo); // desvinculando a imagem da caneca para ser deletada
-//		canecaService.update(c);
-//		imageService.deleteById(oldImageId);
-//	    }
-//	    return arquivo;
-//	} else {
-//	    return imageRepository.findById(c.getImage().getId());
-//	}
-//    }
+
+    private void update(HttpServletRequest request, String descricao, String quantidade, Tema tema, Cliente cliente,
+	    String id) throws IOException, ServletException {
+	List<Arquivo> imagens = new ArrayList<>();
+	Caneca caneca = new Caneca(Long.valueOf(id), Integer.valueOf(quantidade), tema, Etapa.PEDIDO_REALIZADO, cliente,
+		descricao);
+	// carregando a caneca que está sendo editada
+	Caneca c = (Caneca) request.getSession().getAttribute("caneca");
+	// atualiza a imagem caso o user tenha mudado
+	imagens = getImagens(request, c);
+	boolean hasImage = !imagens.isEmpty();
+	if (hasImage) {
+	    imagens.forEach(x -> new ThreadMiniature(x));
+	}
+	canecaService.update(caneca);
+	request.getSession().setAttribute("caneca", "");
+    }
+
+    /**
+     * Verifica se o cliente mudou imagem. caso tenha mudado, captura as novas imagens e manda pra processar no método de updateImagens
+     * Caso nao tenha alterado, retorna uma lista vazia
+     * @param request
+     * @param canecaAntiga
+     * @return
+     * @throws IOException
+     * @throws ServletException
+     */
+    private List<Arquivo> getImagens(HttpServletRequest request, Caneca canecaAntiga)
+	    throws IOException, ServletException {
+	boolean hasChangedImage = request.getParameter("hasChangedImage").equals("true") ? true : false;
+	if (hasChangedImage) {
+	    List<Arquivo> novasImagens = createImages(request, canecaAntiga);
+	    return updateImages(novasImagens, canecaAntiga.getId());
+	}
+	return new ArrayList<Arquivo>();
+    }
+
+    /**
+     * realiza o update da imagem. <br>
+     * Verifica se a nova lista de imagens contém imagem. Depois verifica se tinha
+     * imagem anteriormente, caso sim, apaga todas elas e, em seguida, salva as
+     * novas. caso a nova lista de imagens nao possua nenhuma imagens, verifica se tinha imagem antes, caso
+     * sim, deleta elas e devolve a lista vazia
+     * 
+     * @param imagensNovas - lista contendo as novas imagens
+     * @param canecaId - id da caneca qe está sendo editada para buscar as antigas imagens envolvidas com ela
+     * @return caso as novas imagens contenham imagens, retornará elas fazendo todo procedimento de exclusao;
+     */
+    private List<Arquivo> updateImages(List<Arquivo> imagensNovas, Long canecaId) {
+	List<Arquivo> imagensAntigas = imageService.findAll(canecaId, false);
+	boolean hadImageBefore = !imagensAntigas.isEmpty();
+	boolean hasImage = !imagensNovas.isEmpty();
+	if (hasImage) {
+	    if (hadImageBefore) {
+		imagensAntigas.forEach(x -> imageService.deleteById(x.getId())); // deletando todas as imagens
+	    }
+	    imagensNovas.replaceAll(x -> imageService.save(x)); // salvando novas imagens
+	    return imagensNovas;
+	} else if (hadImageBefore) {
+	    imagensAntigas.forEach(x -> imageService.deleteById(x.getId()));
+	}
+	return imagensNovas;
+    }
 
     /**
      * vaerifica se o tipo do arquivo é válido. se for, set status (200 OK) senão,
@@ -223,8 +224,10 @@ public class OrderServlet extends HttpServlet {
      * Cria uma imagem apenas com o inputstream. Seta base 64 e miniatura pra ""
      * (Vazio) <br>
      * <br>
+     * 
      * @param request - para buscar as informações no lado do cliente
-     * @return Uma lista contendo todas as imagens escolhidas do cliente. Retornará vazia caso o client não escolha nenhuma
+     * @return Uma lista contendo todas as imagens escolhidas do cliente. Retornará
+     *         vazia caso o client não escolha nenhuma
      * @throws IOException
      * @throws ServletException
      */

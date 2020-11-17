@@ -51,11 +51,12 @@ function excluir(index) {
 	let divName = `#div-preview${index}`
 	$(fileName).val("");
 	$(divName).hide();
+	$('#id-' + index).val('null')
 	hasChangedImage(true)
 }
 
 
- // --------------------- preview ---------------------
+// --------------------- preview ---------------------
 function preview(index) {
 	var target = document.querySelector("#preview" + index);
 	var file = document.querySelector("#file" + index).files[0];
@@ -77,10 +78,11 @@ function preview(index) {
 function checkFileType(name, numero) {
 	var file = document.querySelector("#" + name).files[0];
 	hasChangedImage(true);
+	$('#id-' + numero).val('null')
 	$.ajax({
 		url: 'order?action=check-file-type',
 		type: 'POST',
-		data: {'file-type': file.type},
+		data: { 'file-type': file.type },
 		success: function() {
 			console.log("success");
 			preview(numero)
@@ -96,34 +98,50 @@ function checkFileType(name, numero) {
 };
 
 
-function setImage(imgs){
+function setImage(imgs) {
 	hasChangedImage(false);
-	var img1 = imgs[0];
-	var img2 = imgs[1];
-	var img3 = imgs[2];
-	setImageToDiv(img1, 1);
-	setImageToDiv(img2, 2);
-	setImageToDiv(img3, 3);
-	if(img1){
-		$('#plus').show();		
-		showPlusButton = false; 
+	var img1 = null;
+	var img2 = null;
+	var img3 = null;
+	if (imgs[0]) {
+		img1 = imgs[0].base64;
+		var id1 = imgs[0].id;
+		setImageToDiv(img1, 1, id1);
 	}
-	if(img2){
+
+	if (imgs[1]) {
+		img2 = imgs[1].base64;
+		var id2 = imgs[1].id;
+		setImageToDiv(img2, 2, id2);
+	}
+
+	if (imgs[2]) {
+		img3 = imgs[2].base64;
+		var id3 = imgs[2].id;
+		setImageToDiv(img3, 3, id3);
+	}
+	
+	if (img1) {
+		$('#plus').show();
+		showPlusButton = false;
+	}
+	if (img2) {
 		nameDiv = "#filediv3";
 	}
 
 }
 
-function setImageToDiv(img, index){
-		var target = document.querySelector("#preview" + index);
-		if (img) {
-			$('#filediv' + index).show();
-			$('#div-preview' + index).show();
-			target.src = img;
-			target.style.width = '100%';
-			target.style.height = '100%';
-			target.style.borderRadius = '1em'; //
-			$('.text-preview').text('Preview da sua foto')
-			count++;
-		}
+function setImageToDiv(img, index, id) {
+	var target = document.querySelector("#preview" + index);
+	if (img) {
+		$('#id-' + index).val(id)
+		$('#filediv' + index).show();
+		$('#div-preview' + index).show();
+		target.src = img;
+		target.style.width = '100%';
+		target.style.height = '100%';
+		target.style.borderRadius = '1em'; //
+		$('.text-preview').text('Preview da sua foto')
+		count++;
+	}
 }
