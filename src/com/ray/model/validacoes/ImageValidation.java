@@ -24,6 +24,23 @@ public class ImageValidation {
 	return false;
     }
     
+
+    /**
+     * Recebe do client-side o contenType em <strong>TEXTO</strong> ao invés de um Arquivo
+     * Arquivos de imagens não aceitos: GIF
+     * @param request
+     * @return true caso o tipo do arquivo seja válido. False caso não seja.
+     * @throws IOException
+     * @throws ServletException
+     */
+    public static boolean fileTypeIsValid(HttpServletRequest request) throws IOException, ServletException {
+	String fileType = request.getParameter("file-type");
+	if (fileType.contains("image") && !(fileType.contains("gif"))) {
+	    return true;
+	}
+	return false;
+    }
+    
     /**
      * Verifica se o arquivo é uma imagem recebendo um Part. <br>
      * Arquivos de imagens não aceitos: GIF

@@ -49,7 +49,6 @@ $('#remove3').on('click', function() {
 function excluir(index) {
 	let fileName = `#file${index}`
 	let divName = `#div-preview${index}`
-	console.log(fileName)
 	$(fileName).val("");
 	$(divName).hide();
 }
@@ -77,16 +76,11 @@ function preview(index) {
 
 function checkFileType(name, numero) {
 	var file = document.querySelector("#" + name).files[0];
-	var myFormData = new FormData();
-	myFormData.append('file', file);
-
 	$.ajax({
 		url: 'order?action=check-file-type',
 		type: 'POST',
 		cache: false,
-		processData: false, // important
-		contentType: false, // important
-		data: myFormData,
+		data: {'file-type': file.type},
 		success: function() {
 			console.log("success");
 			preview(numero)

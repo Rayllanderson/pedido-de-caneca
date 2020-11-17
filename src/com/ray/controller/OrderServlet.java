@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -209,7 +210,7 @@ public class OrderServlet extends HttpServlet {
      */
     private void checkFileType(HttpServletRequest request, HttpServletResponse response)
 	    throws IOException, ServletException {
-	if (ImageValidation.fileTypeIsValid(request, "file")) {
+	if (ImageValidation.fileTypeIsValid(request)) {
 	    response.setStatus(HttpServletResponse.SC_OK);
 	    return;
 	} else {
