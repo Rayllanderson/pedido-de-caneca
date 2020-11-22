@@ -139,7 +139,7 @@
             <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 "></li>
              
           </ul>
-		<form action="email" method="post">
+		<form action="order?action=finish" method="post">
           <button type="submit" class="f-p btn btn-primary btn-block waves-effect waves-light">Finalizar Pedido</button>
 		</form>
         </div>

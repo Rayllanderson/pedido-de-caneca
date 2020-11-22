@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.ray.model.dao.CanecaRepository;
@@ -24,12 +26,14 @@ import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.dao.TemaRepository;
 import com.ray.model.entities.Caneca;
 import com.ray.model.entities.Cliente;
+import com.ray.model.entities.Pedido;
 import com.ray.model.entities.Arquivo;
 import com.ray.model.entities.Tema;
 import com.ray.model.entities.enums.Etapa;
 import com.ray.model.exceptions.RequisicaoInvalidaException;
 import com.ray.model.service.CanecaService;
 import com.ray.model.service.ImageService;
+import com.ray.model.service.PedidoService;
 import com.ray.model.validacoes.ClientValidation;
 import com.ray.model.validacoes.ImageValidation;
 import com.ray.model.validacoes.ThemeValidation;
@@ -49,6 +53,7 @@ public class OrderServlet extends HttpServlet {
     private CanecaService canecaService;
     private CanecaRepository canecaRepository;
     private ImageService imageService;
+    private PedidoService pedidoService;
 
     @Override
     public void init() throws ServletException {
@@ -79,6 +84,7 @@ public class OrderServlet extends HttpServlet {
 	canecaRepository = RepositoryFactory.createCanecaDao();
 	canecaService = new CanecaService();
 	imageService = new ImageService();
+	pedidoService = new PedidoService();
     }
 
     /**
@@ -94,11 +100,29 @@ public class OrderServlet extends HttpServlet {
 		    checkFileType(request, response);
 		} else if (action.equals("next")) {
 		    saveOrUpdate(request, response);
+		} else if (action.equals("finish")) {
+		    finish(request, response);
 		}
 	    }
 	} catch (RequisicaoInvalidaException e) {
 	    // TODO: setar response com erro
 	}
+    }
+
+    private void finish(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	Calendar calendar = Calendar.getInstance();
+	java.util.Date currentTime = calendar.getTime();
+	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
+	Pedido p = new Pedido(cliente, currentTime);
+	if (pedidoService.save(p)) {
+	    response.setStatus(200);
+	    response.sendRedirect("sucess.jsp");
+	    logout(request);
+	} else {
+	    response.setStatus(400);
+	    response.sendRedirect("error.jsp");
+	}
+	return;
     }
 
     private void saveOrUpdate(HttpServletRequest request, HttpServletResponse response)
@@ -156,8 +180,10 @@ public class OrderServlet extends HttpServlet {
     }
 
     /**
-     * Verifica se o cliente mudou imagem. caso tenha mudado, captura as novas imagens e manda pra processar no método de updateImagens
-     * Caso nao tenha alterado, retorna uma lista vazia
+     * Verifica se o cliente mudou imagem. caso tenha mudado, captura as novas
+     * imagens e manda pra processar no método de updateImagens Caso nao tenha
+     * alterado, retorna uma lista vazia
+     * 
      * @param request
      * @param canecaAntiga
      * @return
@@ -173,7 +199,7 @@ public class OrderServlet extends HttpServlet {
 	    for (int i = 1; i <= NUMERO_IMAGENS; i++) {
 		novasImagens.add(createImage(request, canecaAntiga, i));
 	    }
-	    novasImagens.removeAll(Collections.singleton(null));
+	    novasImagens.removeAll(Collections.singleton(null));// removendo as imgs nulas
 	    return updateImages(novasImagens, canecaAntiga.getId());
 	}
 	return new ArrayList<Arquivo>();
@@ -183,23 +209,29 @@ public class OrderServlet extends HttpServlet {
      * realiza o update da imagem. <br>
      * Verifica se a nova lista de imagens contém imagem. Depois verifica se tinha
      * imagem anteriormente, caso sim, apaga todas elas e, em seguida, salva as
-     * novas. caso a nova lista de imagens nao possua nenhuma imagens, verifica se tinha imagem antes, caso
-     * sim, deleta elas e devolve a lista vazia
+     * novas. caso a nova lista de imagens nao possua nenhuma imagens, verifica se
+     * tinha imagem antes, caso sim, deleta elas e devolve a lista vazia
      * 
      * @param imagensNovas - lista contendo as novas imagens
-     * @param canecaId - id da caneca qe está sendo editada para buscar as antigas imagens envolvidas com ela
-     * @return caso as novas imagens contenham imagens, retornará elas fazendo todo procedimento de exclusao;
+     * @param canecaId     - id da caneca qe está sendo editada para buscar as
+     *                     antigas imagens envolvidas com ela
+     * @return caso as novas imagens contenham imagens, retornará elas fazendo todo
+     *         procedimento de exclusao;
      */
     private List<Arquivo> updateImages(List<Arquivo> imagensNovas, Long canecaId) {
 	List<Arquivo> imagensAntigas = imageService.findAll(canecaId, false);
-	imagensAntigas.removeAll(imagensNovas); //removendo as imagens que permaneceram inalteradas e deixando apenas as imagens antigas (que foram removidas)
+	imagensAntigas.removeAll(imagensNovas); // removendo as imagens que permaneceram inalteradas e deixando apenas
+						// as imagens antigas (que foram removidas)
 	boolean hadImageBefore = !imagensAntigas.isEmpty();
 	boolean hasImage = !imagensNovas.isEmpty();
 	if (hasImage) {
 	    if (hadImageBefore) {
-		imagensAntigas.forEach(x -> imageService.deleteById(x.getId())); //removendo as imagens anteriores que foram excluídas
+		imagensAntigas.forEach(x -> imageService.deleteById(x.getId())); // removendo as imagens anteriores que
+										 // foram excluídas
 	    }
-	    imagensNovas.replaceAll(x -> x.getId() == null ? imageService.save(x) : x); // salvando novas imagens e deixando as antigas como estão
+	    imagensNovas.replaceAll(x -> x.getId() == null ? imageService.save(x) : x); // salvando novas imagens e
+											// deixando as antigas como
+											// estão
 	    return imagensNovas;
 	} else if (hadImageBefore) {
 	    imagensAntigas.forEach(x -> imageService.deleteById(x.getId()));
@@ -252,19 +284,20 @@ public class OrderServlet extends HttpServlet {
 	}
 	return imagens;
     }
-    
-    private Arquivo createImage(HttpServletRequest request, Caneca caneca, int index) throws IOException, ServletException {
+
+    private Arquivo createImage(HttpServletRequest request, Caneca caneca, int index)
+	    throws IOException, ServletException {
 	String imageId = request.getParameter("id-" + index);
 	boolean hasChangedImage = imageId.equals("null");
-	if(hasChangedImage) {
+	if (hasChangedImage) {
 	    Part part = request.getPart("file" + index);
 	    if (part.getSize() > 0 && ImageValidation.fileTypeIsValid(request, part)) {
 		InputStream fileContent = part.getInputStream();
 		return new Arquivo(null, fileContent, "", "", part.getContentType(), caneca);
-	    }else {
+	    } else {
 		return null;
 	    }
-	}else {
+	} else {
 	    return imageRepository.findById(Long.parseLong(imageId));
 	}
     }
@@ -295,6 +328,13 @@ public class OrderServlet extends HttpServlet {
 	} catch (NullPointerException e) {
 	    response.setStatus(400);
 	    return;
+	}
+    }
+
+    private void logout(HttpServletRequest request) {
+	HttpSession session = request.getSession(false);
+	if (session != null) {
+	    session.invalidate();
 	}
     }
 }

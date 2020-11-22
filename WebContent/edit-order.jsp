@@ -244,8 +244,6 @@ var imgs = []
   		id:  '<c:out value="${imagem.id}" />' });
     </c:forEach>
 
-console.log(imgs)
-
 //setando atributos
 $('#id').val(canecaId)
 $('#temas').val(tema);

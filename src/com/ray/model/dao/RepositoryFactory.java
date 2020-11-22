@@ -3,6 +3,7 @@ package com.ray.model.dao;
 import com.ray.db.DB;
 import com.ray.model.dao.impl.CanecaDaoJdbc;
 import com.ray.model.dao.impl.ClienteDaoJdbc;
+import com.ray.model.dao.impl.PedidoDaoJdbc;
 import com.ray.model.dao.impl.ArquivoDaoJdbc;
 import com.ray.model.dao.impl.TemaDaoJdbc;
 
@@ -23,6 +24,10 @@ public class RepositoryFactory {
 
     public static CanecaRepository createCanecaDao() {
 	return new CanecaDaoJdbc(DB.getConnection());
+    }
+
+    public static PedidoRepository createPedidoDao() {
+	return new PedidoDaoJdbc(DB.getConnection());
     }
     
 }
