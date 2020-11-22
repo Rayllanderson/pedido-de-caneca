@@ -2,12 +2,9 @@ package com.ray.controller;
 
 //File Name SendEmail.java
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
-import javax.activation.DataHandler;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -19,16 +16,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.mail.util.ByteArrayDataSource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ray.model.dao.CanecaRepository;
-import com.ray.model.dao.RepositoryFactory;
-import com.ray.model.entities.Caneca;
 import com.ray.model.entities.Cliente;
 import com.ray.util.Html;
 
@@ -37,13 +30,13 @@ public class EmailServlet extends HttpServlet {
 
     private final String USERNAME = "rayllandersonemailjava@gmail.com";
     private final String PASSWORD = "-**";
-    private CanecaRepository repository;
+//    private CanecaRepository repository;
 
     private static final long serialVersionUID = 1L;
 
     @Override
     public void init() throws ServletException {
-	repository = RepositoryFactory.createCanecaDao();
+//	repository = RepositoryFactory.createCanecaDao();
 	super.init();
     }
 
@@ -59,7 +52,7 @@ public class EmailServlet extends HttpServlet {
 
 	// cliente
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
-	List<Caneca> canecas = (List<Caneca>) repository.findAll(cliente.getId());
+//	List<Caneca> canecas = (List<Caneca>) repository.findAll(cliente.getId());
 
 	StringBuilder html = new StringBuilder();
 
@@ -103,7 +96,7 @@ public class EmailServlet extends HttpServlet {
 	    // Attachment body part.
 	    MimeBodyPart texto = new MimeBodyPart();
 
-	    int index = 1;
+//	    int index = 1;
 	    html.append(Html.h1("Dados da(s) Caneca(s)"));
 //	    for (Caneca c : canecas) {
 //		boolean hasImage = c.getImage().getId() != 0;
@@ -140,17 +133,17 @@ public class EmailServlet extends HttpServlet {
 	}
     }
 
-    private String dadosCanecas(int index, Caneca c) {
-	StringBuilder html = new StringBuilder();
-//	String fotoPersonalizada = (c.getImage().getId() != 0) ? "Sim" : "Não";
-//	String nomeArquivo = hasImage ? "Caneca " + index + "." + contentType.split("/")[1] : "";
-	html.append(Html.h2("Caneca " + index));
-	html.append(Html.p("Tema: " + c.getTema()));
-	html.append(Html.p("Quantidade: " + c.getQuantidade()));
-//	html.append(Html.p("Foto personalizada? " + fotoPersonalizada));
-	html.append("<hr>");
-	return html.toString();
-    }
+//    private String dadosCanecas(int index, Caneca c) {
+//	StringBuilder html = new StringBuilder();
+////	String fotoPersonalizada = (c.getImage().getId() != 0) ? "Sim" : "Não";
+////	String nomeArquivo = hasImage ? "Caneca " + index + "." + contentType.split("/")[1] : "";
+//	html.append(Html.h2("Caneca " + index));
+//	html.append(Html.p("Tema: " + c.getTema()));
+//	html.append(Html.p("Quantidade: " + c.getQuantidade()));
+////	html.append(Html.p("Foto personalizada? " + fotoPersonalizada));
+//	html.append("<hr>");
+//	return html.toString();
+//    }
 
     private String dadosCliente(Cliente cliente) {
 	

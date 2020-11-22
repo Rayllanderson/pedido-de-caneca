@@ -2,16 +2,12 @@ package com.ray.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,10 +20,10 @@ import com.ray.model.dao.CanecaRepository;
 import com.ray.model.dao.ImageRepository;
 import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.dao.TemaRepository;
+import com.ray.model.entities.Arquivo;
 import com.ray.model.entities.Caneca;
 import com.ray.model.entities.Cliente;
 import com.ray.model.entities.Pedido;
-import com.ray.model.entities.Arquivo;
 import com.ray.model.entities.Tema;
 import com.ray.model.entities.enums.Etapa;
 import com.ray.model.exceptions.RequisicaoInvalidaException;
@@ -37,6 +33,7 @@ import com.ray.model.service.PedidoService;
 import com.ray.model.validacoes.ClientValidation;
 import com.ray.model.validacoes.ImageValidation;
 import com.ray.model.validacoes.ThemeValidation;
+import com.ray.util.Email;
 import com.ray.util.ThreadMiniature;
 
 /**
@@ -117,6 +114,7 @@ public class OrderServlet extends HttpServlet {
 	if (pedidoService.save(p)) {
 	    response.setStatus(200);
 	    response.sendRedirect("sucess.jsp");
+	    new Email(cliente.getNome());
 	    logout(request);
 	} else {
 	    response.setStatus(400);
