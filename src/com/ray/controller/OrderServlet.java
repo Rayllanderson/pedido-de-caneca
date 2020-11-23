@@ -112,6 +112,7 @@ public class OrderServlet extends HttpServlet {
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 	Pedido p = new Pedido(cliente, currentTime);
 	if (pedidoService.save(p)) {
+	    request.getSession().setAttribute("order", p);
 	    response.setStatus(200);
 	    response.sendRedirect("sucess.jsp");
 	    new Email(cliente.getNome());

@@ -15,19 +15,19 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-/**
- * Ao instanciar, manda o email
- * @author Ray
- *
- */
+
 public class Email implements Runnable {
 
     private final String USERNAME = "rayllandersonemailjava@gmail.com";
-    private final String PASSWORD = "SendEmail123";
+    private final String PASSWORD = "";
     private String clientName;
     String pattern;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
+    /**
+     * Ao instanciar, manda o email
+     *
+     */
     public Email(String clientName) {
 	this.clientName = clientName;
 	Thread t = new Thread(this);
