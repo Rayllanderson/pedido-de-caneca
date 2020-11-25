@@ -9,30 +9,16 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="src/css/alert.css">
 <script src="src/js/fa.js"></script>
+<link rel="stylesheet" href="src/css/main.css">
 
 <title>Insert title here</title>
 
 <style type="text/css">
 	
-	.card{
-		border-radius: 1em;
-		
-	}
-	
-	body{
-		background-color: #f8f9fa;
-	}
-	
-	.group{
-		padding: 10px;
-		width: 50%;
-		margin: 0 auto;
-	}
-	
-	a{
-	cursor: pointer;}
+		a{
+		cursor: pointer;}
 
- input[type="file"] {
+ 		input[type="file"] {
             display: block;
         }
         
@@ -52,6 +38,10 @@
             background: white;
             color: black;
         }
+        
+        h5{
+        	color: white;
+        }
 
 	
 </style>
@@ -66,7 +56,7 @@
 				</div>
 			</div>
 		
-	<div class="mt-5"></div>
+	<section id="cover">
 	<div class="container">
 	
 	
@@ -110,14 +100,14 @@
 		        <div id="files">
 		            <div class="form-group" id="filediv">
 		                <label style="display: block">Foto personalizada 1</label>
-		                <label for="file1" class="btn btn-outline-primary">escolha a foto aqui</label>
+		                <label for="file1" class="btn ">escolha a foto aqui</label>
 		                <input id="file1" type="file" name="file1" accept="image/*" style="display: none">
 		
 		                <div class="form-group" id="div-preview1" style="display: none;">
 		                    <h5 class="text-preview"></h5>
 		                    <img class="img-fluid" id="preview1"></img>
 		                    <div id="remove1">
-		                        <a class="text-danger float-right mt-2 mb-4" id="remove-photo1"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
+		                        <a class="text-light float-right mt-2 mb-4" id="remove-photo1"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
 		                    </div>
 		                </div>
 		
@@ -125,33 +115,33 @@
 		
 		            <div class="form-group" id="filediv2" style="display: none;">
 		                <label style="display: block">Foto personalizada 2</label>
-		                <label for="file2" class="btn btn-outline-primary">escolha a foto aqui</label>
+		                <label for="file2" class="btn ">escolha a foto aqui</label>
 		                <input id="file2" type="file" name="file2" accept="image/*" style="display: none">
 		
 		                <div class="form-group" id="div-preview2" style="display: none;">
 		                    <h5 class="text-preview"></h5>
 		                    <img class="img-fluid" id="preview2"></img>
 		                    <div id="remove2">
-		                        <a class="text-danger float-right mt-2 mb-4" id="remove-photo2"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
+		                        <a class="text-light float-right mt-2 mb-4" id="remove-photo2"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
 		                    </div>
 		                </div>
 		            </div>
 		
 		            <div class="form-group" id="filediv3" style="display: none;">
 		                <label style="display: block">Foto personalizada 3</label>
-		                <label for="file3" class="btn btn-outline-primary">escolha a foto aqui</label>
+		                <label for="file3" class="btn ">escolha a foto aqui</label>
 		                <input id="file3" type="file" name="file3" accept="image/*" style="display: none">
 		
 		                <div class="form-group" id="div-preview3" style="display: none;">
 		                    <h5 class="text-preview"></h5>
 		                    <img class="img-fluid" id="preview3"></img>
 		                    <div id="remove3">
-		                        <a class="text-danger float-right mt-2 mb-4" id="remove-photo3"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
+		                        <a class="text-light float-right mt-2 mb-4" id="remove-photo3"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
 		                    </div>
 		                </div>
 		            </div>
 		
-		            <label id="plus" class="btn btn-outline-primary" style="display: none;"> + </label>
+		            <label id="plus" class="btn" style="display: none;"> + </label>
 		        </div><!--  fim input -->
 		    
 		    
@@ -160,7 +150,7 @@
 				    <textarea class="form-control" id="txt-area" name="descricao" rows="4" placeholder="Dê mais detalhes, diga pra gente como você quer a caneca (opcional)"></textarea>
 				  </div>
 				  <div class="col mb-4">
-			 		 <button type="submit" id="btn-submit" class="btn btn-primary float-right">Próximo</button>
+			 		 <button type="submit" id="btn-submit" class="btn float-right">Próximo</button>
 			 	 </div>
 			 </div>
 			 </form>
@@ -170,7 +160,7 @@
 	</div>
 	</div>
 	
-	
+	</section>
 	
 	<!-- Modal confirmar remover foto -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

@@ -19,28 +19,54 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <!-- Material Design Bootstrap -->
 <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet"> -->
-
+<link rel="stylesheet" href="src/css/main.css">
 <style type="text/css">
 
 	.card{
-		 border-radius: 1em !important;
+		 border-radius: 0.5em !important;
 	}
 	
- /*	.n-c{
-		background-color: #28a745  !important;
-	}
-	
-	 .f-p{
-		background-color: #007bff  !important;
-	}
-	*/
-	#img{
-		 transition: transform .2s}
+	#img{ transition: transform .2s}
 	
 	#img:hover{
 		 transform: scale(1.05);
 	}
 	
+	.link, .obs{
+		color: var(--yellow)!important
+	}
+	
+	.link:hover, .white{
+		color: white
+	}
+	
+	hr { display: block; height: 0.3px;
+    border: 0; border-top: 0.3px solid white;
+    margin: 1em 0; padding: 0; }
+	
+	.btn-danger {
+            color: #fff!important;
+            background-color: #dc3545!important;
+            border-color: #dc3545!important;
+        }
+        
+        .btn-danger:hover {
+            color: #fff!important;
+            background-color: #c82333!important;
+            border-color: #bd2130!important;
+        }
+       
+ 		.btn-light {
+            color: #212529!important;
+            background-color: #f8f9fa!important;
+            border-color: #f8f9fa!important;
+        }
+        
+        .btn-light:hover {
+            color: #212529!important;
+            background-color: #e2e6ea!important;
+            border-color: #dae0e5!important;
+        }
 
 </style>
 
@@ -54,7 +80,7 @@
 				   <h4 id="titulo"></h4> <p id="alertMsg"></p>
 				</div>
 			</div>
-
+			
 <div class="container mt-5">
 <!--Section: Block Content-->
 <section>
@@ -90,17 +116,17 @@
                 <div class="d-flex justify-content-between">
                   <div>
                     <h5>Tema: ${caneca.tema}</h5>
-                    <p class="mb-5 text-muted text-uppercase small">Quantidade: ${caneca.quantidade}</p>
+                    <p class="white mb-4 text-uppercase small">Quantidade: ${caneca.quantidade}</p>
                   </div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                  <div style="display: inline;" data-toggle="modal" data-target="#edit-modal" data-id="${caneca.id}">
-                   <a href="#" id="edit" class="edit card-link-secondary small text-uppercase mr-3"><i
+                  <div  class="mb-1"data-toggle="modal" data-target="#edit-modal" data-id="${caneca.id}">
+                   <a href="#" id="edit" class="link edit card-link-secondary small text-uppercase"><i
                         class="fas fa-edit mr-1"></i> Editar Caneca </a>
                    </div>
-                  	<div style="display: inline;" data-toggle="modal" data-target="#exampleModalCenter" data-id="${caneca.id}" >
-                   		 <a href="#!" type="button" class="card-link-secondary small text-uppercase"><i
+                  	<div data-toggle="modal" data-target="#exampleModalCenter" data-id="${caneca.id}" >
+                   		 <a href="#!" type="button" class="link card-link-secondary small text-uppercase"><i
                         class="fas fa-trash-alt mr-1"  ></i> Remover Caneca </a>
                     </div>
                   </div>
@@ -112,7 +138,7 @@
    </c:forEach>
  </data>        
           
-          <p class="text-primary mb-0"><i class="fas fa-info-circle mr-1"></i> Não se preocupe se sua foto parecer borrada. Receberemos ela em qualidade original.</p>
+          <p class="obs text-primary mb-0"><i class="fas fa-info-circle mr-1"></i> Não se preocupe se sua foto parecer borrada. Receberemos ela em qualidade original.</p>
 
         </div>
       </div>
@@ -157,7 +183,6 @@
 </div>
 
 
-
 	<!-- Modal confirmar remover caneca -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -172,8 +197,8 @@
        	Você tem certeza que deseja remover esta caneca?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger" id="btn-delete">Excluir</button>
+        <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btn-delete" style="background-color: #dc3545">Excluir</button>
       </div>
     </div>
   </div>

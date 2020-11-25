@@ -1,0 +1,47 @@
+	
+	:root {
+	  --red: #8B0000;
+	  --yellow: #FFB408;
+	}
+	
+	html,
+	body{
+	 height: 100%;
+	}
+	
+	
+	.card{
+		background-color: var(--red);
+		border: none;
+	}
+	        h5{
+        	color: white;
+        }
+	
+	body{
+		background-color: var(--red);
+	}
+	
+	.group{
+		padding: 10px;
+		width: 50%;
+		margin: 0 auto;
+	}
+	
+	.btn{
+		background-color: var(--yellow) !important;
+		color: var(--red);
+	}
+	
+	.btn:hover{
+		color: white;
+	}
+	
+	.card-title{
+		color: var(--yellow);
+	}
+	
+	label{
+		color:white
+	}
+	
