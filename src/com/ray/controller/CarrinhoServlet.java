@@ -37,23 +37,28 @@ public class CarrinhoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
-	String action = request.getParameter("action");
-	List<Caneca> canecas = canecaRepository.findAll(cliente.getId());
-	canecas.forEach(x -> x.getFotos().add(ArquivosUtil.getFirstImage(x.getId()))); 
-//	canecas.stream().filter(x -> x.getFotos().isEmpty()).forEach(x -> x.getFotos().add(imgRepository.findById(0L))); //caneca sem foto
-	setQuantidadeCanecas(request, canecas);
-	if (action != null) {
-	    if (action.equals("load-miniature") && ArquivosUtil.thumbIsLoading(canecas)) {
-		canecas.forEach(x -> ArquivosUtil.loadThumb(x.getFotos(), false, imgRepository));
-		response.setStatus(200);
-		return;
-	    } else if (action.equals("delete")) {
-		delete(request, response, cliente.getId());
+	try {
+	    Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
+	    String action = request.getParameter("action");
+	    List<Caneca> canecas = canecaRepository.findAll(cliente.getId());
+	    canecas.forEach(x -> x.getFotos().add(ArquivosUtil.getFirstImage(x.getId())));
+	    setQuantidadeCanecas(request, canecas);
+	    if (action != null) {
+		if (action.equals("load-miniature") && ArquivosUtil.thumbIsLoading(canecas)) {
+		    canecas.forEach(x -> ArquivosUtil.loadThumb(x.getFotos(), false, imgRepository));
+		    response.setStatus(200);
+		    return;
+		} else if (action.equals("delete")) {
+		    delete(request, response, cliente.getId());
+		}
+	    } else {
+		request.getSession().setAttribute("canecas", canecas);
+		request.getRequestDispatcher("carrinho.jsp").forward(request, response);
 	    }
-	} else {
-	    request.getSession().setAttribute("canecas", canecas);
-	    request.getRequestDispatcher("carrinho.jsp").forward(request, response);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    response.setStatus(500);
+	    response.getWriter().print("Ocorreu um erro.");
 	}
     }
 

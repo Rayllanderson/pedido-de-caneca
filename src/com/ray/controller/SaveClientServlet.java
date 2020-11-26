@@ -21,7 +21,6 @@ public class SaveClientServlet extends HttpServlet {
     
     public SaveClientServlet() {
 	super();
-	// TODO Auto-generated constructor stub
     }
     
     @Override
@@ -43,13 +42,8 @@ public class SaveClientServlet extends HttpServlet {
 	response.setCharacterEncoding("UTF-8");
 	String nome = request.getParameter("nome");
 	String telefone = request.getParameter("telefone");
-	Cliente cliente = new Cliente(null, nome, telefone); //salvar o cliente on db
+	Cliente cliente = new Cliente(null, nome, telefone);
 	cliente = repository.save(cliente);
-//	// invalidando a ultima sessão / fazer isso no final
-//	HttpSession oldSession = request.getSession(false);
-//	if (oldSession != null) {
-//	oldSession.invalidate();
-//	}
 
 	// generate a new session
 	HttpSession newSession = request.getSession(true);

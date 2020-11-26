@@ -28,6 +28,7 @@ import com.ray.model.entities.Tema;
 import com.ray.model.entities.enums.Etapa;
 import com.ray.model.exceptions.RequisicaoInvalidaException;
 import com.ray.model.service.CanecaService;
+import com.ray.model.service.ClienteService;
 import com.ray.model.service.ImageService;
 import com.ray.model.service.PedidoService;
 import com.ray.model.validacoes.ClientValidation;
@@ -51,6 +52,7 @@ public class OrderServlet extends HttpServlet {
     private CanecaRepository canecaRepository;
     private ImageService imageService;
     private PedidoService pedidoService;
+    private ClienteService clienteService;
 
     @Override
     public void init() throws ServletException {
@@ -64,14 +66,21 @@ public class OrderServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	String action = request.getParameter("action");
-	if (action != null) {
-	    if (action.equals("edit")) {
-		setCanecaToEdit(request, response);
+	try {
+	    String action = request.getParameter("action");
+	    if (action != null) {
+		if (action.equals("edit")) {
+		    setCanecaToEdit(request, response);
+		}
+	    } else {
+		request.getSession().setAttribute("temas", temaRepository.findAll());
+		request.getRequestDispatcher("order.jsp").forward(request, response);
 	    }
-	} else {
-	    request.getSession().setAttribute("temas", temaRepository.findAll());
-	    request.getRequestDispatcher("order.jsp").forward(request, response);
+	} catch (Exception e) {
+	    response.setStatus(500);
+	    e.printStackTrace();
+	    response.getWriter().print("Ocorreu um erro.");
+	    logout(request);
 	}
     }
 
@@ -82,6 +91,7 @@ public class OrderServlet extends HttpServlet {
 	canecaService = new CanecaService();
 	imageService = new ImageService();
 	pedidoService = new PedidoService();
+	clienteService = new ClienteService();
     }
 
     /**
@@ -102,26 +112,17 @@ public class OrderServlet extends HttpServlet {
 		}
 	    }
 	} catch (RequisicaoInvalidaException e) {
-	    // TODO: setar response com erro
-	}
-    }
-
-    private void finish(HttpServletRequest request, HttpServletResponse response) throws IOException {
-	Calendar calendar = Calendar.getInstance();
-	java.util.Date currentTime = calendar.getTime();
-	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
-	Pedido p = new Pedido(cliente, currentTime);
-	if (pedidoService.save(p)) {
-	    request.getSession().setAttribute("order", p);
-	    response.setStatus(200);
-	    response.sendRedirect("sucess.jsp");
-	    new Email(cliente.getNome());
-	    logout(request);
-	} else {
 	    response.setStatus(400);
-	    response.sendRedirect("error.jsp");
+	    e.printStackTrace();
+	} catch (IllegalArgumentException e) {
+	    response.setStatus(400);
+	    response.setContentType("text/plain");
+	    response.setCharacterEncoding("UTF-8");
+	    response.getWriter().print(e.getMessage());
+	}catch (Exception e) {
+	    e.printStackTrace();
+	    response.getWriter().print("Ocorreu um erro.");
 	}
-	return;
     }
 
     private void saveOrUpdate(HttpServletRequest request, HttpServletResponse response)
@@ -334,6 +335,46 @@ public class OrderServlet extends HttpServlet {
 	HttpSession session = request.getSession(false);
 	if (session != null) {
 	    session.invalidate();
+	}
+    }
+
+    private void finish(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	Calendar calendar = Calendar.getInstance();
+	java.util.Date currentTime = calendar.getTime();
+	Cliente cliente = getCliente(request);
+	@SuppressWarnings("unchecked")
+	List<Caneca> canecas = (List<Caneca>) request.getSession().getAttribute("canecas");
+	if (canecas.isEmpty()) {
+	    throw new IllegalArgumentException("Para finalizar, você precisa de pelo menos uma caneca em seu carrinho");
+	}
+	Pedido p = new Pedido(cliente, currentTime);
+	if (pedidoService.save(p)) {
+	    request.getSession().setAttribute("order", p);
+	    response.setStatus(200);
+	    response.sendRedirect("sucess.jsp");
+	    new Email(cliente.getNome());
+	    logout(request);
+	} else {
+	    response.setStatus(500);
+	    response.sendRedirect("error.jsp");
+	}
+	return;
+    }
+
+    private Cliente getCliente(HttpServletRequest request) {
+	try {
+	    Cliente c1 = (Cliente) request.getSession().getAttribute("cliente");
+	    Long id = Long.valueOf(request.getParameter("id"));
+	    Cliente c2 = new Cliente(id, null, null);
+	    if (c2.equals(c1)) {
+		c2.setNome(request.getParameter("nome"));
+		c2.setTelefone(request.getParameter("telefone"));
+		return clienteService.update(c2);
+	    } else {
+		throw new IllegalArgumentException("Ocorreu um erro. Recarregue a página e tente novamente");
+	    }
+	} catch (NumberFormatException e) {
+	    throw new IllegalArgumentException("Ocorreu um erro. Recarregue a página e tente novamente");
 	}
     }
 }

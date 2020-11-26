@@ -17,8 +17,6 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 <!-- Bootstrap core CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<!-- Material Design Bootstrap -->
-<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet"> -->
 <link rel="stylesheet" href="src/css/main.css">
 <style type="text/css">
 
@@ -67,6 +65,7 @@
             background-color: #e2e6ea!important;
             border-color: #dae0e5!important;
         }
+        
 
 </style>
 
@@ -152,22 +151,20 @@
     <div class="bt-res col-lg-4">
 
       <!-- Card -->
-      <div class="card mb-3">
+      <div class="card mb-3" >
         <div class="card-body">
 
-          <h5 class="mb-3">The total amount of</h5>
+          <h5 class="mb-3">Opções</h5>
 
           <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-               <a  class="btn btn-success btn-block waves-effect waves-light" href="order.jsp">Nova Caneca</a>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0"  style="background-color: var(--red)">
+               <a  class="btn btn-block waves-effect waves-light" href="order.jsp">Nova Caneca</a>
             </li>
            
-            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 "></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 " style="background-color: var(--red)"></li>
              
           </ul>
-		<form action="order?action=finish" method="post">
-          <button type="submit" class="f-p btn btn-primary btn-block waves-effect waves-light">Finalizar Pedido</button>
-		</form>
+          <button type="submit" class="f-p btn btn-block waves-effect waves-light" data-toggle="modal" data-target="#finalizarModal">Finalizar Pedido</button>
         </div>
       </div>
       <!-- Card -->
@@ -213,9 +210,44 @@
        	<button id="btn-edit" style="display: none"></button>
      </div>
   </div>
-
 </div>
 
+
+<div class="modal fade" id="finalizarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="color: black">Confirme seus dados</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="alert alert-success" id="alertE">
+				   				 <button type="button" class="close" onclick="$('#alertE').hide();">x</button>
+				   					<h4 id="titulo"></h4> <p id="alertMsgE"></p>
+				  				 </div>
+				  				 
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+          	<input style="display: none" value="${cliente.id}" id="clientId" name="id">
+            <label for="recipient-name" class="col-form-label" style="color: black">Nome:</label>
+            <input type="text" class="form-control" id="nome" name="nome" value="${cliente.nome}">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label" style="color: black">Telefone:</label>
+            <input class="form-control" id="telefone" name="telefone" value="${cliente.telefone}"></input>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn" id="finalizar">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- JQuery -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -223,12 +255,18 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
 <!-- Bootstrap core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<!-- MDB core JavaScript -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
 <script src="src/js/alert.js"></script>
 <script src="src/js/ajax/loadMiniature.js"></script>
 <script src="src/js/ajax/excluirCaneca.js"></script>
 <script src="src/js/ajax/redirecionarEditar.js"></script>
+<script src="src/js/jquery.mask.min.js"></script>
+<script src="src/js/telefone.mask.js"></script>
+<script src="src/js/ajax/finalizar.js"></script>
+
+
+<script type="text/javascript">
+
+</script>
 </body>
 
 </html>
