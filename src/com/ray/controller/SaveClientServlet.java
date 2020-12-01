@@ -29,12 +29,6 @@ public class SaveClientServlet extends HttpServlet {
         super.init();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
-	// TODO Auto-generated method stub
-	response.getWriter().append("Served at: ").append(request.getContextPath());
-    }
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 	request.setCharacterEncoding("UTF-8");

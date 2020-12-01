@@ -48,4 +48,10 @@ public class Autenticacao implements Filter {
 	    chain.doFilter(request, response);
 	}
     }
+
+    @Override
+    public void destroy() {
+	// TODO Auto-generated method stub
+	
+    }
 }

@@ -22,8 +22,7 @@ import com.ray.model.entities.Arquivo;
 import com.ray.model.entities.Caneca;
 import com.ray.model.exceptions.EntradaInvalidaException;
 
-public class ArquivosUtil implements Serializable{
-
+public class ArquivosUtil implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,28 +32,21 @@ public class ArquivosUtil implements Serializable{
      * 
      * @param request
      * @return imagem em forma de miniatura
-     * @throws Exception 
+     * @throws Exception
      * @throws ServletException
      * @throws EntradaInvalidaException tipo de arquivo inválido
      */
-    public static String createMiniatureBase64(String base64)
-	    throws Exception {
+    public static String createMiniatureBase64(String base64) throws Exception {
 
 	/* Transforma emum bufferedImage */
 	byte[] imageByteDecode = Base64.decodeBase64(base64);
 	BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageByteDecode));
 	BufferedImage croped = resizeImage(bufferedImage, 320, 320);
-	
-	/* Pega o tipo da imagem */
-	int type = bufferedImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : bufferedImage.getType();
-
-	final int WIDHT = 250;
-	final int HEIGHT = 250;
-	
 	/*
-	 /* Cria imagem em miniatura 
-	BufferedImage resizedImage = new BufferedImage(WIDHT, HEIGHT, type);
-	resizedImage.createGraphics().drawImage(croped, 0, 0, null); */
+	 * Cria imagem em miniatura BufferedImage resizedImage = new
+	 * BufferedImage(WIDHT, HEIGHT, type);
+	 * resizedImage.createGraphics().drawImage(croped, 0, 0, null);
+	 */
 
 	/* Escrever imagem novamente */
 	ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -65,21 +57,19 @@ public class ArquivosUtil implements Serializable{
     /**
      * retorna a base 64 do arquivo
      * 
-     * @param 
+     * @param
      * @return "data:" + contentType + ";base64,"
      */
-    public static String createBase64(InputStream imagem, String contentType)
-	    throws IOException{
+    public static String createBase64(InputStream imagem, String contentType) throws IOException {
 	return "data:" + contentType + ";base64," + Base64.encodeBase64String(streamToByte(imagem));
     }
-    
+
     /**
-     * 
      * @param imagem
      * @return apenas a base64, sem data e contentType
      * @throws IOException
      */
-    public static String createBase64(InputStream imagem) throws IOException{
+    public static String createBase64(InputStream imagem) throws IOException {
 	return Base64.encodeBase64String(streamToByte(imagem));
     }
 
@@ -92,11 +82,12 @@ public class ArquivosUtil implements Serializable{
 	}
 	return baos.toByteArray();
     }
-    
-    private static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws Exception {
-	    return Scalr.resize(originalImage, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, targetWidth, targetHeight, Scalr.OP_ANTIALIAS);
+
+    private static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight)
+	    throws Exception {
+	return Scalr.resize(originalImage, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, targetWidth, targetHeight,
+		Scalr.OP_ANTIALIAS);
     }
-    
 
     /**
      * Se alguma thumb estiver com valor vazio (ou seja, carregando), return true;
@@ -120,24 +111,25 @@ public class ArquivosUtil implements Serializable{
      * Enquanto a thread que cria miniatura não termina, ela irá buscar ela mesma no
      * banco de dados pra verificar se a criação da miniatura já terminou.
      * 
-     * @param loadAll - setar para true caso queira carregar todas as miniaturas. False para carregar apenas a primeira
+     * @param loadAll - setar para true caso queira carregar todas as miniaturas.
+     *                False para carregar apenas a primeira
      * @param imagens - lista de imagens de uma caneca
      */
-    public static void loadThumb(List<Arquivo> imagens, boolean loadAll, ImageRepository imgRepository){
-	if(loadAll) {
+    public static void loadThumb(List<Arquivo> imagens, boolean loadAll, ImageRepository imgRepository) {
+	if (loadAll) {
 	    for (Arquivo i : imagens) {
-		    while (i.getMiniatura().equals("")) {
-			i = imgRepository.findById(i.getId());
-		    }
+		while (i.getMiniatura().equals("")) {
+		    i = imgRepository.findById(i.getId());
 		}
-	}else {
+	    }
+	} else {
 	    Arquivo firstImage = imagens.get(0);
 	    while (firstImage.getMiniatura().equals("")) {
 		firstImage = imgRepository.findById(firstImage.getId());
 	    }
 	}
     }
-    
+
     /**
      * 
      * @param canecaId
@@ -149,7 +141,7 @@ public class ArquivosUtil implements Serializable{
 	Optional<Arquivo> firstImage = imagens.stream().findFirst();
 	if (firstImage.isPresent()) {
 	    return firstImage.get();
-	}else
+	} else
 	    return imgRepository.findById(0L); // caneca sem foto
     }
 }

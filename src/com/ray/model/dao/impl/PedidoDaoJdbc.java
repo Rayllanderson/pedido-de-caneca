@@ -5,16 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import com.ray.db.DB;
 import com.ray.db.DbException;
-import com.ray.model.dao.ClienteRepository;
 import com.ray.model.dao.PedidoRepository;
-import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.entities.Pedido;
 
 public class PedidoDaoJdbc implements PedidoRepository {

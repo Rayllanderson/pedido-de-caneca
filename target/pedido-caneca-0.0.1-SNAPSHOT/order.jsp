@@ -11,7 +11,7 @@
 <script src="src/js/fa.js"></script>
 <link rel="stylesheet" href="src/css/main.css">
 
-<title>Caneca</title>
+<title>Insert title here</title>
 
 <style type="text/css">
 	

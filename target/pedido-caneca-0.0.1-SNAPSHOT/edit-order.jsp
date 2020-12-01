@@ -10,43 +10,32 @@
 <link rel="stylesheet" href="src/css/alert.css">
 <script src="src/js/fa.js"></script>
 <link rel="stylesheet" href="src/css/main.css">
-
-<title>Caneca</title>
+<title>Editando Caneca</title>
 
 <style type="text/css">
 	
-		a{
-		cursor: pointer;}
-
- 		input[type="file"] {
-            display: block;
-        }
-        
-        
-        .pip {
-            display: inline-block;
-            margin: 10px 10px 0 0;
-        }
-        
-        .remove {
-            display: block;
-            text-align: center;
-            cursor: pointer;
-        }
-        
-        .remove:hover {
-            background: white;
-            color: black;
-        }
-        
-        h5{
-        	color: white;
-        }
-
+	a{
+	cursor: pointer;}
+	
+.loader{
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url('src/img/loading page.gif') 
+              50% 50% no-repeat #e93976;
+}
+#loading-img{
+	background: url("src/img/loading page.gif");
+}
 	
 </style>
 </head>
 <body>
+
+<div class="loader" id="loading"></div>
 		
 		<!-- ALERT -->
 			<div class="fixed-top">
@@ -56,7 +45,8 @@
 				</div>
 			</div>
 		
-	<section id="cover">
+<section id="cover">
+
 	<div class="container">
 	
 	
@@ -76,6 +66,10 @@
 			 method="POST" id="order-form" enctype="multipart/form-data">		
 			 <div class="group">
 			 	<div class="form-group">
+			 		<div style="display: none">
+				 		<input type="text" id="id" name="id">
+				 		<input name="hasChangedImage" id="hasChangedImage">
+			 		</div>
 				    <label for="validationCustom04">Tema</label>
 				      <select class="custom-select" id="temas" name="tema-id" required>
 				        <option selected disabled value="">Selecione o tema</option>
@@ -96,11 +90,12 @@
 				 
 				</div>
 				
-		 <!-- input file  -->
+				 <!-- input file  -->
 		        <div id="files">
 		            <div class="form-group" id="filediv">
+						<input type="text" id="id-1" name="id-1" value="null" style="display: none;">
 		                <label style="display: block">Foto personalizada 1</label>
-		                <label for="file1" class="btn ">escolha a foto aqui</label>
+		                <label for="file1" class="btn">escolha a foto aqui</label>
 		                <input id="file1" type="file" name="file1" accept="image/*" style="display: none">
 		
 		                <div class="form-group" id="div-preview1" style="display: none;">
@@ -114,6 +109,7 @@
 		            </div>
 		
 		            <div class="form-group" id="filediv2" style="display: none;">
+						<input type="text" id="id-2" name="id-2" value="null" style="display: none;">
 		                <label style="display: block">Foto personalizada 2</label>
 		                <label for="file2" class="btn ">escolha a foto aqui</label>
 		                <input id="file2" type="file" name="file2" accept="image/*" style="display: none">
@@ -128,6 +124,7 @@
 		            </div>
 		
 		            <div class="form-group" id="filediv3" style="display: none;">
+						<input type="text" id="id-3" name="id-3" value="null" style="display: none;">
 		                <label style="display: block">Foto personalizada 3</label>
 		                <label for="file3" class="btn ">escolha a foto aqui</label>
 		                <input id="file3" type="file" name="file3" accept="image/*" style="display: none">
@@ -141,10 +138,19 @@
 		                </div>
 		            </div>
 		
-		            <label id="plus" class="btn" style="display: none;"> + </label>
+		            <label id="plus" class="btn " style="display: none;"> + </label>
 		        </div><!--  fim input -->
-		    
-		    
+				 
+				 
+				 
+				  <div class="form-group" id="div-preview" style="display: none;" >
+					 <h5 class="text-preview"></h5>
+					 <img class="preview-foto img-fluid" id="preview"></img>
+					 <div id="remove" data-toggle="modal" data-target="#exampleModalCenter">
+					 	<a class="text-light float-right mt-2 mb-4" id="remove-photo"><i class="fas fa-times"> <span class="items" >Remover foto</span></i></a>
+					 </div>
+				 </div>
+				 
 				<div class="form-group">
 				    <label for="exampleFormControlTextarea1">Adicione mais detalhes</label>
 				    <textarea class="form-control" id="txt-area" name="descricao" rows="4" placeholder="Dê mais detalhes, diga pra gente como você quer a caneca (opcional)"></textarea>
@@ -188,12 +194,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
-<script src="src/js/alert.js"></script>
+<script type="text/javascript">
+function hasChangedImage(value){
+	$('#hasChangedImage').val(value)
+}
 
-<!-- <script src="src/js/preview-foto.js"></script>
- -->
- <!-- 
-<script src="src/js/previewPhoto.js"></script> -->
+</script>
+<script src="src/js/alert.js"></script>
+<script src="src/js/edit-preview.js"></script>
+
 <script type="text/javascript">
 
 $(".alert").hide();
@@ -202,23 +211,35 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
 	$('.group').css('width', '80%');
 }
 
-
-$("#btn-submit").on('click', function () {
-	if($("#temas").val() == null){
-		 alertBootstrap("Você não selecionou nenhum tema", "alert alert-warning", "Ei!");
-		$('#temas').focus();
-	 }else{ 
-		$('#btn-submit').prop('disabled', true);
-		 $("#btn-submit").html('Enviando...');
-		 $("#order-form").submit();
-	 }
-});
-	    
 </script>
+<script src="src/js/edit-caneca.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#loading").hide();
+});
 
+//capturando os atributos
+var canecaId = "${caneca.id}"
+var tema = "${caneca.tema.id}"
+var quantidade = "${caneca.quantidade}"
+var descricao ="${caneca.descricao}";
+var imgs = []
+
+    <c:forEach items="${caneca.fotos}" var="imagem">
+    imgs.push({ base64 : '<c:out value="${imagem.base64Html}" />',
+  		id:  '<c:out value="${imagem.id}" />' });
+    </c:forEach>
+
+//setando atributos
+$('#id').val(canecaId)
+$('#temas').val(tema);
+$("#txt-area").val(descricao);
+$("#qtd").val(quantidade == '' ? 1 : quantidade)
+setImage(imgs);
+
+</script>
 
 </body>
 
-<script src="src/js/preview.js"></script>
 
 </html>

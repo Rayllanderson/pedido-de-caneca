@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -279,7 +280,7 @@ public class OrderServlet extends HttpServlet {
 	for (Part part : parts) {
 	    if (part.getSize() > 0 && ImageValidation.fileTypeIsValid(request, part)) {
 		InputStream fileContent = part.getInputStream();
-		imagens.add(new Arquivo(null, fileContent, "", "", part.getContentType(), caneca));
+		imagens.add(new Arquivo(null, fileContent, "", "", part.getContentType(), caneca, part.getName()));
 	    }
 	}
 	return imagens;
@@ -302,13 +303,6 @@ public class OrderServlet extends HttpServlet {
 	}
     }
 
-    /**
-     * 
-     * @param request
-     * @param response
-     * @throws IOException
-     * @throws ServletException
-     */
     private void setCanecaToEdit(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 	try {
@@ -339,7 +333,7 @@ public class OrderServlet extends HttpServlet {
     }
 
     private void finish(HttpServletRequest request, HttpServletResponse response) throws IOException {
-	Calendar calendar = Calendar.getInstance();
+	Calendar calendar = Calendar.getInstance(new Locale("pt", "BR"));
 	java.util.Date currentTime = calendar.getTime();
 	Cliente cliente = getCliente(request);
 	@SuppressWarnings("unchecked")

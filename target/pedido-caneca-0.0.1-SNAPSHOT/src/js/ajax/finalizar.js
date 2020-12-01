@@ -1,4 +1,3 @@
-$(".alert").hide();
 
 
 $("#finalizar").on('click', function() {
@@ -19,7 +18,7 @@ $("#finalizar").on('click', function() {
 				console.log('Success')
 			},
 			error: function() {
-				alertModal('Não é possível finalizar sem canecas no carrinho', 'alert alert-danger');
+				
 			}
 		})
 	}
