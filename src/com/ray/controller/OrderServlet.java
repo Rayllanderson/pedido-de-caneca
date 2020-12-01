@@ -280,7 +280,7 @@ public class OrderServlet extends HttpServlet {
 	for (Part part : parts) {
 	    if (part.getSize() > 0 && ImageValidation.fileTypeIsValid(request, part)) {
 		InputStream fileContent = part.getInputStream();
-		imagens.add(new Arquivo(null, fileContent, "", "", part.getContentType(), caneca, part.getName()));
+		imagens.add(new Arquivo(null, fileContent, "", "", part.getContentType(), caneca, part.getSubmittedFileName()));
 	    }
 	}
 	return imagens;
