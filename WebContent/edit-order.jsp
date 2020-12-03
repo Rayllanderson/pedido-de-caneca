@@ -96,7 +96,7 @@
 						<input type="text" id="id-1" name="id-1" value="null" style="display: none;">
 		                <div class="form-group"> 
 		                 <label style="display: inline">Foto personalizada 1</label>
-		                 <button style="display: inline;" class="btn btn-sm float-right" id="btn-original-size" type="button" title="ver imagens em tamanho original">Tamanho original</button>
+		                 <button style="display: inline;" class="btn btn-sm float-right" id="btn-original-size" type="button" title="ver suas imagens em tamanho original">Tamanho original</button>
 		                </div> 
 		                <label for="file1" class="btn">escolha a foto aqui</label>
 		                <input id="file1" type="file" name="file1" accept="image/*" style="display: none">
@@ -250,8 +250,8 @@ $('#btn-original-size').on('click', function(){
 	    imgs.push({ base64 : '<c:out value="${imagem.base64Html}" />',
 	  		id:  '<c:out value="${imagem.id}" />' });
 	    </c:forEach>
-	    
 	    setImage(imgs);
+	    $(this).hide();
 })
 
 
