@@ -1,6 +1,6 @@
 $('.alert').hide();
 function alertBootstrap(msg, classe, titulo) {
-	$(".alert").show();
+	$("#success-alert").show();
 
 	const title = document.getElementById('titulo');
 

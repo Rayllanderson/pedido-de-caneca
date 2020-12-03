@@ -1,5 +1,5 @@
 $(".alert").hide();
-
+$('#alertE').hide();
 
 $("#finalizar").on('click', function() {
 	var id = $('#clientId').val();
