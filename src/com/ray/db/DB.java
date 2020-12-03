@@ -15,9 +15,9 @@ public class DB {
 
 	if (conn == null) {
 	    try {
-		String url = "jdbc:mysql://localhost:3306/pedido-de-caneca?useTimezone=true&serverTimezone=UTC&autoReconnect=true";
-		String user = "root";
-		String password = "12345";
+		String url = "*zone=true&serverTimezone=UTC&autoReconnect=true";
+		String user = "*";
+		String password = "*";
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		conn = DriverManager.getConnection(url, user, password);
 		System.out.println("The database has been successfully connected");

@@ -7,8 +7,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 <link rel="stylesheet" href="src/css/alert.css">
-<script src="src/js/fa.js"></script>
 <link rel="stylesheet" href="src/css/main.css">
 <title>Editando Caneca</title>
 
@@ -39,7 +40,7 @@
 		
 		<!-- ALERT -->
 			<div class="fixed-top">
-				<div class="alert alert-success" id="success-alert">
+				<div class="alert alert-success hide" id="success-alert">
 				   <button type="button" class="close" onclick="$('.alert').hide();">x</button>
 				   <h4 id="titulo"></h4> <p id="alertMsg"></p>
 				</div>
@@ -94,7 +95,10 @@
 		        <div id="files">
 		            <div class="form-group" id="filediv">
 						<input type="text" id="id-1" name="id-1" value="null" style="display: none;">
-		                <label style="display: block">Foto personalizada 1</label>
+		                <div class="form-group"> 
+		                 <label style="display: inline">Foto personalizada 1</label>
+		                 <button style="display: inline;" class="btn btn-sm float-right" id="btn-original-size" type="button" title="ver suas imagens em tamanho original">Tamanho original</button>
+		                </div> 
 		                <label for="file1" class="btn">escolha a foto aqui</label>
 		                <input id="file1" type="file" name="file1" accept="image/*" style="display: none">
 		
@@ -223,19 +227,34 @@ var canecaId = "${caneca.id}"
 var tema = "${caneca.tema.id}"
 var quantidade = "${caneca.quantidade}"
 var descricao ="${caneca.descricao}";
-var imgs = []
+var miniatures = [];
 
     <c:forEach items="${caneca.fotos}" var="imagem">
-    imgs.push({ base64 : '<c:out value="${imagem.base64Html}" />',
+    miniatures.push({ base64 : '<c:out value="${imagem.miniatura}" />',
   		id:  '<c:out value="${imagem.id}" />' });
     </c:forEach>
+
+    if (miniatures.length == 0){
+    	$('#btn-original-size').hide();
+    }
 
 //setando atributos
 $('#id').val(canecaId)
 $('#temas').val(tema);
 $("#txt-area").val(descricao);
 $("#qtd").val(quantidade == '' ? 1 : quantidade)
-setImage(imgs);
+setImage(miniatures);
+
+$('#btn-original-size').on('click', function(){
+	var imgs = []
+	 <c:forEach items="${caneca.fotos}" var="imagem">
+	    imgs.push({ base64 : '<c:out value="${imagem.base64Html}" />',
+	  		id:  '<c:out value="${imagem.id}" />' });
+	    </c:forEach>
+	    setImage(imgs);
+	    $(this).hide();
+})
+
 
 </script>
 

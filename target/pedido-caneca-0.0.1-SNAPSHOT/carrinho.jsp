@@ -223,7 +223,7 @@
         </button>
       </div>
       
-      <div class="alert alert-success" id="alertE">
+      <div class="alert alert-success hide" id="alertE">
 				   				 <button type="button" class="close" onclick="$('#alertE').hide();">x</button>
 				   					<h4 id="titulo"></h4> <p id="alertMsgE"></p>
 				  				 </div>
@@ -265,7 +265,8 @@
 
 
 <script type="text/javascript">
-
+$('#alertE').hide();
+$('#success-alert').hide();
 </script>
 </body>
 

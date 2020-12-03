@@ -7,8 +7,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 <link rel="stylesheet" href="src/css/alert.css">
-<script src="src/js/fa.js"></script>
 <link rel="stylesheet" href="src/css/main.css">
 
 <title>Caneca</title>
@@ -209,8 +210,8 @@ $("#btn-submit").on('click', function () {
 		$('#temas').focus();
 	 }else{ 
 		$('#btn-submit').prop('disabled', true);
-		 $("#btn-submit").html('Enviando...');
-		 $("#order-form").submit();
+		$("#btn-submit").html('Enviando...');
+		$("#order-form").submit();
 	 }
 });
 	    

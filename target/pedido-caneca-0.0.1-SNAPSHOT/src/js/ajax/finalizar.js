@@ -1,11 +1,16 @@
+$(".alert").hide();
+$('#alertE').hide();
 
+const telefoneSize = 14;
 
 $("#finalizar").on('click', function() {
+	$(this).prop('disabled', true);
+	$(this).html('Enviando...');
 	var id = $('#clientId').val();
 	var nome = $('#nome').val();
 	var telefone = $('#telefone').val();
 
-	if (telefone.length < 14) {
+	if (telefone.length < telefoneSize) {
 		$('#telefone').focus();
 		alertModal('número inválido', 'alert alert-danger');
 	} else {
@@ -18,7 +23,7 @@ $("#finalizar").on('click', function() {
 				console.log('Success')
 			},
 			error: function() {
-				
+				alertModal('Não é possível finalizar sem canecas no carrinho', 'alert alert-danger');
 			}
 		})
 	}
