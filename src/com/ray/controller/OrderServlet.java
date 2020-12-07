@@ -38,9 +38,6 @@ import com.ray.model.validacoes.ThemeValidation;
 import com.ray.util.Email;
 import com.ray.util.ThreadMiniature;
 
-/**
- * mudar o nome também
- */
 @MultipartConfig
 @WebServlet("/order")
 public class OrderServlet extends HttpServlet {

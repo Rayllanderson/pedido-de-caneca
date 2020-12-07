@@ -19,7 +19,7 @@ import javax.mail.internet.MimeMessage;
 public class Email implements Runnable {
 
     private final String USERNAME = "rayllandersonemailjava@gmail.com";
-    private final String PASSWORD = "x";
+    private final String PASSWORD = "";
     private String clientName;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 

@@ -239,6 +239,18 @@
             <label for="message-text" class="col-form-label" style="color: black">Telefone:</label>
             <input class="form-control" id="telefone" name="telefone" value="${cliente.telefone}"></input>
           </div>
+          
+           <div class="form-group">
+            <label for="message-text" class="col-form-label" style="color: black">Forma de entrega:</label>
+				      <select class="custom-select" id="entrega" name="entrega-id" required>
+				        <option selected disabled value="">Selecione</option>
+				       	<c:forEach items="${entregas}" var="entrega">
+							<option id="entrega-id"  value="${entrega.id}"> 
+								${tema.nome}
+							</option>
+				    	 </c:forEach>
+				      </select>
+		</div>
         </form>
       </div>
       <div class="modal-footer">

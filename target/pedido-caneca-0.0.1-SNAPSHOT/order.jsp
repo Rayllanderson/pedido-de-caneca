@@ -210,8 +210,8 @@ $("#btn-submit").on('click', function () {
 		$('#temas').focus();
 	 }else{ 
 		$('#btn-submit').prop('disabled', true);
-		 $("#btn-submit").html('Enviando...');
-		 $("#order-form").submit();
+		$("#btn-submit").html('Enviando...');
+		$("#order-form").submit();
 	 }
 });
 	    
