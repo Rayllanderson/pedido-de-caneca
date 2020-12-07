@@ -18,12 +18,14 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.ray.model.dao.CanecaRepository;
+import com.ray.model.dao.EntregaRepository;
 import com.ray.model.dao.ImageRepository;
 import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.dao.TemaRepository;
 import com.ray.model.entities.Arquivo;
 import com.ray.model.entities.Caneca;
 import com.ray.model.entities.Cliente;
+import com.ray.model.entities.Entrega;
 import com.ray.model.entities.Pedido;
 import com.ray.model.entities.Tema;
 import com.ray.model.entities.enums.Etapa;
@@ -51,6 +53,7 @@ public class OrderServlet extends HttpServlet {
     private ImageService imageService;
     private PedidoService pedidoService;
     private ClienteService clienteService;
+    private EntregaRepository entregaRepository = RepositoryFactory.createEntregaDao();
 
     @Override
     public void init() throws ServletException {
@@ -69,6 +72,8 @@ public class OrderServlet extends HttpServlet {
 	    if (action != null) {
 		if (action.equals("edit")) {
 		    setCanecaToEdit(request, response);
+		} else if (action.equals("getEntregas")) {
+		    request.getSession().setAttribute("entregas", entregaRepository.findAll());
 		}
 	    } else {
 		request.getSession().setAttribute("temas", temaRepository.findAll());
@@ -117,7 +122,7 @@ public class OrderServlet extends HttpServlet {
 	    response.setContentType("text/plain");
 	    response.setCharacterEncoding("UTF-8");
 	    response.getWriter().print(e.getMessage());
-	}catch (Exception e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	    response.getWriter().print("Ocorreu um erro.");
 	}
@@ -277,7 +282,8 @@ public class OrderServlet extends HttpServlet {
 	for (Part part : parts) {
 	    if (part.getSize() > 0 && ImageValidation.fileTypeIsValid(request, part)) {
 		InputStream fileContent = part.getInputStream();
-		imagens.add(new Arquivo(null, fileContent, "", "", part.getContentType(), caneca, part.getSubmittedFileName()));
+		imagens.add(new Arquivo(null, fileContent, "", "", part.getContentType(), caneca,
+			part.getSubmittedFileName()));
 	    }
 	}
 	return imagens;
@@ -338,7 +344,7 @@ public class OrderServlet extends HttpServlet {
 	if (canecas.isEmpty()) {
 	    throw new IllegalArgumentException("Para finalizar, você precisa de pelo menos uma caneca em seu carrinho");
 	}
-	Pedido p = new Pedido(cliente, currentTime);
+	Pedido p = new Pedido(cliente, currentTime, getEntrega(request));
 	if (pedidoService.save(p)) {
 	    request.getSession().setAttribute("order", p);
 	    response.setStatus(200);
@@ -350,6 +356,15 @@ public class OrderServlet extends HttpServlet {
 	    response.sendRedirect("error.jsp");
 	}
 	return;
+    }
+
+    private Entrega getEntrega(HttpServletRequest request) {
+	try {
+	    Long id = Long.valueOf(request.getParameter("entrega-id"));
+	    return entregaRepository.findById(id);
+	} catch (Exception e) {
+	    return new Entrega(1L, null); // entrega padrão
+	}
     }
 
     private Cliente getCliente(HttpServletRequest request) {

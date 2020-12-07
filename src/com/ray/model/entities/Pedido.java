@@ -10,11 +10,12 @@ public class Pedido implements Serializable{
     private static final long serialVersionUID = 1L;
     private Cliente cliente;
     private Date data;
+    private Entrega entrega;
 
-    public Pedido(Cliente cliente, Date data) {
-	super();
+    public Pedido(Cliente cliente, Date data, Entrega entrega) {
 	this.cliente = cliente;
 	this.data = data;
+	this.entrega = entrega;
     }
 
     public Cliente getCliente() {
@@ -36,4 +37,13 @@ public class Pedido implements Serializable{
     public String getDataString() {
 	return DateUtil.formatData(data);
     }
+
+    public Entrega getEntrega() {
+	return entrega;
+    }
+
+    public void setEntrega(Entrega entrega) {
+	this.entrega = entrega;
+    }
+    
 }

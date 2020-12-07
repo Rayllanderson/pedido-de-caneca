@@ -20,14 +20,11 @@ public class PedidoDaoJdbc implements PedidoRepository {
 	this.conn = conn;
     }
 
-    /**
-     * Retorna o cliente salvo do banco do de dados
-     */
     @Override
     public boolean save(Pedido pedido) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	String sql = "insert into pedidos (cliente_id, order_time) values (?, ?)";
+	String sql = "insert into pedidos (cliente_id, order_time, entrega_id) values (?, ?, ?)";
 	try {
 	    Calendar calendar = Calendar.getInstance();
 	    java.util.Date currentTime = calendar.getTime();
@@ -35,6 +32,7 @@ public class PedidoDaoJdbc implements PedidoRepository {
 	    st = conn.prepareStatement(sql);
 	    st.setLong(1, pedido.getCliente().getId());
 	    st.setTimestamp(2, new Timestamp(time));
+	    st.setLong(3, pedido.getEntrega().getId());
 	    if (st.executeUpdate() > 0) {
 		return true;
 	    };
