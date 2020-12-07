@@ -137,7 +137,7 @@ public class OrderServlet extends HttpServlet {
 	String descricao = request.getParameter("descricao");
 	String quantidade = request.getParameter("quantidade");
 
-	Tema tema = temaRepository.findById(Long.valueOf(request.getParameter("tema-id")));
+	Tema tema = getTema(request);
 	ThemeValidation.validateTheme(tema);
 	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 
@@ -156,6 +156,7 @@ public class OrderServlet extends HttpServlet {
 	}
 	response.sendRedirect("carrinho");
     }
+
 
     private void save(HttpServletRequest request, String descricao, String quantidade, Tema tema, Cliente cliente)
 	    throws IOException, ServletException {
@@ -318,7 +319,6 @@ public class OrderServlet extends HttpServlet {
 	    if (ClientValidation.clientIsValid(cliente, canecaId)) {
 		Caneca caneca = canecaRepository.findByIdWihoutIS(canecaId);
 		caneca.getFotos().addAll(imageService.findAll(canecaId, false));
-//		request.getSession().setAttribute("temas", temaRepository.findAll());
 		request.getSession().setAttribute("caneca", caneca);
 		response.setStatus(200);
 		return;
@@ -385,6 +385,14 @@ public class OrderServlet extends HttpServlet {
 	    }
 	} catch (NumberFormatException e) {
 	    throw new IllegalArgumentException("Ocorreu um erro. Recarregue a página e tente novamente");
+	}
+    }
+    
+    private Tema getTema(HttpServletRequest request) {
+	try {
+	    return temaRepository.findById(Long.valueOf(request.getParameter("tema-id")));
+	}catch (Exception e) {
+	   throw new IllegalArgumentException("Tema inválido");
 	}
     }
 }
