@@ -132,21 +132,39 @@ public class ArquivoDaoJdbc implements ImageRepository {
     public List<Arquivo> findAll(Long canecaId) {
 	PreparedStatement st = null;
 	ResultSet rs = null;
-	List <Arquivo> modelos = new ArrayList<>();
+	List <Arquivo> imagens = new ArrayList<>();
 	String sql = "select * from arquivos where id_caneca = " + canecaId;
 	try {
 	    st = conn.prepareStatement(sql);
-//	    st.setLong(1, canecaId);
 	    rs = st.executeQuery();
 	    while(rs.next()) {
-		modelos.add(setNewImage(rs));
+		imagens.add(setNewImage(rs));
 	    }
-	    return modelos;
+	    return imagens;
 	} catch (SQLException e) {
 	    throw new DbException(e.getMessage());
 	} finally {
 	    DB.closeStatement(st);
 	}
+    }
+    
+    @Override
+    public Arquivo getFirstImage(Long canecaId) {
+	PreparedStatement st = null;
+	ResultSet rs = null;
+	String sql = "SELECT id, base64, miniatura from arquivos where id_caneca = " + canecaId + "  LIMIT 1;";
+	try {
+	    st = conn.prepareStatement(sql);
+	    rs = st.executeQuery();
+	    if(rs.next()) {
+		return new Arquivo(rs.getLong("id"), null, rs.getString("base64"), rs.getString("miniatura"), null, null);
+	    }
+	} catch (SQLException e) {
+	    throw new DbException(e.getMessage());
+	} finally {
+	    DB.closeStatement(st);
+	}
+	return null;
     }
 
 }

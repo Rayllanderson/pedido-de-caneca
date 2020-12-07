@@ -15,4 +15,6 @@ public interface ImageRepository {
     Arquivo findById(Long id);
 
     List<Arquivo> findAll(Long canecaId);
+
+    Arquivo getFirstImage(Long canecaId);
 }

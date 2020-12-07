@@ -73,7 +73,9 @@ public class OrderServlet extends HttpServlet {
 		if (action.equals("edit")) {
 		    setCanecaToEdit(request, response);
 		} else if (action.equals("getEntregas")) {
-		    request.getSession().setAttribute("entregas", entregaRepository.findAll());
+		  if (request.getSession().getAttribute("entregas") == null) {
+		      request.getSession().setAttribute("entregas", entregaRepository.findAll());
+		  }
 		}
 	    } else {
 		if (request.getSession().getAttribute("temas") == null){

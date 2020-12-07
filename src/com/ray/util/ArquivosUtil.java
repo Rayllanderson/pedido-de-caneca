@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -120,6 +119,11 @@ public class ArquivosUtil implements Serializable {
 	    for (Arquivo i : imagens) {
 		while (i.getMiniatura().equals("")) {
 		    i = imgRepository.findById(i.getId());
+		    try {
+			Thread.sleep(100);
+		    } catch (InterruptedException e) {
+			e.printStackTrace();
+		    }
 		}
 	    }
 	} else {
@@ -137,11 +141,7 @@ public class ArquivosUtil implements Serializable {
      */
     public static Arquivo getFirstImage(Long canecaId) {
 	ImageRepository imgRepository = RepositoryFactory.createImageDao();
-	List<Arquivo> imagens = imgRepository.findAll(canecaId);
-	Optional<Arquivo> firstImage = imagens.stream().findFirst();
-	if (firstImage.isPresent()) {
-	    return firstImage.get();
-	} else
-	    return imgRepository.findById(0L); // caneca sem foto
+	Arquivo imagem = imgRepository.getFirstImage(canecaId);
+	return imagem == null ? imgRepository.findById(0L) : imagem;
     }
 }

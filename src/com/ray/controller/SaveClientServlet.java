@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ray.model.dao.ClienteRepository;
+import com.ray.model.dao.EntregaRepository;
 import com.ray.model.dao.RepositoryFactory;
 import com.ray.model.dao.TemaRepository;
 import com.ray.model.entities.Cliente;
@@ -20,6 +21,7 @@ public class SaveClientServlet extends HttpServlet {
 
     private ClienteRepository repository;
     private TemaRepository temaRepository =  RepositoryFactory.createTemaDao();
+    private EntregaRepository entregaRepository = RepositoryFactory.createEntregaDao();
     
     @Override
     public void init() throws ServletException {
@@ -37,7 +39,7 @@ public class SaveClientServlet extends HttpServlet {
 	Cliente cliente = new Cliente(null, nome, telefone);
 	cliente = repository.save(cliente);
 	request.getSession().setAttribute("temas", temaRepository.findAll());
-
+	request.getSession().setAttribute("entregas", entregaRepository.findAll());
 	// generate a new session
 	HttpSession newSession = request.getSession(true);
 	newSession.setMaxInactiveInterval(30 * 60); //30 minutos
