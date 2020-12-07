@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import com.ray.model.dao.ClienteRepository;
 import com.ray.model.dao.RepositoryFactory;
+import com.ray.model.dao.TemaRepository;
 import com.ray.model.entities.Cliente;
 
 @WebServlet("/save-client")
@@ -18,10 +19,7 @@ public class SaveClientServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private ClienteRepository repository;
-    
-    public SaveClientServlet() {
-	super();
-    }
+    private TemaRepository temaRepository =  RepositoryFactory.createTemaDao();
     
     @Override
     public void init() throws ServletException {
@@ -38,6 +36,7 @@ public class SaveClientServlet extends HttpServlet {
 	String telefone = request.getParameter("telefone");
 	Cliente cliente = new Cliente(null, nome, telefone);
 	cliente = repository.save(cliente);
+	request.getSession().setAttribute("temas", temaRepository.findAll());
 
 	// generate a new session
 	HttpSession newSession = request.getSession(true);

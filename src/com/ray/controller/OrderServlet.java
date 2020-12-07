@@ -76,7 +76,9 @@ public class OrderServlet extends HttpServlet {
 		    request.getSession().setAttribute("entregas", entregaRepository.findAll());
 		}
 	    } else {
-		request.getSession().setAttribute("temas", temaRepository.findAll());
+		if (request.getSession().getAttribute("temas") == null){
+		    request.getSession().setAttribute("temas", temaRepository.findAll());
+		}
 		request.getRequestDispatcher("order.jsp").forward(request, response);
 	    }
 	} catch (Exception e) {
@@ -314,7 +316,7 @@ public class OrderServlet extends HttpServlet {
 	    if (ClientValidation.clientIsValid(cliente, canecaId)) {
 		Caneca caneca = canecaRepository.findByIdWihoutIS(canecaId);
 		caneca.getFotos().addAll(imageService.findAll(canecaId, false));
-		request.getSession().setAttribute("temas", temaRepository.findAll());
+//		request.getSession().setAttribute("temas", temaRepository.findAll());
 		request.getSession().setAttribute("caneca", caneca);
 		response.setStatus(200);
 		return;
