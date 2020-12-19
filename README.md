@@ -1,4 +1,4 @@
-# Pedido de Canecas Personaizadas
+# Pedido de Canecas Personalizadas
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/Rayllanderson/pedido-de-caneca/blob/master/LICENSE) 
 
 # Sobre o projeto
