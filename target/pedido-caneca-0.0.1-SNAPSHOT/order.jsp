@@ -71,7 +71,7 @@
       <div class="card mb-3">
         <div class="card-body">
 	
-			 <h5 class="card-title text-center mt-4">Caneca x</h5>
+			 <h5 class="card-title text-center mt-4">Caneca Personalizada</h5>
 			 
 			 <form class="" action="order?action=next"
 			 method="POST" id="order-form" enctype="multipart/form-data">		

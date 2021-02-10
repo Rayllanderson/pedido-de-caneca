@@ -1,6 +1,14 @@
 $(".alert").hide();
 $('#alertE').hide();
 
+
+$('#finalizarModal').on('show.bs.modal', function () {
+
+$.get("order?action=getEntregas");
+
+}) 
+
+
 const telefoneSize = 14;
 
 $("#finalizar").on('click', function() {

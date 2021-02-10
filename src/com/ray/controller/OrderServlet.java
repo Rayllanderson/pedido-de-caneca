@@ -73,12 +73,12 @@ public class OrderServlet extends HttpServlet {
 		if (action.equals("edit")) {
 		    setCanecaToEdit(request, response);
 		} else if (action.equals("getEntregas")) {
-		  if (request.getSession().getAttribute("entregas") == null) {
+		  if (request.getSession().getAttribute("entregas").toString().equals("[]")) {
 		      request.getSession().setAttribute("entregas", entregaRepository.findAll());
 		  }
 		}
 	    } else {
-		if (request.getSession().getAttribute("temas") == null){
+		if (request.getSession().getAttribute("temas").toString().equals("[]")){
 		    request.getSession().setAttribute("temas", temaRepository.findAll());
 		}
 		request.getRequestDispatcher("order.jsp").forward(request, response);
@@ -144,7 +144,6 @@ public class OrderServlet extends HttpServlet {
 	String id = request.getParameter("id");
 	boolean hasId = id != null;
 	if (hasId) {
-	    System.out.println(id);
 	    if (ClientValidation.clientIsValid(cliente, Long.valueOf(id))) {
 		update(request, descricao, quantidade, tema, cliente, id);
 	    } else {
@@ -178,7 +177,7 @@ public class OrderServlet extends HttpServlet {
 	// carregando a caneca que está sendo editada
 	Caneca c = (Caneca) request.getSession().getAttribute("caneca");
 	// atualiza a imagem caso o user tenha mudado
-	imagens = getImagens(request, c);
+	imagens = getNewImagens(request, c);
 	boolean hasImage = !imagens.isEmpty();
 	if (hasImage) {
 	    imagens.forEach(x -> new ThreadMiniature(x));
@@ -198,7 +197,7 @@ public class OrderServlet extends HttpServlet {
      * @throws IOException
      * @throws ServletException
      */
-    private List<Arquivo> getImagens(HttpServletRequest request, Caneca canecaAntiga)
+    private List<Arquivo> getNewImagens(HttpServletRequest request, Caneca canecaAntiga)
 	    throws IOException, ServletException {
 	final int NUMERO_IMAGENS = 3;
 	boolean hasChangedImage = request.getParameter("hasChangedImage").equals("true") ? true : false;
@@ -288,7 +287,7 @@ public class OrderServlet extends HttpServlet {
 	    if (part.getSize() > 0 && ImageValidation.fileTypeIsValid(request, part)) {
 		InputStream fileContent = part.getInputStream();
 		imagens.add(new Arquivo(null, fileContent, "", "", part.getContentType(), caneca,
-			part.getSubmittedFileName()));
+			part.getSubmittedFileName().toString()));
 	    }
 	}
 	return imagens;
@@ -302,7 +301,7 @@ public class OrderServlet extends HttpServlet {
 	    Part part = request.getPart("file" + index);
 	    if (part.getSize() > 0 && ImageValidation.fileTypeIsValid(request, part)) {
 		InputStream fileContent = part.getInputStream();
-		return new Arquivo(null, fileContent, "", "", part.getContentType(), caneca);
+		return new Arquivo(null, fileContent, "", "", part.getContentType(), caneca, part.getSubmittedFileName().toString());
 	    } else {
 		return null;
 	    }

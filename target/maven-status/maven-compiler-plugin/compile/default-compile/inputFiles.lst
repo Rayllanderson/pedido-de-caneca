@@ -3,7 +3,6 @@ C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\db\DbException.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\service\ClienteService.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\entities\Cliente.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\dao\impl\ClienteDaoJdbc.java
-C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\util\Html.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\filters\DBFilter.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\dao\TemaRepository.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\dao\CanecaRepository.java
@@ -21,9 +20,12 @@ C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\util\ArquivosUtil.jav
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\controller\SaveClientServlet.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\db\DB.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\entities\Caneca.java
+C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\entities\Entrega.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\dao\PedidoRepository.java
+C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\dao\EntregaRepository.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\db\DbIntegrityException.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\dao\impl\ArquivoDaoJdbc.java
+C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\dao\impl\EntregaDaoJdbc.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\exceptions\RequisicaoInvalidaException.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\entities\Arquivo.java
 C:\Users\rayll\eclipse-workspace\pedido-caneca\src\com\ray\model\entities\Tema.java

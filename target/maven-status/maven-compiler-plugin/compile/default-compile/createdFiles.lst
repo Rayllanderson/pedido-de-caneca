@@ -10,6 +10,7 @@ com\ray\util\ThreadMiniature.class
 com\ray\util\Email.class
 com\ray\controller\CarrinhoServlet.class
 com\ray\controller\SaveClientServlet.class
+com\ray\model\entities\Entrega.class
 com\ray\model\dao\ImageRepository.class
 com\ray\model\entities\enums\Etapa.class
 com\ray\model\dao\impl\TemaDaoJdbc.class
@@ -20,13 +21,14 @@ com\ray\filters\DBFilter.class
 com\ray\model\dao\impl\ArquivoDaoJdbc.class
 com\ray\model\service\PedidoService.class
 com\ray\model\dao\RepositoryFactory.class
+com\ray\model\dao\impl\EntregaDaoJdbc.class
 com\ray\util\ArquivosUtil.class
 com\ray\model\entities\Arquivo.class
-com\ray\util\Html.class
 com\ray\model\dao\impl\PedidoDaoJdbc.class
 com\ray\model\validacoes\ClientValidation.class
 com\ray\model\validacoes\ImageValidation.class
 com\ray\controller\OrderServlet.class
+com\ray\model\dao\EntregaRepository.class
 com\ray\model\exceptions\RequisicaoInvalidaException.class
 com\ray\model\dao\TemaRepository.class
 com\ray\model\dao\PedidoRepository.class

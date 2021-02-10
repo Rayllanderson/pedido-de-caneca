@@ -10,46 +10,47 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<!-- Font Awesome -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-<link rel="stylesheet" href="src/css/alert.css">
+<link rel="stylesheet" href="src/css/main.css">
+<link rel="icon" href="src/img/icon.png">
+<style >
+	h1, h2, h4{
+		color: white;
+	}
+	
+	hr{ border-top: 1px solid white;}
+	
+	.card{
+		box-shadow: 1em;
+	}
+	
+	a{
+		color:#FFB408
+	}
+	
+	a:hover{
+		color:#FBA408
+	}
+</style>
 
-<title>Insert title here</title>
+<title>Sucesso</title>
 </head>
 <body>
 
-	<!-- ALERT -->
-	<div class="fixed-top">
-		<div class="alert alert-success" id="success-alert">
-			<button type="button" class="close" onclick="$('.alert').hide();">x</button>
-			<h4 id="titulo"></h4>
-			<p id="alertMsg"></p>
+	<div class="mt-5 p-4 container" >
+		<div>
+			<a href="https://www.lardopresenteperfeito.com"><img class="img-fluid mt-5 rounded mx-auto d-block" src="https://static.wixstatic.com/media/7d84a5_b9bf03642c3c45b086ed7678a0452699~mv2.png/v1/crop/x_0,y_50,w_600,h_51/fill/w_519,h_44,al_c,q_85,usm_0.66_1.00_0.01/teste-logo-1-(1).webp">
+			</a> 
+		</div>
+		<div class="card mt-5">
+			<h2 class="bd-title">Obrigada, enviaremos seus modelos exclusivos e repletos de carinhos em até 72 horas.</h2>
+		</div>
+		<div class="mt-4">
+			<hr class="my-4"/>
+		 	<strong ><a href="https://www.lardopresenteperfeito.com"> Acessar site principal </a> </strong>
+			<strong ><a href="index.jsp" class="float-right">Realizar novo pedido</a>  </strong>
 		</div>
 	</div>
-
-	<div class="mt-5"></div>
-	<div class="container">
-		
-		<div class="card">
-			<h1>Sucesso!</h1>
-			<h2>Exemplo de pagina redireciada...</h2>
-		</div>
-		
-	</div>
-
-
-
-
-
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<script
-		src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
-	<script src="src/js/alert.js"></script>
-
-
+	
 </body>
 
 </html>

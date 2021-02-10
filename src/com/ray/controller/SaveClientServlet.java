@@ -20,32 +20,38 @@ public class SaveClientServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private ClienteRepository repository;
-    private TemaRepository temaRepository =  RepositoryFactory.createTemaDao();
+    private TemaRepository temaRepository = RepositoryFactory.createTemaDao();
     private EntregaRepository entregaRepository = RepositoryFactory.createEntregaDao();
-    
+
     @Override
     public void init() throws ServletException {
 	repository = RepositoryFactory.createClienteDao();
-        super.init();
+	super.init();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	request.setCharacterEncoding("UTF-8");
-	response.setContentType("text/plain");
-	response.setCharacterEncoding("UTF-8");
-	String nome = request.getParameter("nome");
-	String telefone = request.getParameter("telefone");
-	Cliente cliente = new Cliente(null, nome, telefone);
-	cliente = repository.save(cliente);
-	request.getSession().setAttribute("temas", temaRepository.findAll());
-	request.getSession().setAttribute("entregas", entregaRepository.findAll());
-	// generate a new session
-	HttpSession newSession = request.getSession(true);
-	newSession.setMaxInactiveInterval(30 * 60); //30 minutos
-	newSession.setAttribute("cliente", cliente);
-	response.setStatus(HttpServletResponse.SC_OK);
-	response.sendRedirect("order");
+	try {
+	    request.setCharacterEncoding("UTF-8");
+	    response.setContentType("text/plain");
+	    response.setCharacterEncoding("UTF-8");
+	    String nome = request.getParameter("nome");
+	    String telefone = request.getParameter("telefone");
+	    Cliente cliente = new Cliente(null, nome, telefone);
+	    cliente = repository.save(cliente);
+	    request.getSession().setAttribute("temas", temaRepository.findAll());
+	    request.getSession().setAttribute("entregas", entregaRepository.findAll());
+	    // generate a new session
+	    HttpSession newSession = request.getSession(true);
+	    newSession.setMaxInactiveInterval(30 * 60); // 30 minutos
+	    newSession.setAttribute("cliente", cliente);
+	    response.setStatus(HttpServletResponse.SC_OK);
+	    response.sendRedirect("order");
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    System.out.println("from client controller");
+	    request.getRequestDispatcher("error.jsp").forward(request, response);
+	}
     }
 
 }

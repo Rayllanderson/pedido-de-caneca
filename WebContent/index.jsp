@@ -9,6 +9,7 @@
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 <link rel="stylesheet" href="src/css/main.css">
+<link rel="icon" href="src/img/icon.png">
 
 <title>Bem vindo</title>
 

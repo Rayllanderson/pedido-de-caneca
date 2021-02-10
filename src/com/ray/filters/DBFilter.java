@@ -26,12 +26,18 @@ public class DBFilter implements javax.servlet.Filter {
 	    chain.doFilter(request, response);
 	} catch (Exception e) {
 	    e.printStackTrace();
+	    System.out.println("from filter");
+	    request.getRequestDispatcher("error.jsp").forward(request, response);
 	}
     }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-	DB.getConnection();
+	try{
+	    DB.getConnection();
+	}catch (Exception e) {
+	    DB.getConnection(); //tentando acordar a conexão... 
+	}
     }
 
     @Override

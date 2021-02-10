@@ -11,10 +11,10 @@ public class DB {
     private static Connection conn = null;
 
     public static Connection getConnection() {
+	
 	try {
 	    if (conn == null || conn.isClosed()) {
-
-		String url = "jdbc:mysql://localhost:3306/pedido-de-caneca?useTimezone=true&serverTimezone=UTC&autoReconnect=true";
+		String url = "jdbc:mysql://localhost:3306/pedido-de-caneca?useTimezone=true&serverTimezone=UTC&autoReconnect=true&failOverReadOnly=false";
 		String user = "root";
 		String password = "12345";
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -58,4 +58,5 @@ public class DB {
 	    }
 	}
     }
+    
 }

@@ -18,8 +18,8 @@ import javax.mail.internet.MimeMessage;
 
 public class Email implements Runnable {
 
-    private final String USERNAME = "rayllandersonemailjava@gmail.com";
-    private final String PASSWORD = "";
+    private final String USERNAME = "*@gmail.com";
+    private final String PASSWORD = "**";
     private String clientName;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
@@ -29,13 +29,12 @@ public class Email implements Runnable {
      */
     public Email(String clientName) {
 	this.clientName = clientName;
-	Thread t = new Thread(this);
-	t.run();
+	new Thread(this).run();
     }
 
     public void sendEmail() throws ParseException {
 	// Recipient's email ID needs to be mentioned.
-	String to = "producaolpp100@gmail.com";
+	String to = "*@gmail.com";
 
 //	StringBuilder html = new StringBuilder();
 

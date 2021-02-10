@@ -8,7 +8,8 @@ $('#exampleModalCenter').on('show.bs.modal', function(event) {
 });
 
 $('#btn-delete').on('click', function() {
-
+	$(this).prop('disabled', true);
+	$(this).html('Excluindo...');
 	$.ajax({
 		method: "GET",
 		url: "carrinho?action=delete",
@@ -16,13 +17,19 @@ $('#btn-delete').on('click', function() {
 		success: function() {
 			$('#exampleModalCenter').modal('hide')
 			alertBootstrap("Caneca Excluída com Sucesso!", 'alert alert-success', "Sucesso")
-			$.get("carrinho", function(responseXml) {        
-				$("#start").html($(responseXml).find("data").html()); 
+			$.get("carrinho", function(responseXml) {
+				$("#start").html($(responseXml).find("data").html());
+				enableButton()
 			});
 		}, error: function() {
 			$('#exampleModalCenter').modal('hide')
 			alertBootstrap("Ocorreu um erro ao deletar", 'alert alert-danger', "Ops..")
+			enableButton()
 		}
 	});
-
 })
+
+function enableButton() {
+	$("#btn-delete").prop('disabled', false);
+	$("#btn-delete").html('Excluir');
+}
