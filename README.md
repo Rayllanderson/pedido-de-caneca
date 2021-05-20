@@ -5,7 +5,6 @@
 
 http://lardopresenteperfeito.site:8080
 
-Pedido de Canecas é uma aplicação web desenvolvida a pedido do meu irmão com o propósito de facilitar o pedido de uma ou mais canecas personalizadas.
 
 A aplicação consiste em um pedido de canecas personalizadas, em que o cliente pode realizar um ou muitos pedidos. Nas canecas, 
 o cliente pode escolher de 0 até 3 fotos personalizadas, tema, quantidade e descrição, que pode ser detalhes ou qualquer outra coisa.
