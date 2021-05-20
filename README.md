@@ -57,13 +57,6 @@ assim como temas, formas de entregas e os pedidos que não foram realizados.
 - Amazon AWS
 - Banco de dados: MySQL
 
-# Como executar o projeto
-
-Pré-requisitos: Java 11, Apache tomcat 9
-
-Download war: https://github.com/Rayllanderson/assets/blob/master/pedido-de-caneca/pedido-caneca.war
-
-Após ter o java e o tomcat instalado, basta apenas fazer o deploy do war via tomcat, ou jogar o arquivo war para a pasta <i> apache-tomcat-9\webapps </i>
 
 # Autor
 
